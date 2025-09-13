@@ -23,15 +23,15 @@ export function ModernTemplate({ cvData }: { cvData: CVData }) {
                     </div>
                 )}
                 <div className="text-center mb-8">
-                    <h1 className="font-headline text-2xl font-bold text-gray-900">{personalInfo.name || "Your Name"}</h1>
-                    <p className="text-base text-primary mt-1">{personalInfo.title || "Professional Title"}</p>
+                    <h1 className="font-headline text-2xl font-bold text-gray-900 break-words">{personalInfo.name || "Your Name"}</h1>
+                    <p className="text-base text-primary mt-1 break-words">{personalInfo.title || "Professional Title"}</p>
                 </div>
 
                 <div className="space-y-4 text-xs">
                     <h2 className="sidebar-title">Contact</h2>
-                    {personalInfo.email && <div className="flex items-start gap-2"><Mail size={12} className="mt-0.5" /><span>{personalInfo.email}</span></div>}
-                    {personalInfo.phone && <div className="flex items-start gap-2"><Phone size={12} className="mt-0.5" /><span>{personalInfo.phone}</span></div>}
-                    {personalInfo.address && <div className="flex items-start gap-2"><MapPin size={12} className="mt-0.5" /><span>{personalInfo.address}</span></div>}
+                    {personalInfo.email && <div className="flex items-start gap-2 break-all"><Mail size={12} className="mt-0.5 shrink-0" /><span>{personalInfo.email}</span></div>}
+                    {personalInfo.phone && <div className="flex items-start gap-2 break-all"><Phone size={12} className="mt-0.5 shrink-0" /><span>{personalInfo.phone}</span></div>}
+                    {personalInfo.address && <div className="flex items-start gap-2 break-words"><MapPin size={12} className="mt-0.5 shrink-0" /><span>{personalInfo.address}</span></div>}
                 </div>
 
                 <div className="space-y-4 mt-8">
@@ -46,9 +46,9 @@ export function ModernTemplate({ cvData }: { cvData: CVData }) {
                     <h2 className="sidebar-title">Education</h2>
                      {education.map(edu => (
                         <div key={edu.id} className="text-xs">
-                           <h3 className="font-bold">{edu.degree || "Degree"}</h3>
-                           <p className="text-gray-600">{edu.institution || "Institution"}</p>
-                           <p className="text-gray-500 text-[9px]">{edu.startDate} - {edu.endDate}</p>
+                           <h3 className="font-bold break-words">{edu.degree || "Degree"}</h3>
+                           <p className="text-gray-600 break-words">{edu.institution || "Institution"}</p>
+                           <p className="text-gray-500 text-[9px] whitespace-nowrap">{edu.startDate} - {edu.endDate}</p>
                         </div>
                     ))}
                 </div>
@@ -76,10 +76,10 @@ export function ModernTemplate({ cvData }: { cvData: CVData }) {
                                     <div className="absolute left-0 h-full w-0.5 bg-gray-200"></div>
                                     <div className="absolute left-[-5.5px] top-1 h-3 w-3 rounded-full bg-primary"></div>
                                     <div className="flex justify-between items-baseline">
-                                        <h3 className="font-bold text-sm">{exp.role || "Role"}</h3>
-                                        <p className="text-gray-500 text-[9px]">{exp.startDate} - {exp.endDate}</p>
+                                        <h3 className="font-bold text-sm break-words">{exp.role || "Role"}</h3>
+                                        <p className="text-gray-500 text-[9px] whitespace-nowrap">{exp.startDate} - {exp.endDate}</p>
                                     </div>
-                                    <h4 className="font-semibold text-gray-600">{exp.company || "Company"}</h4>
+                                    <h4 className="font-semibold text-gray-600 break-words">{exp.company || "Company"}</h4>
                                     <ul className="mt-1 list-disc list-inside text-gray-600 whitespace-pre-wrap text-[9.5px]">
                                         {exp.description.split('\n').map((line, i) => (
                                             <li key={i} className="pl-1">{line.replace(/•\s*/, '')}</li>

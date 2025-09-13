@@ -22,12 +22,12 @@ export function MinimalistTemplate({ cvData }: { cvData: CVData }) {
             />
           </div>
         )}
-        <h1 className="text-3xl font-bold font-headline text-gray-900">{personalInfo.name || "Your Name"}</h1>
-        <p className="text-base text-gray-600 mt-1">{personalInfo.title || "Professional Title"}</p>
+        <h1 className="text-3xl font-bold font-headline text-gray-900 break-words">{personalInfo.name || "Your Name"}</h1>
+        <p className="text-base text-gray-600 mt-1 break-words">{personalInfo.title || "Professional Title"}</p>
         <div className="flex justify-center items-center gap-x-4 gap-y-1 mt-2 text-gray-500 text-[9px] flex-wrap">
-          {personalInfo.email && <div className="flex items-center gap-1.5"><Mail size={10} />{personalInfo.email}</div>}
-          {personalInfo.phone && <div className="flex items-center gap-1.5"><Phone size={10} />{personalInfo.phone}</div>}
-          {personalInfo.address && <div className="flex items-center gap-1.5"><MapPin size={10} />{personalInfo.address}</div>}
+          {personalInfo.email && <div className="flex items-center gap-1.5 break-all"><Mail size={10} />{personalInfo.email}</div>}
+          {personalInfo.phone && <div className="flex items-center gap-1.5 break-all"><Phone size={10} />{personalInfo.phone}</div>}
+          {personalInfo.address && <div className="flex items-center gap-1.5 break-words"><MapPin size={10} />{personalInfo.address}</div>}
         </div>
       </header>
 
@@ -46,10 +46,10 @@ export function MinimalistTemplate({ cvData }: { cvData: CVData }) {
               {experience.map(exp => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-[11px]">{exp.role || "Role"}</h3>
-                    <p className="text-gray-500 text-[9px]">{exp.startDate} - {exp.endDate}</p>
+                    <h3 className="font-bold text-[11px] break-words">{exp.role || "Role"}</h3>
+                    <p className="text-gray-500 text-[9px] whitespace-nowrap">{exp.startDate} - {exp.endDate}</p>
                   </div>
-                  <h4 className="font-semibold text-gray-600">{exp.company || "Company"}</h4>
+                  <h4 className="font-semibold text-gray-600 break-words">{exp.company || "Company"}</h4>
                    <ul className="mt-1 list-disc list-inside text-gray-600 whitespace-pre-wrap text-[9.5px]">
                       {exp.description.split('\n').map((line, i) => (
                           <li key={i} className="pl-1">{line.replace(/•\s*/, '')}</li>
@@ -68,10 +68,10 @@ export function MinimalistTemplate({ cvData }: { cvData: CVData }) {
               {education.map(edu => (
                 <div key={edu.id}>
                   <div className="flex justify-between items-baseline">
-                    <h3 className="font-bold text-[11px]">{edu.degree || "Degree"}</h3>
-                     <p className="text-gray-500 text-[9px]">{edu.startDate} - {edu.endDate}</p>
+                    <h3 className="font-bold text-[11px] break-words">{edu.degree || "Degree"}</h3>
+                     <p className="text-gray-500 text-[9px] whitespace-nowrap">{edu.startDate} - {edu.endDate}</p>
                   </div>
-                  <h4 className="font-semibold text-gray-600">{edu.institution || "Institution"}</h4>
+                  <h4 className="font-semibold text-gray-600 break-words">{edu.institution || "Institution"}</h4>
                   <p className="mt-0.5 text-gray-600 whitespace-pre-wrap text-[9.5px]">{edu.description}</p>
                 </div>
               ))}
