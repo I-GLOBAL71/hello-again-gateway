@@ -60,6 +60,42 @@
       "description": "A bold CV template that makes a statement.",
       "imageUrl": "https://picsum.photos/seed/cv10/600/800",
       "imageHint": "bold cv"
+    },
+    {
+        "id": "template-corporate",
+        "description": "A professional and structured template for corporate roles.",
+        "imageUrl": "https://picsum.photos/seed/cv11/600/800",
+        "imageHint": "corporate cv"
+    },
+    {
+        "id": "template-geometric",
+        "description": "A modern template with geometric shapes and a clean layout.",
+        "imageUrl": "https://picsum.photos/seed/cv12/600/800",
+        "imageHint": "geometric resume"
+    },
+    {
+        "id": "template-info",
+        "description": "An infographic-style template to visualize your skills.",
+        "imageUrl": "https://picsum.photos/seed/cv13/600/800",
+        "imageHint": "infographic cv"
+    },
+    {
+        "id": "template-sharp",
+        "description": "A sharp and crisp template with a focus on clarity.",
+        "imageUrl": "https://picsum.photos/seed/cv14/600/800",
+        "imageHint": "sharp resume"
+    },
+    {
+        "id": "template-gallery",
+        "description": "A portfolio-style template to showcase your work.",
+        "imageUrl": "https://picsum.photos/seed/cv15/600/800",
+        "imageHint": "gallery portfolio"
+    },
+    {
+        "id": "template-impact",
+        "description": "A high-impact template designed to grab attention.",
+        "imageUrl": "https://picsum.photos/seed/cv16/600/800",
+        "imageHint": "impactful cv"
     }
   ]
 }
