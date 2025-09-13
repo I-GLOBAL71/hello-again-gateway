@@ -1,5 +1,6 @@
 import type { CVData } from '@/lib/types';
 import  { ProfessionalTemplate } from './templates/ProfessionalTemplate';
+import { MinimalistTemplate } from './templates/MinimalistTemplate';
 
 type CvPreviewProps = {
   cvData: CVData;
@@ -7,11 +8,9 @@ type CvPreviewProps = {
 };
 
 export function CvPreview({ cvData, templateId }: CvPreviewProps) {
-  // In a real app, you would switch between different template components
-  // based on templateId. For this demo, we'll use one versatile template.
-  
   switch (templateId) {
-    // Add cases for other templates if they have unique components
+    case 'minimalist':
+        return <MinimalistTemplate cvData={cvData} />;
     case 'modern':
     case 'classic':
     case 'creative':

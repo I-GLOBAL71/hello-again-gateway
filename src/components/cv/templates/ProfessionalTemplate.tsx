@@ -1,3 +1,5 @@
+'use client';
+
 import type { CVData } from '@/lib/types';
 import { Briefcase, GraduationCap, Lightbulb, Mail, Phone, MapPin, User, Star } from 'lucide-react';
 

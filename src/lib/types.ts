@@ -34,6 +34,5 @@ export type Template = {
   id: string;
   name: string;
   description: string;
-  previewImage: string;
   isNew?: boolean;
 };

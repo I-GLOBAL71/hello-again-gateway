@@ -1,8 +1,42 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { templates } from '@/lib/templates';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { CvPreview } from '@/components/cv/CvPreview';
+import { CVData } from '@/lib/types';
+
+const previewData: CVData = {
+  personalInfo: {
+    name: 'Your Name',
+    title: 'Professional Title',
+    email: 'your.email@example.com',
+    phone: '123-456-7890',
+    address: 'City, Country',
+  },
+  summary: 'A brief professional summary about yourself, your skills, and your career goals.',
+  experience: [
+    {
+      id: 'exp1',
+      company: 'Company Name',
+      role: 'Job Title',
+      startDate: 'YYYY',
+      endDate: 'YYYY',
+      description: '• Key responsibilities and achievements.',
+    },
+  ],
+  education: [
+    {
+      id: 'edu1',
+      institution: 'University Name',
+      degree: 'Degree',
+      startDate: 'YYYY',
+      endDate: 'YYYY',
+      description: '• Relevant coursework or honors.',
+    },
+  ],
+  skills: 'Skill 1, Skill 2, Skill 3',
+};
+
 
 export default function Home() {
   return (
@@ -22,7 +56,7 @@ export default function Home() {
           <h2 className="font-headline text-3xl md:text-4xl font-semibold text-center mb-10">
             Choose Your Template
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {templates.map((template) => (
               <Link
                 href={`/editor/${template.id}`}
@@ -30,18 +64,7 @@ export default function Home() {
                 className="group block"
               >
                 <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
-                  <CardContent className="p-0 relative">
-                    <Image
-                      src={template.previewImage}
-                      alt={`${template.name} template preview`}
-                      width={600}
-                      height={800}
-                      className="w-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                      data-ai-hint="resume cv"
-                    />
-                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  </CardContent>
-                  <CardHeader className="flex-grow">
+                  <CardHeader>
                     <div className="flex justify-between items-center">
                       <CardTitle className="font-headline text-xl">
                         {template.name}
@@ -50,6 +73,13 @@ export default function Home() {
                     </div>
                     <p className="text-sm text-muted-foreground pt-1">{template.description}</p>
                   </CardHeader>
+                  <CardContent className="p-4 pt-0">
+                     <div className="aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
+                        <div className="scale-[0.2] origin-top-left w-[500%] h-[500%]">
+                            <CvPreview cvData={previewData} templateId={template.id} />
+                        </div>
+                    </div>
+                  </CardContent>
                 </Card>
               </Link>
             ))}
