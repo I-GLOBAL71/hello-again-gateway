@@ -5,8 +5,11 @@ import type { CVData, Template } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { Button } from '@/components/ui/button';
-import { Download, ArrowLeft } from 'lucide-react';
+import { Download, ArrowLeft, Eye, Pencil } from 'lucide-react';
 import Link from 'next/link';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from '@/hooks/use-mobile';
+
 
 const initialCvData: CVData = {
   personalInfo: {
@@ -53,33 +56,47 @@ const initialCvData: CVData = {
 
 export function CvEditor({ template }: { template: Template }) {
   const [cvData, setCvData] = useState<CVData>(initialCvData);
+  const isMobile = useIsMobile();
 
   const handlePrint = () => {
-    window.print();
+    if (isMobile) {
+      // On mobile, we need to ensure the preview is visible before printing.
+      const previewTab = document.querySelector('[data-radix-collection-item][value="preview"]') as HTMLElement | null;
+      if (previewTab) {
+        previewTab.click();
+        // Allow time for the tab to switch before printing
+        setTimeout(() => {
+          window.print();
+        }, 200);
+      }
+    } else {
+      window.print();
+    }
   };
 
-  return (
-    <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
-      <div className="no-print lg:w-[45%] lg:max-w-2xl flex flex-col h-full">
-        <header className="p-4 bg-card border-b flex justify-between items-center shrink-0">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/">
-              <ArrowLeft />
-              <span className="sr-only">Back to templates</span>
-            </Link>
-          </Button>
-          <h2 className="font-headline text-xl font-semibold">{template.name} Template</h2>
-          <Button onClick={handlePrint} size="sm">
-            <Download className="mr-2 h-4 w-4" />
-            Download
-          </Button>
-        </header>
-        <div className="overflow-y-auto flex-1 p-4 sm:p-6 bg-card">
-            <CvForm cvData={cvData} setCvData={setCvData} />
-        </div>
+  const EditorView = (
+    <div className="no-print lg:w-[45%] lg:max-w-2xl flex flex-col h-full">
+      <header className="p-4 bg-card border-b flex justify-between items-center shrink-0">
+        <Button variant="ghost" size="icon" asChild>
+          <Link href="/">
+            <ArrowLeft />
+            <span className="sr-only">Back to templates</span>
+          </Link>
+        </Button>
+        <h2 className="font-headline text-xl font-semibold">{template.name} Template</h2>
+        <Button onClick={handlePrint} size="sm">
+          <Download className="mr-2 h-4 w-4" />
+          Download
+        </Button>
+      </header>
+      <div className="overflow-y-auto flex-1 p-4 sm:p-6 bg-card">
+          <CvForm cvData={cvData} setCvData={setCvData} />
       </div>
-      
-      <main className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5">
+    </div>
+  );
+
+  const PreviewView = (
+     <main className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5">
         <div
           id="cv-preview-wrapper"
           className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top"
@@ -89,6 +106,44 @@ export function CvEditor({ template }: { template: Template }) {
             </div>
         </div>
       </main>
+  );
+
+  if (isMobile) {
+    return (
+        <Tabs defaultValue="editor" className="flex flex-col h-screen w-full bg-muted/40">
+            <header className="no-print p-2 bg-card border-b flex justify-between items-center shrink-0">
+                <Button variant="ghost" size="icon" asChild>
+                    <Link href="/">
+                    <ArrowLeft />
+                    <span className="sr-only">Back to templates</span>
+                    </Link>
+                </Button>
+                <TabsList className="grid w-full max-w-xs grid-cols-2">
+                    <TabsTrigger value="editor"><Pencil className="mr-2"/> Editor</TabsTrigger>
+                    <TabsTrigger value="preview"><Eye className="mr-2"/> Preview</TabsTrigger>
+                </TabsList>
+                <Button onClick={handlePrint} size="icon" variant="outline">
+                    <Download />
+                    <span className="sr-only">Download</span>
+                </Button>
+            </header>
+            <TabsContent value="editor" className="flex-1 overflow-y-auto bg-card data-[state=inactive]:hidden">
+                 <div className="p-4 sm:p-6">
+                    <h2 className="font-headline text-xl font-semibold mb-4 text-center">{template.name} Template</h2>
+                    <CvForm cvData={cvData} setCvData={setCvData} />
+                 </div>
+            </TabsContent>
+            <TabsContent value="preview" className="flex-1 overflow-y-auto data-[state=inactive]:hidden">
+                {PreviewView}
+            </TabsContent>
+        </Tabs>
+    );
+  }
+
+  return (
+    <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
+      {EditorView}
+      {PreviewView}
     </div>
   );
 }
