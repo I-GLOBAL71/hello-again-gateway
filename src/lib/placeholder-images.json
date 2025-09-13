@@ -1,3 +1,65 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "template-modern",
+      "description": "A modern CV template with a clean layout.",
+      "imageUrl": "https://picsum.photos/seed/cv1/600/800",
+      "imageHint": "modern cv"
+    },
+    {
+      "id": "template-classic",
+      "description": "A classic and timeless CV template.",
+      "imageUrl": "https://picsum.photos/seed/cv2/600/800",
+      "imageHint": "classic resume"
+    },
+    {
+      "id": "template-creative",
+      "description": "A creative CV template for designers and artists.",
+      "imageUrl": "https://picsum.photos/seed/cv3/600/800",
+      "imageHint": "creative portfolio"
+    },
+    {
+      "id": "template-minimalist",
+      "description": "A minimalist CV template with a focus on content.",
+      "imageUrl": "https://picsum.photos/seed/cv4/600/800",
+      "imageHint": "simple cv"
+    },
+    {
+      "id": "template-professional",
+      "description": "A professional CV template for corporate roles.",
+      "imageUrl": "https://picsum.photos/seed/cv5/600/800",
+      "imageHint": "professional resume"
+    },
+    {
+      "id": "template-academic",
+      "description": "An academic CV template for researchers and scholars.",
+      "imageUrl": "https://picsum.photos/seed/cv6/600/800",
+      "imageHint": "academic cv"
+    },
+    {
+      "id": "template-tech",
+      "description": "A tech-focused CV template for software engineers.",
+      "imageUrl": "https://picsum.photos/seed/cv7/600/800",
+      "imageHint": "tech resume"
+    },
+    {
+      "id": "template-executive",
+      "description": "An executive CV template for leadership positions.",
+      "imageUrl": "https://picsum.photos/seed/cv8/600/800",
+      "imageHint": "executive cv"
+    },
+    {
+      "id": "template-elegant",
+      "description": "An elegant CV template with stylish typography.",
+      "imageUrl": "https://picsum.photos/seed/cv9/600/800",
+      "imageHint": "elegant resume"
+    },
+    {
+      "id": "template-bold",
+      "description": "A bold CV template that makes a statement.",
+      "imageUrl": "https://picsum.photos/seed/cv10/600/800",
+      "imageHint": "bold cv"
+    }
+  ]
 }
