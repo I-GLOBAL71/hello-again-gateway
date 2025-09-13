@@ -92,7 +92,8 @@
   .no-print {
     display: none !important;
   }
-  #cv-preview-wrapper {
+  .print-container {
+    display: block !important;
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
@@ -101,10 +102,13 @@
     max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    overflow: visible !important;
+    background: white !important;
+  }
+  #cv-preview-wrapper {
     box-shadow: none !important;
     border-radius: 0 !important;
     transform: scale(1) !important;
-    overflow: visible !important;
   }
   #cv-preview {
     width: 100% !important;
@@ -113,7 +117,7 @@
     display: block !important;
   }
 
-  body > *:not(#cv-preview-wrapper) {
+  body > *:not(.print-container) {
     display: none !important;
   }
 }

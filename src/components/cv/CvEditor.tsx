@@ -76,6 +76,9 @@ export function CvEditor({ template }: { template: Template }) {
         setTimeout(() => {
           window.print();
         }, 200);
+      } else {
+        // if the tab is not found, just print
+        window.print();
       }
     } else {
       window.print();
@@ -126,7 +129,7 @@ export function CvEditor({ template }: { template: Template }) {
     );
 
   const PreviewView = (
-     <main className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5 relative">
+     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5 relative print-container">
         {TemplateSwitcher}
         <div
           id="cv-preview-wrapper"
@@ -136,7 +139,7 @@ export function CvEditor({ template }: { template: Template }) {
                  <CvPreview cvData={cvData} templateId={selectedTemplateId} />
             </div>
         </div>
-      </main>
+      </div>
   );
 
   if (isMobile) {
