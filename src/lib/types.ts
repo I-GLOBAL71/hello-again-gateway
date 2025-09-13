@@ -5,6 +5,7 @@ export type CVData = {
     email: string;
     phone: string;
     address: string;
+    photo?: string;
   };
   summary: string;
   experience: Experience[];

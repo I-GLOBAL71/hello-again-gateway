@@ -2,6 +2,7 @@
 
 import type { CVData } from '@/lib/types';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 export function MinimalistTemplate({ cvData }: { cvData: CVData }) {
   const { personalInfo, summary, experience, education, skills } = cvData;
@@ -10,9 +11,20 @@ export function MinimalistTemplate({ cvData }: { cvData: CVData }) {
   return (
     <div className="p-8 font-body text-[10px] leading-relaxed bg-white text-gray-800 h-full overflow-y-auto">
       <header className="mb-6 text-center">
+        {personalInfo.photo && (
+          <div className="flex justify-center mb-4">
+            <Image 
+              src={personalInfo.photo} 
+              alt={personalInfo.name} 
+              width={80} 
+              height={80} 
+              className="rounded-full object-cover"
+            />
+          </div>
+        )}
         <h1 className="text-3xl font-bold font-headline text-gray-900">{personalInfo.name || "Your Name"}</h1>
         <p className="text-base text-gray-600 mt-1">{personalInfo.title || "Professional Title"}</p>
-        <div className="flex justify-center items-center gap-x-4 gap-y-1 mt-2 text-gray-500 text-[9px]">
+        <div className="flex justify-center items-center gap-x-4 gap-y-1 mt-2 text-gray-500 text-[9px] flex-wrap">
           {personalInfo.email && <div className="flex items-center gap-1.5"><Mail size={10} />{personalInfo.email}</div>}
           {personalInfo.phone && <div className="flex items-center gap-1.5"><Phone size={10} />{personalInfo.phone}</div>}
           {personalInfo.address && <div className="flex items-center gap-1.5"><MapPin size={10} />{personalInfo.address}</div>}

@@ -11,10 +11,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Plus, Sparkles, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { Plus, Sparkles, Trash2, User } from 'lucide-react';
+import { useState, useRef } from 'react';
 import { summarizeCv } from '@/ai/flows/cv-summary';
 import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 type CvFormProps = {
   cvData: CVData;
@@ -24,6 +25,8 @@ type CvFormProps = {
 export function CvForm({ cvData, setCvData }: CvFormProps) {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
 
   const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,6 +34,20 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
       ...prev,
       personalInfo: { ...prev.personalInfo, [name]: value },
     }));
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCvData(prev => ({
+          ...prev,
+          personalInfo: { ...prev.personalInfo, photo: reader.result as string }
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -119,6 +136,19 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
       <AccordionItem value="personal">
         <AccordionTrigger className='font-headline'>Personal Details</AccordionTrigger>
         <AccordionContent className="space-y-4">
+            <div className="flex items-center gap-4">
+                <Avatar className="h-20 w-20">
+                    <AvatarImage src={cvData.personalInfo.photo} alt={cvData.personalInfo.name} />
+                    <AvatarFallback className="text-3xl"><User /></AvatarFallback>
+                </Avatar>
+                <div className="space-y-1">
+                    <Label>Profile Photo</Label>
+                    <Input id="photo" name="photo" type="file" accept="image/*" onChange={handlePhotoUpload} ref={fileInputRef} className="text-xs"/>
+                    <Button variant="link" size="sm" className="p-0 h-auto" onClick={() => setCvData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, photo: undefined } }))}>
+                        Remove Photo
+                    </Button>
+                </div>
+            </div>
           <div className="space-y-2">
             <Label htmlFor="name">Full Name</Label>
             <Input id="name" name="name" value={cvData.personalInfo.name} onChange={handlePersonalInfoChange} />

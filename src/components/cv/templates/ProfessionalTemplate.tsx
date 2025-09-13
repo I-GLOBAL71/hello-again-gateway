@@ -1,7 +1,8 @@
 'use client';
 
 import type { CVData } from '@/lib/types';
-import { Briefcase, GraduationCap, Lightbulb, Mail, Phone, MapPin, User, Star } from 'lucide-react';
+import { Briefcase, GraduationCap, Star, Mail, Phone, MapPin, User } from 'lucide-react';
+import Image from 'next/image';
 
 export function ProfessionalTemplate({ cvData }: { cvData: CVData }) {
   const { personalInfo, summary, experience, education, skills } = cvData;
@@ -12,6 +13,17 @@ export function ProfessionalTemplate({ cvData }: { cvData: CVData }) {
     <div className="p-10 font-body text-[10px] leading-snug bg-white text-foreground h-full overflow-y-auto">
       {/* Header */}
       <header className="text-center mb-6 border-b-2 pb-5 border-primary/20">
+        {personalInfo.photo && (
+            <div className="flex justify-center mb-4">
+                <Image 
+                    src={personalInfo.photo} 
+                    alt={personalInfo.name} 
+                    width={90} 
+                    height={90} 
+                    className="rounded-full object-cover border-4 border-primary/20 p-1"
+                />
+            </div>
+        )}
         <h1 className="font-headline text-3xl font-bold text-primary">{personalInfo.name || "Your Name"}</h1>
         <p className="text-base font-semibold text-accent mt-1">{personalInfo.title || "Professional Title"}</p>
         <div className="flex justify-center items-center gap-x-4 gap-y-1 mt-3 text-muted-foreground text-[9px] flex-wrap">
