@@ -5,10 +5,17 @@ import type { CVData, Template } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { Button } from '@/components/ui/button';
-import { Download, ArrowLeft, Eye, Pencil } from 'lucide-react';
+import { Download, ArrowLeft, Eye, Pencil, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from '@/hooks/use-mobile';
+import { templates } from '@/lib/templates';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 
 const initialCvData: CVData = {
@@ -56,6 +63,7 @@ const initialCvData: CVData = {
 
 export function CvEditor({ template }: { template: Template }) {
   const [cvData, setCvData] = useState<CVData>(initialCvData);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>(template.id);
   const isMobile = useIsMobile();
 
   const handlePrint = () => {
@@ -73,6 +81,8 @@ export function CvEditor({ template }: { template: Template }) {
       window.print();
     }
   };
+
+  const selectedTemplate = templates.find(t => t.id === selectedTemplateId) || template;
 
   const EditorView = (
     <div className="no-print lg:w-[45%] lg:max-w-2xl flex flex-col h-full">
@@ -95,14 +105,35 @@ export function CvEditor({ template }: { template: Template }) {
     </div>
   );
 
+    const TemplateSwitcher = (
+        <div className="no-print absolute top-4 left-1/2 -translate-x-1/2 z-10">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="bg-white/80 backdrop-blur-sm">
+                        {selectedTemplate.name} Template
+                        <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {templates.map(t => (
+                        <DropdownMenuItem key={t.id} onSelect={() => setSelectedTemplateId(t.id)}>
+                            {t.name}
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
+    );
+
   const PreviewView = (
-     <main className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5">
+     <main className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5 relative">
+        {TemplateSwitcher}
         <div
           id="cv-preview-wrapper"
           className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top"
         >
             <div className="w-full h-full transform-gpu overflow-hidden rounded-lg">
-                 <CvPreview cvData={cvData} templateId={template.id} />
+                 <CvPreview cvData={cvData} templateId={selectedTemplateId} />
             </div>
         </div>
       </main>
