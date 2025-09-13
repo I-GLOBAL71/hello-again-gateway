@@ -1,0 +1,68 @@
+
+{
+    "home": {
+        "title": "CVGenius",
+        "subtitle": "Craft a stunning, professional CV in minutes. Choose a template and let our AI assist you.",
+        "chooseTemplate": "Choose Your Template",
+        "newBadge": "New",
+        "footer": "© {year} CVGenius. All rights reserved."
+    },
+    "editor": {
+        "backToTemplates": "Back to templates",
+        "template": "Template",
+        "download": "Download",
+        "preview": "Preview",
+        "formEditor": "Editor"
+    },
+    "form": {
+        "personalDetails": "Personal Details",
+        "profilePhoto": "Profile Photo",
+        "removePhoto": "Remove Photo",
+        "fullName": "Full Name",
+        "professionalTitle": "Professional Title",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "professionalSummary": "Professional Summary",
+        "summaryPlaceholder": "Your professional summary...",
+        "generateWithAI": "Generate with AI",
+        "generating": "Generating...",
+        "aiSuccessTitle": "Summary Generated!",
+        "aiSuccessDesc": "Your professional summary has been updated.",
+        "aiErrorTitle": "Error",
+        "aiErrorDesc": "Failed to generate summary. Please try again.",
+        "aiGeneratingTitle": "Generating Summary...",
+        "aiGeneratingDesc": "The AI is crafting a professional summary for you.",
+        "workExperience": "Work Experience",
+        "role": "Role",
+        "company": "Company",
+        "startDate": "Start Date",
+        "startDatePlaceholder": "YYYY-MM",
+        "endDate": "End Date",
+        "endDatePlaceholder": "YYYY-MM or Present",
+        "description": "Description",
+        "addExperience": "Add Experience",
+        "education": "Education",
+        "degree": "Degree",
+        "institution": "Institution",
+        "addEducation": "Add Education",
+        "skills": "Skills",
+        "skillsPlaceholder": "List your skills, separated by commas..."
+    },
+    "templates": {
+        "modern": "A sleek, contemporary design for the modern professional.",
+        "classic": "A timeless and elegant template for any industry.",
+        "creative": "Showcase your personality with this stylish template.",
+        "minimalist": "A clean, simple layout that focuses on your content.",
+        "corporate": "A professional and structured template for corporate roles.",
+        "academic": "An academic CV template for researchers and scholars.",
+        "executive": "An executive CV template for leadership positions.",
+        "elegant": "An elegant CV template with stylish typography.",
+        "bold": "A bold CV template that makes a statement.",
+        "geometric": "A modern template with geometric shapes and a clean layout.",
+        "info": "An infographic-style template to visualize your skills.",
+        "sharp": "A sharp and crisp template with a focus on clarity.",
+        "gallery": "A portfolio-style template to showcase your work.",
+        "impact": "A high-impact template designed to grab attention."
+    }
+}

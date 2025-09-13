@@ -15,7 +15,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import { getDictionary } from '@/get-dictionary';
+import { Locale } from '@/i18n-config';
 
 
 const initialCvData: CVData = {
@@ -61,12 +63,25 @@ const initialCvData: CVData = {
   skills: 'React, Next.js, TypeScript, Node.js, Express, MongoDB, PostgreSQL, Docker, Tailwind CSS',
 };
 
-export function CvEditor({ template }: { template: Template }) {
+type CvEditorProps = {
+    template: Template;
+    dictionary: Awaited<ReturnType<typeof getDictionary>>;
+    lang: Locale;
+}
+
+export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [cvData, setCvData] = useState<CVData>(initialCvData);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(template.id);
   const isMobile = useIsMobile();
 
   const handlePrint = () => {
+    //
+    const printContainer = document.querySelector('.print-container');
+    if (printContainer) {
+      document.body.appendChild(printContainer.cloneNode(true));
+    }
+
+
     if (isMobile) {
       // On mobile, we need to ensure the preview is visible before printing.
       const previewTab = document.querySelector('[data-radix-collection-item][value="preview"]') as HTMLElement | null;
@@ -91,19 +106,19 @@ export function CvEditor({ template }: { template: Template }) {
     <div className="no-print lg:w-[45%] lg:max-w-2xl flex flex-col h-full">
       <header className="p-4 bg-card border-b flex justify-between items-center shrink-0">
         <Button variant="ghost" size="icon" asChild>
-          <Link href="/">
+          <Link href={`/${lang}/`}>
             <ArrowLeft />
-            <span className="sr-only">Back to templates</span>
+            <span className="sr-only">{dictionary.editor.backToTemplates}</span>
           </Link>
         </Button>
-        <h2 className="font-headline text-xl font-semibold">{template.name} Template</h2>
+        <h2 className="font-headline text-xl font-semibold">{template.name} {dictionary.editor.template}</h2>
         <Button onClick={handlePrint} size="sm">
           <Download className="mr-2 h-4 w-4" />
-          Download
+          {dictionary.editor.download}
         </Button>
       </header>
       <div className="overflow-y-auto flex-1 p-4 sm:p-6 bg-card">
-          <CvForm cvData={cvData} setCvData={setCvData} />
+          <CvForm cvData={cvData} setCvData={setCvData} dictionary={dictionary.form} />
       </div>
     </div>
   );
@@ -113,7 +128,7 @@ export function CvEditor({ template }: { template: Template }) {
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="bg-white/80 backdrop-blur-sm">
-                        {selectedTemplate.name} Template
+                        {selectedTemplate.name} {dictionary.editor.template}
                         <ChevronDown className="ml-2 h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
@@ -147,24 +162,24 @@ export function CvEditor({ template }: { template: Template }) {
         <Tabs defaultValue="editor" className="flex flex-col h-screen w-full bg-muted/40">
             <header className="no-print p-2 bg-card border-b flex justify-between items-center shrink-0">
                 <Button variant="ghost" size="icon" asChild>
-                    <Link href="/">
+                    <Link href={`/${lang}/`}>
                     <ArrowLeft />
-                    <span className="sr-only">Back to templates</span>
+                    <span className="sr-only">{dictionary.editor.backToTemplates}</span>
                     </Link>
                 </Button>
                 <TabsList className="grid w-full max-w-xs grid-cols-2">
-                    <TabsTrigger value="editor"><Pencil className="mr-2"/> Editor</TabsTrigger>
-                    <TabsTrigger value="preview"><Eye className="mr-2"/> Preview</TabsTrigger>
+                    <TabsTrigger value="editor"><Pencil className="mr-2"/> {dictionary.editor.formEditor}</TabsTrigger>
+                    <TabsTrigger value="preview"><Eye className="mr-2"/> {dictionary.editor.preview}</TabsTrigger>
                 </TabsList>
                 <Button onClick={handlePrint} size="icon" variant="outline">
                     <Download />
-                    <span className="sr-only">Download</span>
+                    <span className="sr-only">{dictionary.editor.download}</span>
                 </Button>
             </header>
             <TabsContent value="editor" className="flex-1 overflow-y-auto bg-card data-[state=inactive]:hidden">
                  <div className="p-4 sm:p-6">
-                    <h2 className="font-headline text-xl font-semibold mb-4 text-center">{template.name} Template</h2>
-                    <CvForm cvData={cvData} setCvData={setCvData} />
+                    <h2 className="font-headline text-xl font-semibold mb-4 text-center">{template.name} {dictionary.editor.template}</h2>
+                    <CvForm cvData={cvData} setCvData={setCvData} dictionary={dictionary.form} />
                  </div>
             </TabsContent>
             <TabsContent value="preview" className="flex-1 overflow-y-auto data-[state=inactive]:hidden">

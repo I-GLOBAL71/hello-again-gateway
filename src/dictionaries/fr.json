@@ -1,0 +1,68 @@
+
+{
+    "home": {
+        "title": "CVGenius",
+        "subtitle": "Créez un CV professionnel et percutant en quelques minutes. Choisissez un modèle et laissez notre IA vous aider.",
+        "chooseTemplate": "Choisissez votre modèle",
+        "newBadge": "Nouveau",
+        "footer": "© {year} CVGenius. Tous droits réservés."
+    },
+    "editor": {
+        "backToTemplates": "Retour aux modèles",
+        "template": "Modèle",
+        "download": "Télécharger",
+        "preview": "Aperçu",
+        "formEditor": "Éditeur"
+    },
+    "form": {
+        "personalDetails": "Détails personnels",
+        "profilePhoto": "Photo de profil",
+        "removePhoto": "Retirer la photo",
+        "fullName": "Nom complet",
+        "professionalTitle": "Titre professionnel",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "address": "Adresse",
+        "professionalSummary": "Résumé professionnel",
+        "summaryPlaceholder": "Votre résumé professionnel...",
+        "generateWithAI": "Générer avec l'IA",
+        "generating": "Génération en cours...",
+        "aiSuccessTitle": "Résumé généré !",
+        "aiSuccessDesc": "Votre résumé professionnel a été mis à jour.",
+        "aiErrorTitle": "Erreur",
+        "aiErrorDesc": "La génération du résumé a échoué. Veuillez réessayer.",
+        "aiGeneratingTitle": "Génération du résumé...",
+        "aiGeneratingDesc": "L'IA est en train de rédiger un résumé professionnel pour vous.",
+        "workExperience": "Expérience professionnelle",
+        "role": "Poste",
+        "company": "Entreprise",
+        "startDate": "Date de début",
+        "startDatePlaceholder": "AAAA-MM",
+        "endDate": "Date de fin",
+        "endDatePlaceholder": "AAAA-MM ou Actuel",
+        "description": "Description",
+        "addExperience": "Ajouter une expérience",
+        "education": "Formation",
+        "degree": "Diplôme",
+        "institution": "Établissement",
+        "addEducation": "Ajouter une formation",
+        "skills": "Compétences",
+        "skillsPlaceholder": "Listez vos compétences, séparées par des virgules..."
+    },
+    "templates": {
+        "modern": "Un design épuré et contemporain pour le professionnel moderne.",
+        "classic": "Un modèle intemporel et élégant pour tous les secteurs.",
+        "creative": "Mettez en valeur votre personnalité avec ce modèle stylé.",
+        "minimalist": "Une mise en page propre et simple qui met l'accent sur votre contenu.",
+        "corporate": "Un modèle professionnel et structuré pour les postes en entreprise.",
+        "academic": "Un modèle de CV académique pour les chercheurs et les universitaires.",
+        "executive": "Un modèle de CV exécutif pour les postes de direction.",
+        "elegant": "Un modèle de CV élégant avec une typographie raffinée.",
+        "bold": "Un modèle de CV audacieux qui se démarque.",
+        "geometric": "Un modèle moderne avec des formes géométriques et une mise en page épurée.",
+        "info": "Un modèle de style infographique pour visualiser vos compétences.",
+        "sharp": "Un modèle net et précis axé sur la clarté.",
+        "gallery": "Un modèle de style portfolio pour présenter votre travail.",
+        "impact": "Un modèle à fort impact conçu pour attirer l'attention."
+    }
+}

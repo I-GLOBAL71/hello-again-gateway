@@ -34,6 +34,5 @@ export type Education = {
 export type Template = {
   id: string;
   name: string;
-  description: string;
   isNew?: boolean;
 };

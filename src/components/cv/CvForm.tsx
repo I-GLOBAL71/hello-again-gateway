@@ -16,13 +16,15 @@ import { useState, useRef } from 'react';
 import { summarizeCv } from '@/ai/flows/cv-summary';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getDictionary } from '@/get-dictionary';
 
 type CvFormProps = {
   cvData: CVData;
   setCvData: React.Dispatch<React.SetStateAction<CVData>>;
+  dictionary: Awaited<ReturnType<typeof getDictionary>>['form'];
 };
 
-export function CvForm({ cvData, setCvData }: CvFormProps) {
+export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -61,8 +63,8 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
   const handleGenerateSummary = async () => {
     setIsGeneratingSummary(true);
     toast({
-        title: "Generating Summary...",
-        description: "The AI is crafting a professional summary for you.",
+        title: dictionary.aiGeneratingTitle,
+        description: dictionary.aiGeneratingDesc,
     });
     try {
       const cvContent = `
@@ -79,16 +81,16 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
       if (result.summary) {
         setCvData(prev => ({ ...prev, summary: result.summary }));
         toast({
-            title: "Summary Generated!",
-            description: "Your professional summary has been updated.",
+            title: dictionary.aiSuccessTitle,
+            description: dictionary.aiSuccessDesc,
         });
       }
     } catch (error) {
       console.error("Failed to generate summary:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to generate summary. Please try again.",
+        title: dictionary.aiErrorTitle,
+        description: dictionary.aiErrorDesc,
       });
     } finally {
       setIsGeneratingSummary(false);
@@ -134,7 +136,7 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
   return (
     <Accordion type="multiple" defaultValue={['personal', 'summary', 'experience', 'education', 'skills']} className="w-full">
       <AccordionItem value="personal">
-        <AccordionTrigger className='font-headline'>Personal Details</AccordionTrigger>
+        <AccordionTrigger className='font-headline'>{dictionary.personalDetails}</AccordionTrigger>
         <AccordionContent className="space-y-4">
             <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
@@ -142,51 +144,51 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
                     <AvatarFallback className="text-3xl"><User /></AvatarFallback>
                 </Avatar>
                 <div className="space-y-1">
-                    <Label>Profile Photo</Label>
+                    <Label>{dictionary.profilePhoto}</Label>
                     <Input id="photo" name="photo" type="file" accept="image/*" onChange={handlePhotoUpload} ref={fileInputRef} className="text-xs"/>
                     <Button variant="link" size="sm" className="p-0 h-auto" onClick={() => setCvData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, photo: undefined } }))}>
-                        Remove Photo
+                        {dictionary.removePhoto}
                     </Button>
                 </div>
             </div>
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
+            <Label htmlFor="name">{dictionary.fullName}</Label>
             <Input id="name" name="name" value={cvData.personalInfo.name} onChange={handlePersonalInfoChange} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="title">Professional Title</Label>
+            <Label htmlFor="title">{dictionary.professionalTitle}</Label>
             <Input id="title" name="title" value={cvData.personalInfo.title} onChange={handlePersonalInfoChange} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{dictionary.email}</Label>
               <Input id="email" name="email" type="email" value={cvData.personalInfo.email} onChange={handlePersonalInfoChange} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">{dictionary.phone}</Label>
               <Input id="phone" name="phone" value={cvData.personalInfo.phone} onChange={handlePersonalInfoChange} />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="address">Address</Label>
+            <Label htmlFor="address">{dictionary.address}</Label>
             <Input id="address" name="address" value={cvData.personalInfo.address} onChange={handlePersonalInfoChange} />
           </div>
         </AccordionContent>
       </AccordionItem>
 
       <AccordionItem value="summary">
-        <AccordionTrigger className='font-headline'>Professional Summary</AccordionTrigger>
+        <AccordionTrigger className='font-headline'>{dictionary.professionalSummary}</AccordionTrigger>
         <AccordionContent className="space-y-4">
-            <Textarea placeholder="Your professional summary..." value={cvData.summary} onChange={handleSummaryChange} rows={5} />
+            <Textarea placeholder={dictionary.summaryPlaceholder} value={cvData.summary} onChange={handleSummaryChange} rows={5} />
             <Button onClick={handleGenerateSummary} disabled={isGeneratingSummary} className="w-full">
                 <Sparkles className="mr-2 h-4 w-4" />
-                {isGeneratingSummary ? 'Generating...' : 'Generate with AI'}
+                {isGeneratingSummary ? dictionary.generating : dictionary.generateWithAI}
             </Button>
         </AccordionContent>
       </AccordionItem>
 
       <AccordionItem value="experience">
-        <AccordionTrigger className='font-headline'>Work Experience</AccordionTrigger>
+        <AccordionTrigger className='font-headline'>{dictionary.workExperience}</AccordionTrigger>
         <AccordionContent className="space-y-6">
             {cvData.experience.map((exp, index) => (
                 <div key={exp.id} className="space-y-4 p-4 border rounded-lg relative">
@@ -194,37 +196,37 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
                         <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
                     <div className="space-y-2">
-                        <Label>Role</Label>
+                        <Label>{dictionary.role}</Label>
                         <Input name="role" value={exp.role} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
                     </div>
                      <div className="space-y-2">
-                        <Label>Company</Label>
+                        <Label>{dictionary.company}</Label>
                         <Input name="company" value={exp.company} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label>Start Date</Label>
-                            <Input name="startDate" placeholder='YYYY-MM' value={exp.startDate} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
+                            <Label>{dictionary.startDate}</Label>
+                            <Input name="startDate" placeholder={dictionary.startDatePlaceholder} value={exp.startDate} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
                         </div>
                         <div className="space-y-2">
-                            <Label>End Date</Label>
-                            <Input name="endDate" placeholder='YYYY-MM or Present' value={exp.endDate} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
+                            <Label>{dictionary.endDate}</Label>
+                            <Input name="endDate" placeholder={dictionary.endDatePlaceholder} value={exp.endDate} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <Label>Description</Label>
+                        <Label>{dictionary.description}</Label>
                         <Textarea name="description" value={exp.description} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
                     </div>
                 </div>
             ))}
             <Button variant="outline" className="w-full" onClick={() => addArrayItem('experience')}>
-                <Plus className="mr-2 h-4 w-4" /> Add Experience
+                <Plus className="mr-2 h-4 w-4" /> {dictionary.addExperience}
             </Button>
         </AccordionContent>
       </AccordionItem>
 
       <AccordionItem value="education">
-        <AccordionTrigger className='font-headline'>Education</AccordionTrigger>
+        <AccordionTrigger className='font-headline'>{dictionary.education}</AccordionTrigger>
         <AccordionContent className="space-y-6">
             {cvData.education.map((edu, index) => (
                 <div key={edu.id} className="space-y-4 p-4 border rounded-lg relative">
@@ -232,39 +234,39 @@ export function CvForm({ cvData, setCvData }: CvFormProps) {
                         <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
                     <div className="space-y-2">
-                        <Label>Degree</Label>
+                        <Label>{dictionary.degree}</Label>
                         <Input name="degree" value={edu.degree} onChange={(e) => handleArrayChange('education', edu.id, e)} />
                     </div>
                     <div className="space-y-2">
-                        <Label>Institution</Label>
+                        <Label>{dictionary.institution}</Label>
                         <Input name="institution" value={edu.institution} onChange={(e) => handleArrayChange('education', edu.id, e)} />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label>Start Date</Label>
-                            <Input name="startDate" placeholder='YYYY-MM' value={edu.startDate} onChange={(e) => handleArrayChange('education', edu.id, e)} />
+                            <Label>{dictionary.startDate}</Label>
+                            <Input name="startDate" placeholder={dictionary.startDatePlaceholder} value={edu.startDate} onChange={(e) => handleArrayChange('education', edu.id, e)} />
                         </div>
                         <div className="space-y-2">
-                            <Label>End Date</Label>
-                            <Input name="endDate" placeholder='YYYY-MM' value={edu.endDate} onChange={(e) => handleArrayChange('education', edu.id, e)} />
+                            <Label>{dictionary.endDate}</Label>
+                            <Input name="endDate" placeholder={dictionary.endDatePlaceholder} value={edu.endDate} onChange={(e) => handleArrayChange('education', edu.id, e)} />
                         </div>
                     </div>
                      <div className="space-y-2">
-                        <Label>Description</Label>
+                        <Label>{dictionary.description}</Label>
                         <Textarea name="description" value={edu.description} onChange={(e) => handleArrayChange('education', edu.id, e)} />
                     </div>
                 </div>
             ))}
             <Button variant="outline" className="w-full" onClick={() => addArrayItem('education')}>
-                <Plus className="mr-2 h-4 w-4" /> Add Education
+                <Plus className="mr-2 h-4 w-4" /> {dictionary.addEducation}
             </Button>
         </AccordionContent>
       </AccordionItem>
 
        <AccordionItem value="skills">
-        <AccordionTrigger className='font-headline'>Skills</AccordionTrigger>
+        <AccordionTrigger className='font-headline'>{dictionary.skills}</AccordionTrigger>
         <AccordionContent>
-            <Textarea placeholder="List your skills, separated by commas..." value={cvData.skills} onChange={handleSkillsChange} rows={4}/>
+            <Textarea placeholder={dictionary.skillsPlaceholder} value={cvData.skills} onChange={handleSkillsChange} rows={4}/>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

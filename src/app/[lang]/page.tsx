@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { CVData } from '@/lib/types';
+import { getDictionary } from '@/get-dictionary';
+import { Locale } from '@/i18n-config';
 
 const previewData: CVData = {
   personalInfo: {
@@ -38,28 +40,29 @@ const previewData: CVData = {
 };
 
 
-export default function Home() {
+export default async function Home({ params: { lang } }: { params: { lang: Locale }}) {
+  const dictionary = await getDictionary(lang);
+
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-12 md:py-20">
         <header className="text-center mb-16">
           <h1 className="font-headline text-5xl md:text-7xl font-bold text-primary">
-            CVGenius
+            {dictionary.home.title}
           </h1>
           <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Craft a stunning, professional CV in minutes. Choose a template and
-            let our AI assist you.
+            {dictionary.home.subtitle}
           </p>
         </header>
 
         <section>
           <h2 className="font-headline text-3xl md:text-4xl font-semibold text-center mb-10">
-            Choose Your Template
+            {dictionary.home.chooseTemplate}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {templates.map((template) => (
               <Link
-                href={`/editor/${template.id}`}
+                href={`/${lang}/editor/${template.id}`}
                 key={template.id}
                 className="group block"
               >
@@ -69,9 +72,9 @@ export default function Home() {
                       <CardTitle className="font-headline text-xl">
                         {template.name}
                       </CardTitle>
-                      {template.isNew && <Badge variant="destructive">New</Badge>}
+                      {template.isNew && <Badge variant="destructive">{dictionary.home.newBadge}</Badge>}
                     </div>
-                    <p className="text-sm text-muted-foreground pt-1">{template.description}</p>
+                    <p className="text-sm text-muted-foreground pt-1">{dictionary.templates[template.id as keyof typeof dictionary.templates]}</p>
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
                      <div className="aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
@@ -88,7 +91,7 @@ export default function Home() {
       </main>
       <footer className="text-center py-6 border-t mt-16">
         <p className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} CVGenius. All rights reserved.
+          {dictionary.home.footer.replace('{year}', new Date().getFullYear().toString())}
         </p>
       </footer>
     </div>
