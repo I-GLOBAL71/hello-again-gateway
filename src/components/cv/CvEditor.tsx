@@ -59,9 +59,9 @@ export function CvEditor({ template }: { template: Template }) {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-muted/40">
-      <div className="no-print lg:w-2/5 lg:max-w-md xl:max-w-lg flex flex-col h-full">
-        <header className="p-4 bg-card border-b flex justify-between items-center">
+    <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
+      <div className="no-print lg:w-[45%] lg:max-w-2xl flex flex-col h-full">
+        <header className="p-4 bg-card border-b flex justify-between items-center shrink-0">
           <Button variant="ghost" size="icon" asChild>
             <Link href="/">
               <ArrowLeft />
@@ -79,12 +79,14 @@ export function CvEditor({ template }: { template: Template }) {
         </div>
       </div>
       
-      <main className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto">
+      <main className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5">
         <div
           id="cv-preview-wrapper"
-          className="w-full lg:h-[90%] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-all"
+          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top"
         >
-            <CvPreview cvData={cvData} templateId={template.id} />
+            <div className="w-full h-full transform-gpu overflow-hidden rounded-lg">
+                 <CvPreview cvData={cvData} templateId={template.id} />
+            </div>
         </div>
       </main>
     </div>
