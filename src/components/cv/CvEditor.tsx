@@ -5,7 +5,7 @@ import type { CVData, Template } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { Button } from '@/components/ui/button';
-import { Download, ArrowLeft, Eye, Pencil, ChevronDown } from 'lucide-react';
+import { Download, ArrowLeft, Eye, Pencil, ChevronDown, CreditCard, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -16,6 +16,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 
@@ -72,10 +82,12 @@ type CvEditorProps = {
 export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [cvData, setCvData] = useState<CVData>(initialCvData);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(template.id);
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   const isMobile = useIsMobile();
+  const downloadPrice = 4.99; // Configurable price
 
   const handlePrint = () => {
-    //
+    // This is where the actual printing/PDF generation happens
     const printContainer = document.querySelector('.print-container');
     if (printContainer) {
       document.body.appendChild(printContainer.cloneNode(true));
@@ -83,16 +95,13 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
 
 
     if (isMobile) {
-      // On mobile, we need to ensure the preview is visible before printing.
       const previewTab = document.querySelector('[data-radix-collection-item][value="preview"]') as HTMLElement | null;
       if (previewTab) {
         previewTab.click();
-        // Allow time for the tab to switch before printing
         setTimeout(() => {
           window.print();
         }, 200);
       } else {
-        // if the tab is not found, just print
         window.print();
       }
     } else {
@@ -100,7 +109,50 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     }
   };
 
+  const handlePaymentAndDownload = () => {
+    // Here you would integrate the real payment logic
+    // For now, we'll just simulate a successful payment and trigger the download
+    console.log("Simulating payment...");
+    setIsPaymentDialogOpen(false);
+    // Give dialog time to close
+    setTimeout(handlePrint, 100);
+  }
+
   const selectedTemplate = templates.find(t => t.id === selectedTemplateId) || template;
+
+  const DownloadButton = (
+    <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <Download className="mr-2 h-4 w-4" />
+          {dictionary.editor.download}
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Finalize Your Purchase</DialogTitle>
+          <DialogDescription>
+            Your professional CV is ready. To download it, please complete the payment.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="my-4">
+          <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
+            <span className="font-semibold">CV Download - {selectedTemplate.name}</span>
+            <span className="font-bold text-lg text-primary">${downloadPrice}</span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">
+            You are about to make a one-time payment to download your CV. This will unlock the high-resolution, watermark-free version of your document.
+          </p>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handlePaymentAndDownload}>
+            <CreditCard className="mr-2 h-4 w-4" /> Pay & Download
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 
   const EditorView = (
     <div className="no-print lg:w-[45%] lg:max-w-2xl flex flex-col h-full">
@@ -112,10 +164,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
           </Link>
         </Button>
         <h2 className="font-headline text-xl font-semibold">{template.name} {dictionary.editor.template}</h2>
-        <Button onClick={handlePrint} size="sm">
-          <Download className="mr-2 h-4 w-4" />
-          {dictionary.editor.download}
-        </Button>
+        {DownloadButton}
       </header>
       <div className="overflow-y-auto flex-1 p-4 sm:p-6 bg-card">
           <CvForm cvData={cvData} setCvData={setCvData} dictionary={dictionary.form} />
@@ -157,6 +206,40 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
       </div>
   );
 
+  const MobileDownloadButton = (
+     <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+      <DialogTrigger asChild>
+        <Button size="icon" variant="outline">
+          <Download />
+          <span className="sr-only">{dictionary.editor.download}</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Finalize Your Purchase</DialogTitle>
+          <DialogDescription>
+            Your professional CV is ready. To download it, please complete the payment.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="my-4">
+          <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
+            <span className="font-semibold">CV Download - {selectedTemplate.name}</span>
+            <span className="font-bold text-lg text-primary">${downloadPrice}</span>
+          </div>
+           <p className="text-xs text-muted-foreground mt-4">
+            You are about to make a one-time payment to download your CV. This will unlock the high-resolution, watermark-free version of your document.
+          </p>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handlePaymentAndDownload}>
+            <CreditCard className="mr-2 h-4 w-4" /> Pay & Download
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+
   if (isMobile) {
     return (
         <Tabs defaultValue="editor" className="flex flex-col h-screen w-full bg-muted/40">
@@ -171,10 +254,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     <TabsTrigger value="editor"><Pencil className="mr-2"/> {dictionary.editor.formEditor}</TabsTrigger>
                     <TabsTrigger value="preview"><Eye className="mr-2"/> {dictionary.editor.preview}</TabsTrigger>
                 </TabsList>
-                <Button onClick={handlePrint} size="icon" variant="outline">
-                    <Download />
-                    <span className="sr-only">{dictionary.editor.download}</span>
-                </Button>
+                {MobileDownloadButton}
             </header>
             <TabsContent value="editor" className="flex-1 overflow-y-auto bg-card data-[state=inactive]:hidden">
                  <div className="p-4 sm:p-6">
