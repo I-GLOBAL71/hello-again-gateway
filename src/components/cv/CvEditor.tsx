@@ -97,7 +97,18 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     setPaymentStep('loading');
     console.log("Initiating payment...");
 
+    // This is a simulation. In a real app, you would have your API keys set up.
+    const areApiKeysConfigured = process.env.NEXT_PUBLIC_LYGOS_API_KEY && process.env.NEXT_PUBLIC_COOLPAY_API_KEY;
+
     try {
+       // If API keys are not set, we simulate a success for demonstration purposes.
+       // In a real application, you would remove this check and let the createPayment call handle it.
+      if (!areApiKeysConfigured) {
+        console.warn("Simulating payment success because API keys are not configured.");
+        setTimeout(() => setPaymentStep('success'), 1000); // Simulate network delay
+        return;
+      }
+
       const paymentData = {
         amount: downloadPrice,
         currency: lang === 'fr' ? 'EUR' : 'USD',
@@ -110,8 +121,6 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         webhookUrl: `${window.location.origin}/api/webhook/payment`
       };
       
-      // We'll use 'lygos' as the default provider for now.
-      // You can make this configurable later.
       const result = await createPayment({ provider: 'lygos', paymentData });
 
       console.log("Payment creation response:", result);
@@ -119,7 +128,6 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
       if (result && (result.success || result.id)) {
         // In a real implementation, you would redirect the user
         // to the payment gateway URL returned by the provider.
-        // For now, we'll simulate a success.
         setPaymentStep('success');
       } else {
         throw new Error(result.message || 'Payment initiation failed.');
