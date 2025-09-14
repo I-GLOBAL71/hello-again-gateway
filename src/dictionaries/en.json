@@ -37,7 +37,7 @@
         "aiSuccessTitle": "Summary Generated!",
         "aiSuccessDesc": "Your professional summary has been updated.",
         "aiErrorTitle": "Error",
-        "aiErrorDesc": "Failed to generate summary. Please try again.",
+        "aiErrorDesc": "Failed to generate. Please try again.",
         "aiGeneratingTitle": "Generating Summary...",
         "aiGeneratingDesc": "The AI is crafting a professional summary for you.",
         "workExperience": "Work Experience",
@@ -54,7 +54,12 @@
         "institution": "Institution",
         "addEducation": "Add Education",
         "skills": "Skills",
-        "skillsPlaceholder": "List your skills, separated by commas..."
+        "skillsPlaceholder": "List your skills, separated by commas...",
+        "formatWithAI": "Format",
+        "aiFormattingTitle": "Formatting...",
+        "aiFormattingDesc": "The AI is formatting your text.",
+        "aiFormatSuccessTitle": "Formatting Complete!",
+        "aiFormatSuccessDesc": "Your description has been formatted."
     },
     "templates": {
         "modern": "A sleek, contemporary design for the modern professional.",

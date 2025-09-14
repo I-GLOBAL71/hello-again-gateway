@@ -37,7 +37,7 @@
         "aiSuccessTitle": "Résumé généré !",
         "aiSuccessDesc": "Votre résumé professionnel a été mis à jour.",
         "aiErrorTitle": "Erreur",
-        "aiErrorDesc": "La génération du résumé a échoué. Veuillez réessayer.",
+        "aiErrorDesc": "La génération a échoué. Veuillez réessayer.",
         "aiGeneratingTitle": "Génération du résumé...",
         "aiGeneratingDesc": "L'IA est en train de rédiger un résumé professionnel pour vous.",
         "workExperience": "Expérience professionnelle",
@@ -54,7 +54,26 @@
         "institution": "Établissement",
         "addEducation": "Ajouter une formation",
         "skills": "Compétences",
-        "skillsPlaceholder": "Listez vos compétences, séparées par des virgules..."
+        "skillsPlaceholder": "Listez vos compétences, séparées par des virgules...",
+        "formatWithAI": "Formatter",
+        "aiFormattingTitle": "Formatage...",
+        "aiFormattingDesc": "L'IA est en train de formatter votre texte.",
+        "aiFormatSuccessTitle": "Formatage terminé !",
+        "aiFormatSuccessDesc": "Votre description a été formatée."
+    },
+     "admin": {
+        "title": "Configuration Admin",
+        "subtitle": "Gérez vos clés d'API pour les fournisseurs de paiement ici.",
+        "lygosTitle": "Configuration Lygos App",
+        "lygosApiKey": "Clé API",
+        "lygosSecretKey": "Clé Secrète",
+        "coolpayTitle": "Configuration CoolPay",
+        "coolpayMerchantId": "ID Marchand",
+        "coolpayApiKey": "Clé API",
+        "coolpaySecretKey": "Clé Secrète",
+        "saveButton": "Sauvegarder la Configuration",
+        "saveSuccess": "Configuration sauvegardée dans la console !",
+        "backToHome": "Retour à l'accueil"
     },
     "templates": {
         "modern": "Un design épuré et contemporain pour le professionnel moderne.",
@@ -71,19 +90,5 @@
         "sharp": "Un modèle net et précis axé sur la clarté.",
         "gallery": "Un modèle de style portfolio pour présenter votre travail.",
         "impact": "Un modèle à fort impact conçu pour attirer l'attention."
-    },
-     "admin": {
-        "title": "Configuration Admin",
-        "subtitle": "Gérez vos clés d'API pour les fournisseurs de paiement ici.",
-        "lygosTitle": "Configuration Lygos App",
-        "lygosApiKey": "Clé API",
-        "lygosSecretKey": "Clé Secrète",
-        "coolpayTitle": "Configuration CoolPay",
-        "coolpayMerchantId": "ID Marchand",
-        "coolpayApiKey": "Clé API",
-        "coolpaySecretKey": "Clé Secrète",
-        "saveButton": "Sauvegarder la Configuration",
-        "saveSuccess": "Configuration sauvegardée dans la console !",
-        "backToHome": "Retour à l'accueil"
     }
 }

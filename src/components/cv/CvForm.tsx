@@ -14,18 +14,19 @@ import { Button } from '@/components/ui/button';
 import { Plus, Sparkles, Trash2, User } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { summarizeCv } from '@/ai/flows/cv-summary';
+import { aiAssistedFormatting } from '@/ai/flows/ai-assisted-formatting';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { getDictionary } from '@/get-dictionary';
 
 type CvFormProps = {
   cvData: CVData;
   setCvData: React.Dispatch<React.SetStateAction<CVData>>;
-  dictionary: Awaited<ReturnType<typeof getDictionary>>['form'];
+  dictionary: any;
 };
 
 export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
+  const [formattingField, setFormattingField] = useState<string | null>(null);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -94,6 +95,39 @@ export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
       });
     } finally {
       setIsGeneratingSummary(false);
+    }
+  };
+
+  const handleFormatDescription = async (arrayName: 'experience' | 'education', id: string, rawText: string) => {
+    const fieldId = `${arrayName}-${id}`;
+    setFormattingField(fieldId);
+    toast({
+        title: dictionary.aiFormattingTitle,
+        description: dictionary.aiFormattingDesc,
+    });
+    try {
+        const result = await aiAssistedFormatting({ rawText, templateName: 'professional' });
+        if (result.formattedText) {
+            setCvData(prev => ({
+                ...prev,
+                [arrayName]: prev[arrayName].map(item =>
+                    item.id === id ? { ...item, description: result.formattedText } : item
+                ),
+            }));
+            toast({
+                title: dictionary.aiFormatSuccessTitle,
+                description: dictionary.aiFormatSuccessDesc,
+            });
+        }
+    } catch (error) {
+        console.error("Failed to format description:", error);
+        toast({
+            variant: "destructive",
+            title: dictionary.aiErrorTitle,
+            description: dictionary.aiErrorDesc,
+        });
+    } finally {
+        setFormattingField(null);
     }
   };
 
@@ -190,7 +224,7 @@ export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
       <AccordionItem value="experience">
         <AccordionTrigger className='font-headline'>{dictionary.workExperience}</AccordionTrigger>
         <AccordionContent className="space-y-6">
-            {cvData.experience.map((exp, index) => (
+            {cvData.experience.map((exp) => (
                 <div key={exp.id} className="space-y-4 p-4 border rounded-lg relative">
                     <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-7 w-7" onClick={() => removeArrayItem('experience', exp.id)}>
                         <Trash2 className="h-4 w-4 text-destructive" />
@@ -214,7 +248,18 @@ export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <Label>{dictionary.description}</Label>
+                        <div className='flex justify-between items-center'>
+                           <Label>{dictionary.description}</Label>
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => handleFormatDescription('experience', exp.id, exp.description)}
+                                disabled={formattingField === `experience-${exp.id}`}
+                            >
+                                <Sparkles className="mr-2 h-4 w-4" />
+                                {formattingField === `experience-${exp.id}` ? dictionary.generating : dictionary.formatWithAI}
+                            </Button>
+                        </div>
                         <Textarea name="description" value={exp.description} onChange={(e) => handleArrayChange('experience', exp.id, e)} />
                     </div>
                 </div>
@@ -228,7 +273,7 @@ export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
       <AccordionItem value="education">
         <AccordionTrigger className='font-headline'>{dictionary.education}</AccordionTrigger>
         <AccordionContent className="space-y-6">
-            {cvData.education.map((edu, index) => (
+            {cvData.education.map((edu) => (
                 <div key={edu.id} className="space-y-4 p-4 border rounded-lg relative">
                     <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-7 w-7" onClick={() => removeArrayItem('education', edu.id)}>
                         <Trash2 className="h-4 w-4 text-destructive" />
@@ -252,7 +297,18 @@ export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
                         </div>
                     </div>
                      <div className="space-y-2">
-                        <Label>{dictionary.description}</Label>
+                        <div className='flex justify-between items-center'>
+                           <Label>{dictionary.description}</Label>
+                           <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => handleFormatDescription('education', edu.id, edu.description)}
+                                disabled={formattingField === `education-${edu.id}`}
+                            >
+                                <Sparkles className="mr-2 h-4 w-4" />
+                                {formattingField === `education-${edu.id}` ? dictionary.generating : dictionary.formatWithAI}
+                            </Button>
+                        </div>
                         <Textarea name="description" value={edu.description} onChange={(e) => handleArrayChange('education', edu.id, e)} />
                     </div>
                 </div>
