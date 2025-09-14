@@ -18,14 +18,14 @@ export default function AdminLayoutContent({
 }: {
   children: React.ReactNode;
   dictionary: any;
-  adminConfig: AdminConfig;
+  adminConfig: AdminConfig | null;
   lang: Locale;
 }) {
   const { user, loading } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && adminConfig) {
       if (user && user.email === adminConfig.superAdminEmail) {
         setIsAuthorized(true);
       } else {
@@ -34,7 +34,7 @@ export default function AdminLayoutContent({
     }
   }, [user, loading, adminConfig]);
 
-  if (loading || isAuthorized === null) {
+  if (loading || isAuthorized === null || !adminConfig) {
     return (
       <div className="min-h-screen bg-muted/30 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">

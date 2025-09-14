@@ -3,7 +3,7 @@
  * This file contains the logic to communicate with different payment APIs.
  */
 
-import { getAdminConfig } from '@/ai/flows/admin-config';
+import type { AdminConfig } from '@/lib/types';
 
 const LYGOS_API_URLS = {
     baseUrl: 'https://api.lygosapp.com',
@@ -38,9 +38,14 @@ interface PaymentProvider {
 }
 
 class LygosProvider implements PaymentProvider {
+    private config: AdminConfig;
+
+    constructor(config: AdminConfig) {
+        this.config = config;
+    }
+
     async createPayment(paymentData: PaymentData): Promise<any> {
-        const config = await getAdminConfig();
-        if (!config.lygosApiKey || !config.lygosSecretKey) {
+        if (!this.config.lygosApiKey || !this.config.lygosSecretKey) {
             throw new Error('Lygos API keys are not configured.');
         }
 
@@ -64,8 +69,8 @@ class LygosProvider implements PaymentProvider {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${config.lygosApiKey}`,
-                    'X-Secret-Key': config.lygosSecretKey
+                    'Authorization': `Bearer ${this.config.lygosApiKey}`,
+                    'X-Secret-Key': this.config.lygosSecretKey
                 },
                 body: JSON.stringify(payload)
             });
@@ -83,14 +88,19 @@ class LygosProvider implements PaymentProvider {
 }
 
 class CoolPayProvider implements PaymentProvider {
+    private config: AdminConfig;
+
+    constructor(config: AdminConfig) {
+        this.config = config;
+    }
+    
     async createPayment(paymentData: PaymentData): Promise<any> {
-         const config = await getAdminConfig();
-         if (!config.coolpayMerchantId || !config.coolpayApiKey) {
+         if (!this.config.coolpayMerchantId || !this.config.coolpayApiKey) {
             throw new Error('CoolPay API keys are not configured.');
         }
 
         const payload = {
-            merchant_id: config.coolpayMerchantId,
+            merchant_id: this.config.coolpayMerchantId,
             amount: paymentData.amount,
             currency: paymentData.currency,
             description: paymentData.description,
@@ -106,8 +116,8 @@ class CoolPayProvider implements PaymentProvider {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${config.coolpayApiKey}`,
-                    'X-Merchant-ID': config.coolpayMerchantId
+                    'Authorization': `Bearer ${this.config.coolpayApiKey}`,
+                    'X-Merchant-ID': this.config.coolpayMerchantId
                 },
                 body: JSON.stringify(payload)
             });
@@ -127,11 +137,11 @@ class CoolPayProvider implements PaymentProvider {
 export class PaymentManager {
     private providerInstance: PaymentProvider;
 
-    constructor(provider: 'lygos' | 'coolpay') {
+    constructor(provider: 'lygos' | 'coolpay', config: AdminConfig) {
         if (provider === 'lygos') {
-            this.providerInstance = new LygosProvider();
+            this.providerInstance = new LygosProvider(config);
         } else if (provider === 'coolpay') {
-            this.providerInstance = new CoolPayProvider();
+            this.providerInstance = new CoolPayProvider(config);
         } else {
             throw new Error('Unsupported payment provider');
         }

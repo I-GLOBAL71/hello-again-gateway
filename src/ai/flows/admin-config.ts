@@ -6,6 +6,7 @@
  * - updateAdminConfig - Saves or updates the admin configuration.
  * - getAdminConfig - Retrieves the admin configuration.
  */
+import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -26,18 +27,21 @@ const AdminConfigSchema = z.object({
 });
 
 
-export async function getAdminConfig(): Promise<AdminConfig> {
+// Define the flow for getting the config
+const getAdminConfigFlow = ai.defineFlow(
+  {
+    name: 'getAdminConfigFlow',
+    outputSchema: AdminConfigSchema,
+  },
+  async () => {
     try {
         const docRef = doc(db, CONFIG_COLLECTION_ID, CONFIG_DOC_ID);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            // Directly return the data, assuming it matches the AdminConfig type.
-            // This simplifies the logic to pinpoint the connection issue.
             return docSnap.data() as AdminConfig;
         }
         
-        // If the document doesn't exist, return a full default object.
         return {
             superAdminEmail: 'fabricewilliam71@gmail.com',
             lygosApiKey: '',
@@ -51,11 +55,19 @@ export async function getAdminConfig(): Promise<AdminConfig> {
         console.error("Error fetching admin config from Firestore:", error);
         throw new Error("Failed to retrieve configuration from database.");
     }
-}
+  }
+);
 
-export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
+
+// Define the flow for updating the config
+const updateAdminConfigFlow = ai.defineFlow(
+  {
+    name: 'updateAdminConfigFlow',
+    inputSchema: AdminConfigSchema,
+    outputSchema: z.object({ success: z.boolean() }),
+  },
+  async (config) => {
     try {
-        // We still validate on write to ensure data integrity.
         const parsedConfig = AdminConfigSchema.parse(config);
         const docRef = doc(db, CONFIG_COLLECTION_ID, CONFIG_DOC_ID);
         await setDoc(docRef, parsedConfig, { merge: true });
@@ -64,4 +76,15 @@ export async function updateAdminConfig(config: AdminConfig): Promise<{ success:
         console.error("Error updating admin config in Firestore:", error);
         throw new Error("Failed to update configuration.");
     }
+  }
+);
+
+
+// Export async wrapper functions that call the flows
+export async function getAdminConfig(): Promise<AdminConfig> {
+    return getAdminConfigFlow();
+}
+
+export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
+    return updateAdminConfigFlow(config);
 }

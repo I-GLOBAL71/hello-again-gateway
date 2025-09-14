@@ -11,7 +11,14 @@ export default async function AdminLayout({
   params: { lang: Locale }
 }) {
   const dictionary = await getDictionary(lang);
-  const adminConfig = await getAdminConfig();
+  
+  let adminConfig = null;
+  try {
+    adminConfig = await getAdminConfig();
+  } catch (error) {
+    console.error("Failed to load admin config in layout:", error);
+    // We pass null to the client, which will handle showing a loading/error state.
+  }
 
   return (
     <AdminLayoutContent

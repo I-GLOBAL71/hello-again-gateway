@@ -8,8 +8,9 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit';
+import { z } from 'zod';
 import { PaymentManager, PaymentData } from '@/services/payment';
+import { getAdminConfig } from './admin-config';
 
 const PaymentDataSchema = z.object({
   amount: z.number(),
@@ -41,14 +42,12 @@ const createPaymentFlow = ai.defineFlow(
   },
   async ({ provider, paymentData }) => {
     try {
-      // Important: API keys are handled on the server-side in PaymentManager
-      const paymentManager = new PaymentManager(provider);
+      const adminConfig = await getAdminConfig();
+      const paymentManager = new PaymentManager(provider, adminConfig);
       const result = await paymentManager.createPayment(paymentData as PaymentData);
       return result;
     } catch (error) {
       console.error(`Payment creation failed for provider ${provider}:`, error);
-      // It's better to throw the error so the client can handle it.
-      // We can also return a structured error object.
       const message = error instanceof Error ? error.message : 'An unknown error occurred during payment creation.';
       throw new Error(message);
     }
