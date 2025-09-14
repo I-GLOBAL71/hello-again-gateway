@@ -330,11 +330,11 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     );
 
   const PreviewView = (
-     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-muted/30 relative print-container-wrapper">
+     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-muted/30 relative print-container-wrapper no-print">
         {TemplateSwitcher}
         <div
           id="cv-preview-wrapper"
-          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top"
+          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top print-wrapper"
         >
             <div id="cv-preview" className="w-full h-full transform-gpu overflow-hidden rounded-lg">
                  <CvPreview cvData={cvData} templateId={selectedTemplateId} />
@@ -374,7 +374,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   if (isMobile) {
     return (
       <>
-        <Tabs defaultValue="editor" className="flex flex-col h-screen w-full bg-muted/40">
+        <Tabs defaultValue="editor" className="flex flex-col h-screen w-full bg-muted/40 no-print">
             <header className="no-print p-2 bg-card border-b flex justify-between items-center shrink-0">
                 <Button variant="ghost" size="icon" asChild>
                     <Link href={`/${lang}/`}>
@@ -409,7 +409,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
 
   return (
     <>
-      <div className="no-print flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
+      <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor no-print">
         {EditorView}
         <div className="flex-1">
           {PreviewView}
@@ -422,3 +422,5 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     </>
   );
 }
+
+    

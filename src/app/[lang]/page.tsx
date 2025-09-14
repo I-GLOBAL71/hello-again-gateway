@@ -48,7 +48,7 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="absolute top-0 right-0 p-4">
+      <header className="absolute top-0 right-0 p-4 no-print">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="sm" asChild>
             <Link href={`/${lang}/admin`}>
@@ -78,7 +78,7 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
               <Link
                 href={`/${lang}/editor/${template.id}`}
                 key={template.id}
-                className="group block"
+                className="group block no-print"
               >
                 <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
                   <CardHeader>
@@ -91,7 +91,7 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
                     <p className="text-sm text-muted-foreground pt-1">{dictionary.templates[template.id as keyof typeof dictionary.templates]}</p>
                   </CardHeader>
                   <CardContent className="p-4 pt-0">
-                     <div className="aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
+                     <div className="aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none print-wrapper">
                         <div className="scale-[0.2] origin-top-left w-[500%] h-[500%]">
                             <CvPreview cvData={previewData} templateId={template.id} />
                         </div>
@@ -103,7 +103,7 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
           </div>
         </section>
       </main>
-      <footer className="text-center py-6 border-t mt-16">
+      <footer className="text-center py-6 border-t mt-16 no-print">
         <p className="text-sm text-muted-foreground">
           {dictionary.home.footer.replace('{year}', new Date().getFullYear().toString())}
         </p>
@@ -111,3 +111,5 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
     </div>
   );
 }
+
+    

@@ -85,18 +85,42 @@
 }
 
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-  .no-print {
-    display: none !important;
-  }
-  .print-only {
-    display: block !important;
-  }
+    body {
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-only {
+        display: block !important;
+    }
+    
+    .print-wrapper {
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .print-wrapper > div {
+        transform: scale(1) !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+    }
 }
 
 /* Styles pour le popup de paiement */
@@ -363,3 +387,5 @@
         flex-direction: column;
     }
 }
+
+    
