@@ -12,7 +12,13 @@
         "template": "Modèle",
         "download": "Télécharger",
         "preview": "Aperçu",
-        "formEditor": "Éditeur"
+        "formEditor": "Éditeur",
+        "paymentTitle": "Finalisez votre achat",
+        "paymentDescription": "Votre CV professionnel est prêt. Pour le télécharger, veuillez finaliser le paiement.",
+        "paymentItem": "Téléchargement du CV",
+        "paymentDisclaimer": "Vous êtes sur le point d'effectuer un paiement unique pour télécharger votre CV. Cela débloquera la version haute résolution et sans filigrane de votre document.",
+        "paymentCancel": "Annuler",
+        "paymentPay": "Payer et Télécharger"
     },
     "form": {
         "personalDetails": "Détails personnels",

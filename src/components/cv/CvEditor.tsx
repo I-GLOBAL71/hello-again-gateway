@@ -130,24 +130,24 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Finalize Your Purchase</DialogTitle>
+          <DialogTitle>{dictionary.editor.paymentTitle}</DialogTitle>
           <DialogDescription>
-            Your professional CV is ready. To download it, please complete the payment.
+            {dictionary.editor.paymentDescription}
           </DialogDescription>
         </DialogHeader>
         <div className="my-4">
           <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
-            <span className="font-semibold">CV Download - {selectedTemplate.name}</span>
+            <span className="font-semibold">{dictionary.editor.paymentItem} - {selectedTemplate.name}</span>
             <span className="font-bold text-lg text-primary">${downloadPrice}</span>
           </div>
           <p className="text-xs text-muted-foreground mt-4">
-            You are about to make a one-time payment to download your CV. This will unlock the high-resolution, watermark-free version of your document.
+            {dictionary.editor.paymentDisclaimer}
           </p>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>{dictionary.editor.paymentCancel}</Button>
           <Button onClick={handlePaymentAndDownload}>
-            <CreditCard className="mr-2 h-4 w-4" /> Pay & Download
+            <CreditCard className="mr-2 h-4 w-4" /> {dictionary.editor.paymentPay}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -216,24 +216,24 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Finalize Your Purchase</DialogTitle>
+          <DialogTitle>{dictionary.editor.paymentTitle}</DialogTitle>
           <DialogDescription>
-            Your professional CV is ready. To download it, please complete the payment.
+            {dictionary.editor.paymentDescription}
           </DialogDescription>
         </DialogHeader>
         <div className="my-4">
           <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
-            <span className="font-semibold">CV Download - {selectedTemplate.name}</span>
+            <span className="font-semibold">{dictionary.editor.paymentItem} - {selectedTemplate.name}</span>
             <span className="font-bold text-lg text-primary">${downloadPrice}</span>
           </div>
            <p className="text-xs text-muted-foreground mt-4">
-            You are about to make a one-time payment to download your CV. This will unlock the high-resolution, watermark-free version of your document.
+            {dictionary.editor.paymentDisclaimer}
           </p>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>{dictionary.editor.paymentCancel}</Button>
           <Button onClick={handlePaymentAndDownload}>
-            <CreditCard className="mr-2 h-4 w-4" /> Pay & Download
+            <CreditCard className="mr-2 h-4 w-4" /> {dictionary.editor.paymentPay}
           </Button>
         </DialogFooter>
       </DialogContent>
