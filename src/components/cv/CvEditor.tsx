@@ -89,23 +89,27 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const handlePrint = () => {
     // This is where the actual printing/PDF generation happens
     const printContainer = document.querySelector('.print-container');
-    if (printContainer) {
-      document.body.appendChild(printContainer.cloneNode(true));
-    }
-
+    if (!printContainer) return;
+    
+    const printContent = printContainer.cloneNode(true) as HTMLElement;
+    printContent.id = 'print-content-cloned';
+    document.body.appendChild(printContent);
 
     if (isMobile) {
-      const previewTab = document.querySelector('[data-radix-collection-item][value="preview"]') as HTMLElement | null;
-      if (previewTab) {
-        previewTab.click();
-        setTimeout(() => {
-          window.print();
-        }, 200);
-      } else {
-        window.print();
-      }
+        const previewTab = document.querySelector('[data-radix-collection-item][value="preview"]') as HTMLElement | null;
+        if (previewTab && previewTab.getAttribute('data-state') !== 'active') {
+            previewTab.click();
+            setTimeout(() => {
+                window.print();
+                document.body.removeChild(printContent);
+            }, 300);
+        } else {
+            window.print();
+            document.body.removeChild(printContent);
+        }
     } else {
-      window.print();
+        window.print();
+        document.body.removeChild(printContent);
     }
   };
 
@@ -138,7 +142,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         <div className="my-4">
           <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
             <span className="font-semibold">{dictionary.editor.paymentItem} - {selectedTemplate.name}</span>
-            <span className="font-bold text-lg text-primary">${downloadPrice}</span>
+            <span className="font-bold text-lg text-primary">{dictionary.editor.price.replace('{price}', downloadPrice.toString())}</span>
           </div>
           <p className="text-xs text-muted-foreground mt-4">
             {dictionary.editor.paymentDisclaimer}
@@ -193,11 +197,11 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     );
 
   const PreviewView = (
-     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5 relative print-container">
+     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5 relative print-container-wrapper">
         {TemplateSwitcher}
         <div
           id="cv-preview-wrapper"
-          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top"
+          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top print-container"
         >
             <div id="cv-preview" className="w-full h-full transform-gpu overflow-hidden rounded-lg">
                  <CvPreview cvData={cvData} templateId={selectedTemplateId} />
@@ -224,7 +228,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         <div className="my-4">
           <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
             <span className="font-semibold">{dictionary.editor.paymentItem} - {selectedTemplate.name}</span>
-            <span className="font-bold text-lg text-primary">${downloadPrice}</span>
+            <span className="font-bold text-lg text-primary">{dictionary.editor.price.replace('{price}', downloadPrice.toString())}</span>
           </div>
            <p className="text-xs text-muted-foreground mt-4">
             {dictionary.editor.paymentDisclaimer}

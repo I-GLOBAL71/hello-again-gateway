@@ -16,6 +16,7 @@
         "paymentTitle": "Finalize Your Purchase",
         "paymentDescription": "Your professional CV is ready. To download it, please complete the payment.",
         "paymentItem": "CV Download",
+        "price": "${price}",
         "paymentDisclaimer": "You are about to make a one-time payment to download your CV. This will unlock the high-resolution, watermark-free version of your document.",
         "paymentCancel": "Cancel",
         "paymentPay": "Pay & Download"
