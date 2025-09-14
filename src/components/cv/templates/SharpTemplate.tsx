@@ -9,7 +9,7 @@ export function SharpTemplate({ cvData }: { cvData: CVData }) {
     const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
     return (
-        <div className="p-8 font-sans text-[10px] leading-relaxed bg-white text-gray-900 h-full overflow-y-auto">
+        <div className="p-8 font-sans text-[10px] leading-relaxed bg-white text-gray-900">
             <header className="mb-8 flex justify-between items-center">
                 <div>
                     <h1 className="text-4xl font-extrabold tracking-tighter font-headline break-words">{personalInfo.name || "Your Name"}</h1>

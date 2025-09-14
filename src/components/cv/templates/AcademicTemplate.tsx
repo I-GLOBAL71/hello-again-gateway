@@ -9,7 +9,7 @@ export function AcademicTemplate({ cvData }: { cvData: CVData }) {
   const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
   return (
-    <div className="p-8 font-serif text-[11px] leading-relaxed bg-white text-gray-800 h-full overflow-y-auto">
+    <div className="p-8 font-serif text-[11px] leading-relaxed bg-white text-gray-800">
       <header className="text-center mb-6">
         <h1 className="text-4xl font-bold font-headline text-gray-900 break-words">{personalInfo.name || "Your Name"}</h1>
         <p className="text-lg text-gray-600 mt-1 break-words">{personalInfo.title || "Academic Title"}</p>

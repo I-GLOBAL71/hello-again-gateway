@@ -9,7 +9,7 @@ export function GeometricTemplate({ cvData }: { cvData: CVData }) {
     const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
     return (
-        <div className="font-body text-[10px] leading-snug bg-white h-full overflow-y-auto relative">
+        <div className="font-body text-[10px] leading-snug bg-white relative">
             <div className="absolute top-0 right-0 h-full w-1/3 bg-gray-100 -z-1"></div>
             <header className="p-10 pb-6 flex items-start justify-between">
                 <div>

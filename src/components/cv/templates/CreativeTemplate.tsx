@@ -9,7 +9,7 @@ export function CreativeTemplate({ cvData }: { cvData: CVData }) {
     const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
     return (
-        <div className="font-body text-[10px] leading-snug bg-white h-full overflow-y-auto">
+        <div className="font-body text-[10px] leading-snug bg-white">
             <header className="relative h-48 bg-accent/10">
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
                      {personalInfo.photo && (

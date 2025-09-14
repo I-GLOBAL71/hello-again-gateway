@@ -9,7 +9,7 @@ export function CorporateTemplate({ cvData }: { cvData: CVData }) {
   const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
   return (
-    <div className="p-8 font-body bg-white text-gray-800 h-full overflow-y-auto text-[10px] leading-relaxed">
+    <div className="p-8 font-body bg-white text-gray-800 text-[10px] leading-relaxed">
       <header className="flex items-center mb-8 border-b-4 border-primary pb-6">
         {personalInfo.photo && (
           <div className="mr-6">

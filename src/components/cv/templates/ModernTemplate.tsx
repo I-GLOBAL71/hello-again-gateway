@@ -9,7 +9,7 @@ export function ModernTemplate({ cvData }: { cvData: CVData }) {
     const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
     return (
-        <div className="bg-white text-gray-800 h-full flex font-body text-[10px] leading-snug overflow-y-auto">
+        <div className="bg-white text-gray-800 flex font-body text-[10px] leading-snug">
             <aside className="w-1/3 bg-gray-100 p-6 flex flex-col text-gray-700">
                 {personalInfo.photo && (
                     <div className="flex justify-center mb-6">

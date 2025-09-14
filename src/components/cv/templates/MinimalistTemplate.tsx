@@ -9,7 +9,7 @@ export function MinimalistTemplate({ cvData }: { cvData: CVData }) {
   const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
   return (
-    <div className="p-8 font-body text-[10px] leading-relaxed bg-white text-gray-800 h-full overflow-y-auto">
+    <div className="p-8 font-body text-[10px] leading-relaxed bg-white text-gray-800">
       <header className="mb-6 text-center">
         {personalInfo.photo && (
           <div className="flex justify-center mb-4">

@@ -9,7 +9,7 @@ export function ElegantTemplate({ cvData }: { cvData: CVData }) {
   const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
   return (
-    <div className="p-10 font-serif text-[10px] leading-relaxed bg-white text-gray-700 h-full overflow-y-auto">
+    <div className="p-10 font-serif text-[10px] leading-relaxed bg-white text-gray-700">
       <header className="text-center mb-8 relative">
         <div className="absolute top-0 left-0 w-full h-px bg-gray-200"></div>
         <div className="absolute bottom-0 left-0 w-full h-px bg-gray-200"></div>

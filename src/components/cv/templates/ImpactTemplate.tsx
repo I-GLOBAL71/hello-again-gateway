@@ -9,7 +9,7 @@ export function ImpactTemplate({ cvData }: { cvData: CVData }) {
   const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
   return (
-    <div className="bg-gray-900 text-white h-full font-sans text-[10px] leading-relaxed overflow-y-auto">
+    <div className="bg-gray-900 text-white font-sans text-[10px] leading-relaxed">
       <div className="grid grid-cols-12">
         <div className="col-span-4 bg-primary/80 p-8">
             {personalInfo.photo && (

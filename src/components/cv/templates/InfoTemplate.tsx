@@ -9,7 +9,7 @@ export function InfoTemplate({ cvData }: { cvData: CVData }) {
     const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
     return (
-        <div className="font-sans text-[10px] leading-snug bg-white h-full overflow-y-auto">
+        <div className="font-sans text-[10px] leading-snug bg-white">
             <header className="p-8 pb-4">
                 <div className="flex items-center">
                     {personalInfo.photo && (

@@ -9,7 +9,7 @@ export function GalleryTemplate({ cvData }: { cvData: CVData }) {
     const skillsArray = skills.split(',').map(skill => skill.trim()).filter(Boolean);
 
     return (
-        <div className="font-body text-[10px] leading-snug bg-gray-50 h-full overflow-y-auto">
+        <div className="font-body text-[10px] leading-snug bg-gray-50">
             <header className="relative h-64 bg-gray-800 flex items-center justify-center text-white">
                 {personalInfo.photo ? (
                     <Image
