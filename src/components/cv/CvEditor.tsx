@@ -129,21 +129,15 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
       console.log("Payment creation response:", result);
 
       if (result && (result.success || result.id)) {
+        // The service now simulates success if keys are not configured,
+        // so we can just proceed.
         setPaymentStep('success');
       } else {
         throw new Error(result.message || 'Payment initiation failed.');
       }
     } catch (error) {
       console.error("Payment error:", error);
-      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
-      // For demo, we simulate success if keys are not configured.
-      // In a real app, you'd show the error.
-      if (errorMessage.includes("not configured")) {
-         console.warn("Simulating payment success because API keys are not configured.");
-         setTimeout(() => setPaymentStep('success'), 1000);
-      } else {
-        setPaymentStep('error');
-      }
+      setPaymentStep('error');
     }
   }
   
