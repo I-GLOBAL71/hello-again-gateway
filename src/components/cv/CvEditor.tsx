@@ -325,6 +325,24 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         </div>
       </div>
   );
+  
+  const PaymentDialog = (
+    <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+        <DialogContent className="payment-popup p-0 max-w-md w-full" onInteractOutside={(e) => e.preventDefault()}>
+          <DialogHeader className="p-0">
+            <div className="popup-header">
+                <DialogTitle>Paiement Sécurisé</DialogTitle>
+                <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
+            </div>
+            <DialogDescription className="sr-only">
+                {dictionary.editor.paymentDescription}
+            </DialogDescription>
+          </DialogHeader>
+          <PaymentDialogContent/>
+        </DialogContent>
+    </Dialog>
+  );
+
 
   const MobileDownloadButton = (
     <Button size="icon" variant="outline" onClick={openPaymentDialog}>
@@ -359,15 +377,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                 {PreviewView}
             </TabsContent>
             
-            <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-                 <DialogContent className="payment-popup p-0 max-w-md w-full" onInteractOutside={(e) => e.preventDefault()}>
-                    <div className="popup-header">
-                        <h3>Paiement Sécurisé</h3>
-                         <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
-                    </div>
-                   <PaymentDialogContent/>
-                 </DialogContent>
-            </Dialog>
+            {PaymentDialog}
         </Tabs>
     );
   }
@@ -376,16 +386,9 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
       {EditorView}
       {PreviewView}
-
-      <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-         <DialogContent className="payment-popup p-0 max-w-md w-full" onInteractOutside={(e) => e.preventDefault()}>
-            <div className="popup-header">
-                <h3>Paiement Sécurisé</h3>
-                <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
-            </div>
-           <PaymentDialogContent/>
-         </DialogContent>
-      </Dialog>
+      {PaymentDialog}
     </div>
   );
 }
+
+    

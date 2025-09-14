@@ -89,6 +89,8 @@ const DialogTitle = React.forwardRef<
     ref={ref}
     className={cn(
       "text-lg font-semibold leading-none tracking-tight",
+      // Hide title visually but keep it for screen readers
+      "sr-only",
       className
     )}
     {...props}
@@ -120,3 +122,5 @@ export {
   DialogTitle,
   DialogDescription,
 }
+
+    
