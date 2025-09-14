@@ -71,5 +71,19 @@
         "sharp": "Un modèle net et précis axé sur la clarté.",
         "gallery": "Un modèle de style portfolio pour présenter votre travail.",
         "impact": "Un modèle à fort impact conçu pour attirer l'attention."
+    },
+     "admin": {
+        "title": "Configuration Admin",
+        "subtitle": "Gérez vos clés d'API pour les fournisseurs de paiement ici.",
+        "lygosTitle": "Configuration Lygos App",
+        "lygosApiKey": "Clé API",
+        "lygosSecretKey": "Clé Secrète",
+        "coolpayTitle": "Configuration CoolPay",
+        "coolpayMerchantId": "ID Marchand",
+        "coolpayApiKey": "Clé API",
+        "coolpaySecretKey": "Clé Secrète",
+        "saveButton": "Sauvegarder la Configuration",
+        "saveSuccess": "Configuration sauvegardée dans la console !",
+        "backToHome": "Retour à l'accueil"
     }
 }

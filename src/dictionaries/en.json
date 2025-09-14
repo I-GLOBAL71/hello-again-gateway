@@ -71,5 +71,19 @@
         "sharp": "A sharp and crisp template with a focus on clarity.",
         "gallery": "A portfolio-style template to showcase your work.",
         "impact": "A high-impact template designed to grab attention."
+    },
+    "admin": {
+        "title": "Admin Configuration",
+        "subtitle": "Manage your payment provider API keys here.",
+        "lygosTitle": "Lygos App Configuration",
+        "lygosApiKey": "API Key",
+        "lygosSecretKey": "Secret Key",
+        "coolpayTitle": "CoolPay Configuration",
+        "coolpayMerchantId": "Merchant ID",
+        "coolpayApiKey": "API Key",
+        "coolpaySecretKey": "Secret Key",
+        "saveButton": "Save Configuration",
+        "saveSuccess": "Configuration saved to console!",
+        "backToHome": "Back to Home"
     }
 }
