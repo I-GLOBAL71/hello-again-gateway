@@ -3,27 +3,25 @@
  * This file contains the logic to communicate with different payment APIs.
  */
 
-// Configuration for Lygos App
-const LYGOS_CONFIG = {
+// We will fetch these from Firestore later
+let LYGOS_CONFIG: { apiKey?: string; secretKey?: string; } = {};
+let COOLPAY_CONFIG: { merchantId?: string; apiKey?: string; secretKey?: string; } = {};
+
+
+const LYGOS_API_URLS = {
     baseUrl: 'https://api.lygosapp.com',
     endpoints: {
         createGateway: '/gateway/create-payment-gateway',
         getPayinStatus: '/payin/get-payin-status'
-    },
-    apiKey: process.env.LYGOS_API_KEY,
-    secretKey: process.env.LYGOS_SECRET_KEY
+    }
 };
 
-// Configuration for My-CoolPay
-const COOLPAY_CONFIG = {
-    baseUrl: 'https://my-coolpay.com/api', // Note: Corrected base URL
+const COOLPAY_API_URLS = {
+    baseUrl: 'https://my-coolpay.com/api',
     endpoints: {
         createPayment: '/payments/create',
         getStatus: '/payments/status'
-    },
-    merchantId: process.env.COOLPAY_MERCHANT_ID,
-    apiKey: process.env.COOLPAY_API_KEY,
-    secretKey: process.env.COOLPAY_SECRET_KEY
+    }
 };
 
 export type PaymentData = {
@@ -64,7 +62,7 @@ class LygosProvider implements PaymentProvider {
         };
 
         try {
-            const response = await fetch(`${LYGOS_CONFIG.baseUrl}${LYGOS_CONFIG.endpoints.createGateway}`, {
+            const response = await fetch(`${LYGOS_API_URLS.baseUrl}${LYGOS_API_URLS.endpoints.createGateway}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +103,7 @@ class CoolPayProvider implements PaymentProvider {
         };
 
         try {
-            const response = await fetch(`${COOLPAY_CONFIG.baseUrl}${COOLPAY_CONFIG.endpoints.createPayment}`, {
+            const response = await fetch(`${COOLPAY_API_URLS.baseUrl}${COOLPAY_API_URLS.endpoints.createPayment}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

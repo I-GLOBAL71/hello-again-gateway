@@ -86,7 +86,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [paymentStep, setPaymentStep] = useState<'details' | 'form' | 'loading' | 'success' | 'error'>('details');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile' | null>(null);
   const isMobile = useIsMobile();
-  const downloadPrice = 4.99;
+  const downloadPrice = 4.99; // This will be dynamic in a future step
 
   const handlePrint = () => {
     window.print();
@@ -97,6 +97,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     console.log("Initiating payment...");
 
     // This is a simulation. In a real app, you would have your API keys set up.
+    // We will get this from the admin config later.
     const areApiKeysConfigured = false;
 
     try {

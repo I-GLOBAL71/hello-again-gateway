@@ -48,6 +48,7 @@ const getAdminConfigFlow = ai.defineFlow(
     if (docSnap.exists()) {
       return AdminConfigSchema.parse(docSnap.data());
     } else {
+      // Return default/empty config if it doesn't exist
       return {
         lygosApiKey: '',
         lygosSecretKey: '',
