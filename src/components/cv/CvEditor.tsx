@@ -373,6 +373,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
 
   if (isMobile) {
     return (
+      <>
         <Tabs defaultValue="editor" className="flex flex-col h-screen w-full bg-muted/40">
             <header className="no-print p-2 bg-card border-b flex justify-between items-center shrink-0">
                 <Button variant="ghost" size="icon" asChild>
@@ -399,19 +400,25 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
             
             {PaymentDialog}
         </Tabs>
+        <div className="print-only">
+            <CvPreview cvData={cvData} templateId={selectedTemplateId} />
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
-      {EditorView}
+    <>
+      <div className="no-print flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
+        {EditorView}
+        <div className="flex-1">
+          {PreviewView}
+        </div>
+        {PaymentDialog}
+      </div>
       <div className="print-only">
         <CvPreview cvData={cvData} templateId={selectedTemplateId} />
       </div>
-      <div className="no-print flex-1">
-        {PreviewView}
-      </div>
-      {PaymentDialog}
-    </div>
+    </>
   );
 }

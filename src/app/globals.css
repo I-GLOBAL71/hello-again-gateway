@@ -87,6 +87,7 @@
 @media print {
   body {
     background: white !important;
+    color: black !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -95,14 +96,6 @@
   }
   .print-only {
     display: block !important;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-   body > *:not(.print-only) {
-    display: none !important;
   }
 }
 
