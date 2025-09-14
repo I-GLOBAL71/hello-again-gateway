@@ -14,6 +14,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
         coolpayMerchantId: '',
         coolpayApiKey: '',
         coolpaySecretKey: '',
+        downloadPrice: '4.99',
     });
     const { toast } = useToast();
 
@@ -36,6 +37,25 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
          <div className="max-w-4xl mx-auto">
             <p className="mb-8 text-muted-foreground">{dictionary.subtitle}</p>
             <form onSubmit={handleSubmit} className="space-y-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{dictionary.pricingTitle}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="downloadPrice">{dictionary.downloadPrice}</Label>
+                            <Input
+                                id="downloadPrice"
+                                name="downloadPrice"
+                                type="number"
+                                step="0.01"
+                                value={config.downloadPrice}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <Card>
                     <CardHeader>
                         <CardTitle>{dictionary.lygosTitle}</CardTitle>

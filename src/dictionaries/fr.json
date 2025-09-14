@@ -87,6 +87,8 @@
      "admin": {
         "title": "Configuration Admin",
         "subtitle": "Gérez vos clés d'API pour les fournisseurs de paiement ici.",
+        "pricingTitle": "Configuration des Tarifs",
+        "downloadPrice": "Prix du Téléchargement",
         "lygosTitle": "Configuration Lygos App",
         "lygosApiKey": "Clé API",
         "lygosSecretKey": "Clé Secrète",
