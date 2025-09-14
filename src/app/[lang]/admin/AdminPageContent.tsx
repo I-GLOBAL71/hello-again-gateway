@@ -90,7 +90,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                 id="superAdminEmail"
                                 name="superAdminEmail"
                                 type="email"
-                                value={config.superAdminEmail}
+                                value={config.superAdminEmail || ''}
                                 onChange={handleChange}
                             />
                         </div>
@@ -109,7 +109,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                 name="downloadPrice"
                                 type="number"
                                 step="0.01"
-                                value={config.downloadPrice}
+                                value={config.downloadPrice || ''}
                                 onChange={handleChange}
                             />
                         </div>
@@ -127,7 +127,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                 id="lygosApiKey"
                                 name="lygosApiKey"
                                 type="password"
-                                value={config.lygosApiKey}
+                                value={config.lygosApiKey || ''}
                                 onChange={handleChange}
                             />
                         </div>
@@ -137,7 +137,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                 id="lygosSecretKey"
                                 name="lygosSecretKey"
                                 type="password"
-                                value={config.lygosSecretKey}
+                                value={config.lygosSecretKey || ''}
                                 onChange={handleChange}
                             />
                         </div>
@@ -154,7 +154,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                             <Input
                                 id="coolpayMerchantId"
                                 name="coolpayMerchantId"
-                                value={config.coolpayMerchantId}
+                                value={config.coolpayMerchantId || ''}
                                 onChange={handleChange}
                             />
                         </div>
@@ -164,7 +164,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                 id="coolpayApiKey"
                                 name="coolpayApiKey"
                                 type="password"
-                                value={config.coolpayApiKey}
+                                value={config.coolpayApiKey || ''}
                                 onChange={handleChange}
                             />
                         </div>
@@ -174,7 +174,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                 id="coolpaySecretKey"
                                 name="coolpaySecretKey"
                                 type="password"
-                                value={config.coolpaySecretKey}
+                                value={config.coolpaySecretKey || ''}
                                 onChange={handleChange}
                             />
                         </div>
