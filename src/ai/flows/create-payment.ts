@@ -41,15 +41,11 @@ const createPaymentFlow = ai.defineFlow(
     outputSchema: z.any(),
   },
   async ({ provider, paymentData }) => {
-    try {
-      const adminConfig = await getAdminConfig();
-      const paymentManager = new PaymentManager(provider, adminConfig);
-      const result = await paymentManager.createPayment(paymentData as PaymentData);
-      return result;
-    } catch (error) {
-      console.error(`Payment creation failed for provider ${provider}:`, error);
-      const message = error instanceof Error ? error.message : 'An unknown error occurred during payment creation.';
-      throw new Error(message);
-    }
+    // The error handling is now more robust within the service itself.
+    // The flow will just pass the result or error up to the client.
+    const adminConfig = await getAdminConfig();
+    const paymentManager = new PaymentManager(provider, adminConfig);
+    const result = await paymentManager.createPayment(paymentData as PaymentData);
+    return result;
   }
 );

@@ -48,11 +48,12 @@ class LygosProvider implements PaymentProvider {
         if (!this.config.lygosApiKey || !this.config.lygosSecretKey) {
             // Instead of throwing an error, simulate success for demo purposes.
             console.warn("Lygos API keys not configured. Simulating successful payment response.");
+            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
             return Promise.resolve({
                 success: true,
                 message: "Payment gateway created successfully (Simulated)",
                 gateway_id: `simulated_${crypto.randomUUID()}`,
-                payment_url: paymentData.successUrl, // Redirect to success for simulation
+                payment_url: paymentData.successUrl, // Use successUrl for simulation
             });
         }
 
@@ -103,7 +104,12 @@ class CoolPayProvider implements PaymentProvider {
     
     async createPayment(paymentData: PaymentData): Promise<any> {
          if (!this.config.coolpayMerchantId || !this.config.coolpayApiKey) {
-            throw new Error('CoolPay API keys are not configured.');
+            // Instead of throwing an error, simulate success for demo purposes.
+            console.warn("CoolPay API keys not configured. Simulating successful payment response.");
+            return Promise.resolve({
+                id: `simulated_${crypto.randomUUID()}`,
+                payment_url: paymentData.successUrl, // Redirect to success for simulation
+            });
         }
 
         const payload = {

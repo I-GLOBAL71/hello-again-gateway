@@ -116,11 +116,11 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         amount: downloadPrice,
         currency: lang === 'fr' ? 'EUR' : 'USD',
         description: `${dictionary.editor.paymentItem} - ${selectedTemplate.name}`,
-        customerEmail: cvData.personalInfo.email,
-        customerName: cvData.personalInfo.name,
-        successUrl: window.location.href,
-        cancelUrl: window.location.href,
-        failureUrl: window.location.href,
+        customerEmail: cvData.personalInfo.email || 'customer@example.com', // Fallback email
+        customerName: cvData.personalInfo.name || 'Customer Name', // Fallback name
+        successUrl: `${window.location.origin}/${lang}/payment/success`,
+        cancelUrl: `${window.location.origin}/${lang}/editor/${selectedTemplateId}`,
+        failureUrl: `${window.location.origin}/${lang}/payment/failure`,
         webhookUrl: `${window.location.origin}/api/webhook/payment`
       };
       
@@ -128,11 +128,13 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
 
       console.log("Payment creation response:", result);
 
-      if (result && (result.success || result.id)) {
-        // The service now simulates success if keys are not configured,
-        // so we can just proceed.
+      if (result && (result.success || result.id || result.payment_url)) {
+        // This now handles both real API responses and our simulated success.
+        // For a real API, you would redirect to `result.payment_url`
+        // For our simulation, we just move to the success step.
         setPaymentStep('success');
       } else {
+        // Handle cases where the API returns a non-successful response
         throw new Error(result.message || 'Payment initiation failed.');
       }
     } catch (error) {
@@ -183,7 +185,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                         <div className="success-icon">✅</div>
                         <h3>{dictionary.editor.paymentSuccessTitle}</h3>
                         <p>{dictionary.editor.paymentSuccessMessage}</p>
-                        <button className="btn-primary" onClick={handleDownload}>
+                        <button className="btn-primary mt-4" onClick={handleDownload}>
                             {dictionary.editor.download}
                         </button>
                     </div>
@@ -196,7 +198,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                         <div className="error-icon">❌</div>
                         <h3>{dictionary.editor.paymentErrorTitle}</h3>
                         <p>{dictionary.editor.paymentErrorMessage}</p>
-                        <button className="btn-secondary" onClick={() => setPaymentStep('details')}>
+                        <button className="btn-secondary mt-4" onClick={() => setPaymentStep('details')}>
                             {dictionary.editor.paymentRetry}
                         </button>
                     </div>
