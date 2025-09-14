@@ -28,6 +28,7 @@ import {
 
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
+import { createPayment } from '@/ai/flows/create-payment';
 
 
 const initialCvData: CVData = {
@@ -92,16 +93,42 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     window.print();
   };
 
-  const handlePaymentAndDownload = () => {
+  const handlePaymentAndDownload = async () => {
     setPaymentStep('loading');
-    // Here you would integrate the real payment logic
-    console.log("Simulating payment processing...");
-    
-    // Simulate API call
-    setTimeout(() => {
-      // Simulate success
-      setPaymentStep('success');
-    }, 2000);
+    console.log("Initiating payment...");
+
+    try {
+      const paymentData = {
+        amount: downloadPrice,
+        currency: lang === 'fr' ? 'EUR' : 'USD',
+        description: `${dictionary.editor.paymentItem} - ${selectedTemplate.name}`,
+        customerEmail: cvData.personalInfo.email,
+        customerName: cvData.personalInfo.name,
+        successUrl: window.location.href,
+        cancelUrl: window.location.href,
+        failureUrl: window.location.href,
+        webhookUrl: `${window.location.origin}/api/webhook/payment`
+      };
+      
+      // We'll use 'lygos' as the default provider for now.
+      // You can make this configurable later.
+      const result = await createPayment({ provider: 'lygos', paymentData });
+
+      console.log("Payment creation response:", result);
+
+      if (result && (result.success || result.id)) {
+        // In a real implementation, you would redirect the user
+        // to the payment gateway URL returned by the provider.
+        // For now, we'll simulate a success.
+        setPaymentStep('success');
+      } else {
+        throw new Error(result.message || 'Payment initiation failed.');
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+      setPaymentStep('error');
+    }
   }
   
   const handleClosePaymentDialog = () => {
@@ -306,13 +333,13 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   
   const PaymentDialog = (
     <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-        <DialogContent className="payment-popup p-0" onInteractOutside={(e) => e.preventDefault()}>
+        <DialogContent className="payment-popup p-0 max-w-lg w-[95%] max-h-[95vh] rounded-2xl" onInteractOutside={(e) => e.preventDefault()}>
           <DialogHeader className="p-0">
             <div className="popup-header">
                 <h3 className="text-lg font-semibold text-primary-foreground">{dictionary.editor.paymentTitle}</h3>
                 <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
             </div>
-            <DialogTitle>{dictionary.editor.paymentTitle}</DialogTitle>
+            <DialogTitle className="sr-only">{dictionary.editor.paymentTitle}</DialogTitle>
             <DialogDescription className="sr-only">
                 {dictionary.editor.paymentDescription}
             </DialogDescription>
