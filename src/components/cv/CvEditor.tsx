@@ -5,7 +5,7 @@ import type { CVData, Template } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { Button } from '@/components/ui/button';
-import { Download, ArrowLeft, Eye, Pencil, ChevronDown, CreditCard, CheckCircle } from 'lucide-react';
+import { Download, ArrowLeft, Eye, Pencil, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -86,7 +86,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [paymentStep, setPaymentStep] = useState<'details' | 'form' | 'loading' | 'success' | 'error'>('details');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile' | null>(null);
   const isMobile = useIsMobile();
-  const downloadPrice = 4.99; // Configurable price
+  const downloadPrice = 4.99;
 
   const handlePrint = () => {
     window.print();
@@ -97,7 +97,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     console.log("Initiating payment...");
 
     // This is a simulation. In a real app, you would have your API keys set up.
-    const areApiKeysConfigured = process.env.NEXT_PUBLIC_LYGOS_API_KEY && process.env.NEXT_PUBLIC_COOLPAY_API_KEY;
+    const areApiKeysConfigured = false;
 
     try {
        // If API keys are not set, we simulate a success for demonstration purposes.
@@ -169,7 +169,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                 <div className="popup-content">
                     <div className="loader-container">
                         <div className="spinner"></div>
-                        <p>Préparation du paiement...</p>
+                        <p>{dictionary.editor.paymentLoading}</p>
                     </div>
                 </div>
             );
@@ -178,10 +178,10 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                  <div className="popup-content">
                     <div className="success-container">
                         <div className="success-icon">✅</div>
-                        <h3>Paiement réussi !</h3>
-                        <p>Votre paiement a été traité avec succès.</p>
+                        <h3>{dictionary.editor.paymentSuccessTitle}</h3>
+                        <p>{dictionary.editor.paymentSuccessMessage}</p>
                         <button className="btn-primary" onClick={handleDownload}>
-                            Télécharger le CV
+                            {dictionary.editor.download}
                         </button>
                     </div>
                 </div>
@@ -191,10 +191,10 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                  <div className="popup-content">
                     <div className="error-container">
                         <div className="error-icon">❌</div>
-                        <h3>Erreur de paiement</h3>
-                        <p>Le paiement a échoué. Veuillez réessayer.</p>
+                        <h3>{dictionary.editor.paymentErrorTitle}</h3>
+                        <p>{dictionary.editor.paymentErrorMessage}</p>
                         <button className="btn-secondary" onClick={() => setPaymentStep('details')}>
-                            Réessayer
+                            {dictionary.editor.paymentRetry}
                         </button>
                     </div>
                 </div>
@@ -203,19 +203,19 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
             return (
                  <div className="popup-content">
                     <div className="payment-details">
-                        <h4>Détails du paiement</h4>
-                        <p><strong>Montant:</strong> {dictionary.editor.price.replace('{price}', downloadPrice.toString())}</p>
-                        <p><strong>Description:</strong> {dictionary.editor.paymentItem} - {selectedTemplate.name}</p>
+                        <h4>{dictionary.editor.paymentDetails}</h4>
+                        <p><strong>{dictionary.editor.paymentAmount}:</strong> {dictionary.editor.price.replace('{price}', downloadPrice.toString())}</p>
+                        <p><strong>{dictionary.editor.paymentDescriptionLabel}:</strong> {dictionary.editor.paymentItem} - {selectedTemplate.name}</p>
                     </div>
                     
                     <div className="payment-methods">
-                        <h4>Méthodes de paiement</h4>
+                        <h4>{dictionary.editor.paymentMethods}</h4>
                         <div className="method-buttons">
                             <button className="payment-method" data-method="card" onClick={() => setPaymentMethod('card')}>
-                                💳 Carte bancaire
+                                💳 {dictionary.editor.creditCard}
                             </button>
                             <button className="payment-method" data-method="mobile" onClick={() => setPaymentMethod('mobile')}>
-                                📱 Paiement mobile
+                                📱 {dictionary.editor.mobilePayment}
                             </button>
                         </div>
                     </div>
@@ -225,37 +225,37 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                             {paymentMethod === 'card' ? (
                                 <div className="card-form">
                                     <div className="form-group">
-                                        <label>Numéro de carte</label>
+                                        <label>{dictionary.editor.cardNumber}</label>
                                         <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxLength={19} />
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group">
-                                            <label>MM/AA</label>
-                                            <input type="text" id="card-expiry" placeholder="12/25" maxLength={5} />
+                                            <label>{dictionary.editor.cardExpiry}</label>
+                                            <input type="text" id="card-expiry" placeholder="MM/AA" maxLength={5} />
                                         </div>
                                         <div className="form-group">
-                                            <label>CVC</label>
+                                            <label>{dictionary.editor.cardCVC}</label>
                                             <input type="text" id="card-cvc" placeholder="123" maxLength={4} />
                                         </div>
                                     </div>
                                     <div className="form-group">
-                                        <label>Nom sur la carte</label>
+                                        <label>{dictionary.editor.cardName}</label>
                                         <input type="text" id="card-name" placeholder="John Doe" />
                                     </div>
                                 </div>
                             ) : (
                                 <div className="mobile-form">
                                     <div className="form-group">
-                                        <label>Numéro de téléphone</label>
+                                        <label>{dictionary.editor.mobileNumber}</label>
                                         <input type="tel" id="mobile-number" placeholder="+33 6 12 34 56 78" />
                                     </div>
                                     <div className="form-group">
-                                        <label>Opérateur</label>
+                                        <label>{dictionary.editor.mobileOperator}</label>
                                         <select id="mobile-operator">
-                                            <option value="">Sélectionner un opérateur</option>
-                                            <option value="orange">Orange Money</option>
-                                            <option value="mtn">MTN Money</option>
-                                            <option value="moov">Moov Money</option>
+                                            <option value="">{dictionary.editor.selectOperator}</option>
+                                            <option value="orange">{dictionary.editor.operatorOrange}</option>
+                                            <option value="mtn">{dictionary.editor.operatorMtn}</option>
+                                            <option value="moov">{dictionary.editor.operatorMoov}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -265,11 +265,11 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     
                     <div className="popup-actions">
                         <button className="btn-cancel" onClick={handleClosePaymentDialog}>
-                           Annuler
+                           {dictionary.editor.paymentCancel}
                         </button>
                         {paymentMethod && (
                             <button className="btn-pay" id="process-payment" onClick={handlePaymentAndDownload}>
-                                Payer maintenant
+                                {dictionary.editor.paymentPay}
                             </button>
                         )}
                     </div>
@@ -340,7 +340,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   
   const PaymentDialog = (
     <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-        <DialogContent className="payment-popup p-0 max-w-lg w-[95%] max-h-[90vh] sm:max-h-[95vh] rounded-2xl" onInteractOutside={(e) => e.preventDefault()}>
+        <DialogContent className="p-0 max-w-lg w-[95%] max-h-[90vh] sm:max-h-[95vh] rounded-2xl" onInteractOutside={(e) => e.preventDefault()}>
           <DialogHeader className="p-0">
             <div className="popup-header">
                 <h3 className="text-lg font-semibold text-primary-foreground">{dictionary.editor.paymentTitle}</h3>
@@ -408,3 +408,5 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     </div>
   );
 }
+
+    

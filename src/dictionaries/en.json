@@ -15,11 +15,34 @@
         "formEditor": "Editor",
         "paymentTitle": "Finalize Your Purchase",
         "paymentDescription": "Your professional CV is ready. To download it, please complete the payment.",
+        "paymentDescriptionLabel": "Description",
         "paymentItem": "CV Download",
         "price": "${price}",
+        "currencySymbol": "$",
         "paymentDisclaimer": "You are about to make a one-time payment to download your CV. This will unlock the high-resolution, watermark-free version of your document.",
         "paymentCancel": "Cancel",
-        "paymentPay": "Pay & Download"
+        "paymentPay": "Pay & Download",
+        "paymentDetails": "Payment Details",
+        "paymentAmount": "Amount",
+        "paymentMethods": "Payment Methods",
+        "creditCard": "Credit Card",
+        "mobilePayment": "Mobile Payment",
+        "cardNumber": "Card Number",
+        "cardExpiry": "MM/YY",
+        "cardCVC": "CVC",
+        "cardName": "Name on Card",
+        "mobileNumber": "Phone Number",
+        "mobileOperator": "Operator",
+        "selectOperator": "Select an operator",
+        "operatorOrange": "Orange Money",
+        "operatorMtn": "MTN Money",
+        "operatorMoov": "Moov Money",
+        "paymentLoading": "Preparing payment...",
+        "paymentSuccessTitle": "Payment Successful!",
+        "paymentSuccessMessage": "Your payment has been processed successfully.",
+        "paymentErrorTitle": "Payment Error",
+        "paymentErrorMessage": "The payment failed. Please try again.",
+        "paymentRetry": "Retry"
     },
     "form": {
         "personalDetails": "Personal Details",
@@ -92,3 +115,5 @@
         "backToHome": "Back to Home"
     }
 }
+
+    

@@ -15,11 +15,34 @@
         "formEditor": "Éditeur",
         "paymentTitle": "Finalisez votre achat",
         "paymentDescription": "Votre CV professionnel est prêt. Pour le télécharger, veuillez finaliser le paiement.",
+        "paymentDescriptionLabel": "Description",
         "paymentItem": "Téléchargement du CV",
         "price": "{price}€",
+        "currencySymbol": "€",
         "paymentDisclaimer": "Vous êtes sur le point d'effectuer un paiement unique pour télécharger votre CV. Cela débloquera la version haute résolution et sans filigrane de votre document.",
         "paymentCancel": "Annuler",
-        "paymentPay": "Payer et Télécharger"
+        "paymentPay": "Payer et Télécharger",
+        "paymentDetails": "Détails du paiement",
+        "paymentAmount": "Montant",
+        "paymentMethods": "Méthodes de paiement",
+        "creditCard": "Carte bancaire",
+        "mobilePayment": "Paiement mobile",
+        "cardNumber": "Numéro de carte",
+        "cardExpiry": "MM/AA",
+        "cardCVC": "CVC",
+        "cardName": "Nom sur la carte",
+        "mobileNumber": "Numéro de téléphone",
+        "mobileOperator": "Opérateur",
+        "selectOperator": "Sélectionner un opérateur",
+        "operatorOrange": "Orange Money",
+        "operatorMtn": "MTN Money",
+        "operatorMoov": "Moov Money",
+        "paymentLoading": "Préparation du paiement...",
+        "paymentSuccessTitle": "Paiement réussi !",
+        "paymentSuccessMessage": "Votre paiement a été traité avec succès.",
+        "paymentErrorTitle": "Erreur de paiement",
+        "paymentErrorMessage": "Le paiement a échoué. Veuillez réessayer.",
+        "paymentRetry": "Réessayer"
     },
     "form": {
         "personalDetails": "Détails personnels",
@@ -92,3 +115,5 @@
         "impact": "Un modèle à fort impact conçu pour attirer l'attention."
     }
 }
+
+    
