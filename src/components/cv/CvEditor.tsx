@@ -330,13 +330,14 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     );
 
   const PreviewView = (
-     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-muted/30 relative print-container-wrapper no-print">
+     <div className="print-container-wrapper flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-muted/30 relative no-print">
         {TemplateSwitcher}
         <div
           id="cv-preview-wrapper"
-          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top print-wrapper"
+          className="w-full max-w-4xl bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top not-prose"
+          style={{ aspectRatio: '210 / 297' }}
         >
-            <div id="cv-preview" className="w-full h-full transform-gpu rounded-lg">
+            <div id="cv-preview" className="w-full h-full transform-gpu rounded-lg overflow-hidden">
                  <CvPreview cvData={cvData} templateId={selectedTemplateId} />
             </div>
         </div>
@@ -411,9 +412,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     <>
       <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor no-print">
         {EditorView}
-        <div className="flex-1">
-          {PreviewView}
-        </div>
+        {PreviewView}
         {PaymentDialog}
       </div>
       <div className="print-only">
