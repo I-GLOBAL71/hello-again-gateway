@@ -89,29 +89,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const downloadPrice = 4.99; // Configurable price
 
   const handlePrint = () => {
-    const printContainer = document.querySelector('.print-container');
-    if (!printContainer) return;
-    
-    const printContent = printContainer.cloneNode(true) as HTMLElement;
-    printContent.id = 'print-content-cloned';
-    document.body.appendChild(printContent);
-
-    if (isMobile) {
-        const previewTab = document.querySelector('[data-radix-collection-item][value="preview"]') as HTMLElement | null;
-        if (previewTab && previewTab.getAttribute('data-state') !== 'active') {
-            previewTab.click();
-            setTimeout(() => {
-                window.print();
-                document.body.removeChild(printContent);
-            }, 300);
-        } else {
-            window.print();
-            document.body.removeChild(printContent);
-        }
-    } else {
-        window.print();
-        document.body.removeChild(printContent);
-    }
+    window.print();
   };
 
   const handlePaymentAndDownload = () => {
@@ -181,8 +159,8 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                         <div className="error-icon">❌</div>
                         <h3>Erreur de paiement</h3>
                         <p>Le paiement a échoué. Veuillez réessayer.</p>
-                        <button className="btn-secondary" onClick={handleClosePaymentDialog}>
-                            Fermer
+                        <button className="btn-secondary" onClick={() => setPaymentStep('details')}>
+                            Réessayer
                         </button>
                     </div>
                 </div>
@@ -313,11 +291,11 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     );
 
   const PreviewView = (
-     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-gray-900/5 relative print-container-wrapper">
+     <div className="flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-muted/30 relative print-container-wrapper">
         {TemplateSwitcher}
         <div
           id="cv-preview-wrapper"
-          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top print-container"
+          className="w-full max-w-4xl lg:h-full lg:max-h-[95vh] aspect-[210/297] bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top"
         >
             <div id="cv-preview" className="w-full h-full transform-gpu overflow-hidden rounded-lg">
                  <CvPreview cvData={cvData} templateId={selectedTemplateId} />
@@ -328,12 +306,13 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   
   const PaymentDialog = (
     <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-        <DialogContent className="payment-popup p-0 max-w-md w-full" onInteractOutside={(e) => e.preventDefault()}>
+        <DialogContent className="payment-popup p-0" onInteractOutside={(e) => e.preventDefault()}>
           <DialogHeader className="p-0">
             <div className="popup-header">
-                <DialogTitle>Paiement Sécurisé</DialogTitle>
+                <h3 className="text-lg font-semibold text-primary-foreground">{dictionary.editor.paymentTitle}</h3>
                 <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
             </div>
+            <DialogTitle>{dictionary.editor.paymentTitle}</DialogTitle>
             <DialogDescription className="sr-only">
                 {dictionary.editor.paymentDescription}
             </DialogDescription>
@@ -373,7 +352,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     <CvForm cvData={cvData} setCvData={setCvData} dictionary={dictionary.form} />
                  </div>
             </TabsContent>
-            <TabsContent value="preview" className="flex-1 overflow-y-auto data-[state=inactive]:hidden">
+            <TabsContent value="preview" className="flex-1 overflow-y-auto data-[state=inactive]:hidden no-print">
                 {PreviewView}
             </TabsContent>
             
@@ -385,10 +364,13 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   return (
     <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
       {EditorView}
-      {PreviewView}
+      <div className="print-only">
+        <CvPreview cvData={cvData} templateId={selectedTemplateId} />
+      </div>
+      <div className="no-print flex-1">
+        {PreviewView}
+      </div>
       {PaymentDialog}
     </div>
   );
 }
-
-    

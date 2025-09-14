@@ -85,39 +85,32 @@
 
 @media print {
   body {
-    background-color: white !important;
+    background: white !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
   .no-print {
     display: none !important;
   }
-  .print-container {
+  .print-only {
     display: block !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    max-width: none !important;
+  }
+  .print-container-wrapper, #cv-preview-wrapper {
     margin: 0 !important;
     padding: 0 !important;
-    overflow: visible !important;
-    background: white !important;
-  }
-  #cv-preview-wrapper {
     box-shadow: none !important;
+    border: none !important;
     border-radius: 0 !important;
-    transform: scale(1) !important;
-  }
-  #cv-preview {
     width: 100% !important;
     height: 100% !important;
-    overflow: visible !important;
-    display: block !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    transform: scale(1) !important;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
-
-  body > *:not(.print-container) {
+   body > *:not(.print-only) {
     display: none !important;
   }
 }
@@ -362,10 +355,11 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .payment-popup {
-        width: 95%;
-        margin: 20px;
+      width: 95%;
+      margin: auto;
+      max-height: 95vh;
     }
     
     .method-buttons {
