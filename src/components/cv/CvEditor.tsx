@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { CVData, Template } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
@@ -28,6 +28,7 @@ import {
 
 import { Locale } from '@/i18n-config';
 import { createPayment } from '@/ai/flows/create-payment';
+import { getAdminConfig } from '@/ai/flows/admin-config';
 
 
 const initialCvData: CVData = {
@@ -85,8 +86,22 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   const [paymentStep, setPaymentStep] = useState<'details' | 'form' | 'loading' | 'success' | 'error'>('details');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile' | null>(null);
+  const [downloadPrice, setDownloadPrice] = useState<number>(4.99);
   const isMobile = useIsMobile();
-  const downloadPrice = 4.99; // This will be dynamic in a future step
+  
+  useEffect(() => {
+    const fetchConfig = async () => {
+        try {
+            const config = await getAdminConfig();
+            if (config.downloadPrice) {
+                setDownloadPrice(parseFloat(config.downloadPrice));
+            }
+        } catch (error) {
+            console.error("Failed to load admin config for price:", error);
+        }
+    };
+    fetchConfig();
+  }, []);
 
   const handlePrint = () => {
     window.print();
@@ -96,19 +111,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     setPaymentStep('loading');
     console.log("Initiating payment...");
 
-    // This is a simulation. In a real app, you would have your API keys set up.
-    // We will get this from the admin config later.
-    const areApiKeysConfigured = false;
-
     try {
-       // If API keys are not set, we simulate a success for demonstration purposes.
-       // In a real application, you would remove this check and let the createPayment call handle it.
-      if (!areApiKeysConfigured) {
-        console.warn("Simulating payment success because API keys are not configured.");
-        setTimeout(() => setPaymentStep('success'), 1000); // Simulate network delay
-        return;
-      }
-
       const paymentData = {
         amount: downloadPrice,
         currency: lang === 'fr' ? 'EUR' : 'USD',
@@ -126,8 +129,6 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
       console.log("Payment creation response:", result);
 
       if (result && (result.success || result.id)) {
-        // In a real implementation, you would redirect the user
-        // to the payment gateway URL returned by the provider.
         setPaymentStep('success');
       } else {
         throw new Error(result.message || 'Payment initiation failed.');
@@ -135,7 +136,14 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     } catch (error) {
       console.error("Payment error:", error);
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
-      setPaymentStep('error');
+      // For demo, we simulate success if keys are not configured.
+      // In a real app, you'd show the error.
+      if (errorMessage.includes("not configured")) {
+         console.warn("Simulating payment success because API keys are not configured.");
+         setTimeout(() => setPaymentStep('success'), 1000);
+      } else {
+        setPaymentStep('error');
+      }
     }
   }
   

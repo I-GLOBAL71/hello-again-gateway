@@ -3,10 +3,7 @@
  * This file contains the logic to communicate with different payment APIs.
  */
 
-// We will fetch these from Firestore later
-let LYGOS_CONFIG: { apiKey?: string; secretKey?: string; } = {};
-let COOLPAY_CONFIG: { merchantId?: string; apiKey?: string; secretKey?: string; } = {};
-
+import { getAdminConfig } from '@/ai/flows/admin-config';
 
 const LYGOS_API_URLS = {
     baseUrl: 'https://api.lygosapp.com',
@@ -42,7 +39,8 @@ interface PaymentProvider {
 
 class LygosProvider implements PaymentProvider {
     async createPayment(paymentData: PaymentData): Promise<any> {
-        if (!LYGOS_CONFIG.apiKey || !LYGOS_CONFIG.secretKey) {
+        const config = await getAdminConfig();
+        if (!config.lygosApiKey || !config.lygosSecretKey) {
             throw new Error('Lygos API keys are not configured.');
         }
 
@@ -66,8 +64,8 @@ class LygosProvider implements PaymentProvider {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${LYGOS_CONFIG.apiKey}`,
-                    'X-Secret-Key': LYGOS_CONFIG.secretKey
+                    'Authorization': `Bearer ${config.lygosApiKey}`,
+                    'X-Secret-Key': config.lygosSecretKey
                 },
                 body: JSON.stringify(payload)
             });
@@ -86,12 +84,13 @@ class LygosProvider implements PaymentProvider {
 
 class CoolPayProvider implements PaymentProvider {
     async createPayment(paymentData: PaymentData): Promise<any> {
-         if (!COOLPAY_CONFIG.merchantId || !COOLPAY_CONFIG.apiKey) {
+         const config = await getAdminConfig();
+         if (!config.coolpayMerchantId || !config.coolpayApiKey) {
             throw new Error('CoolPay API keys are not configured.');
         }
 
         const payload = {
-            merchant_id: COOLPAY_CONFIG.merchantId,
+            merchant_id: config.coolpayMerchantId,
             amount: paymentData.amount,
             currency: paymentData.currency,
             description: paymentData.description,
@@ -107,8 +106,8 @@ class CoolPayProvider implements PaymentProvider {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${COOLPAY_CONFIG.apiKey}`,
-                    'X-Merchant-ID': COOLPAY_CONFIG.merchantId
+                    'Authorization': `Bearer ${config.coolpayApiKey}`,
+                    'X-Merchant-ID': config.coolpayMerchantId
                 },
                 body: JSON.stringify(payload)
             });
