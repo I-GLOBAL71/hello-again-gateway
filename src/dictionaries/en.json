@@ -117,5 +117,10 @@
         "saveButton": "Save Configuration",
         "saveSuccess": "Configuration saved successfully!",
         "backToHome": "Back to Home"
+    },
+    "auth": {
+        "login": "Login",
+        "logout": "Logout",
+        "loading": "Loading..."
     }
 }

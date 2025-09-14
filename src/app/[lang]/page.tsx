@@ -6,6 +6,9 @@ import { CvPreview } from '@/components/cv/CvPreview';
 import { CVData } from '@/lib/types';
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
+import { Auth } from '@/components/auth/Auth';
+import { Button } from '@/components/ui/button';
+import { User } from 'lucide-react';
 
 const previewData: CVData = {
   personalInfo: {
@@ -45,15 +48,26 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
 
   return (
     <div className="min-h-screen bg-background">
+      <header className="absolute top-0 right-0 p-4">
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="sm" asChild>
+            <Link href={`/${lang}/admin`}>
+              <User className="mr-2"/>
+              Admin
+            </Link>
+          </Button>
+          <Auth dictionary={dictionary.auth} />
+        </div>
+      </header>
       <main className="container mx-auto px-4 py-12 md:py-20">
-        <header className="text-center mb-16">
+        <div className="text-center mb-16">
           <h1 className="font-headline text-5xl md:text-7xl font-bold text-primary">
             {dictionary.home.title}
           </h1>
           <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             {dictionary.home.subtitle}
           </p>
-        </header>
+        </div>
 
         <section>
           <h2 className="font-headline text-3xl md:text-4xl font-semibold text-center mb-10">
