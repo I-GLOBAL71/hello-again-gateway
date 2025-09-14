@@ -12,13 +12,14 @@ export default async function AdminLayout({
 }) {
   const dictionary = await getDictionary(lang);
   
+  // We fetch the config on the client side now to avoid server-side issues.
   let adminConfig = null;
   try {
     adminConfig = await getAdminConfig();
   } catch (error) {
     console.error("Failed to load admin config in layout:", error);
-    // We pass null to the client, which will handle showing a loading/error state.
   }
+
 
   return (
     <AdminLayoutContent

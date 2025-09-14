@@ -6,12 +6,10 @@
  * - updateAdminConfig - Saves or updates the admin configuration.
  * - getAdminConfig - Retrieves the admin configuration.
  */
-import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import type { AdminConfig } from '@/lib/types';
-
 
 const CONFIG_DOC_ID = 'singleton';
 const CONFIG_COLLECTION_ID = 'adminConfig';
@@ -26,14 +24,7 @@ const AdminConfigSchema = z.object({
     downloadPrice: z.string().optional(),
 });
 
-
-// Define the flow for getting the config
-const getAdminConfigFlow = ai.defineFlow(
-  {
-    name: 'getAdminConfigFlow',
-    outputSchema: AdminConfigSchema,
-  },
-  async () => {
+export async function getAdminConfig(): Promise<AdminConfig> {
     try {
         const docRef = doc(db, CONFIG_COLLECTION_ID, CONFIG_DOC_ID);
         const docSnap = await getDoc(docRef);
@@ -55,18 +46,9 @@ const getAdminConfigFlow = ai.defineFlow(
         console.error("Error fetching admin config from Firestore:", error);
         throw new Error("Failed to retrieve configuration from database.");
     }
-  }
-);
+}
 
-
-// Define the flow for updating the config
-const updateAdminConfigFlow = ai.defineFlow(
-  {
-    name: 'updateAdminConfigFlow',
-    inputSchema: AdminConfigSchema,
-    outputSchema: z.object({ success: z.boolean() }),
-  },
-  async (config) => {
+export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
     try {
         const parsedConfig = AdminConfigSchema.parse(config);
         const docRef = doc(db, CONFIG_COLLECTION_ID, CONFIG_DOC_ID);
@@ -76,15 +58,4 @@ const updateAdminConfigFlow = ai.defineFlow(
         console.error("Error updating admin config in Firestore:", error);
         throw new Error("Failed to update configuration.");
     }
-  }
-);
-
-
-// Export async wrapper functions that call the flows
-export async function getAdminConfig(): Promise<AdminConfig> {
-    return getAdminConfigFlow();
-}
-
-export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
-    return updateAdminConfigFlow(config);
 }

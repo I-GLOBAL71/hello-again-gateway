@@ -9,11 +9,12 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { Locale } from '@/i18n-config';
+import { getAdminConfig } from '@/ai/flows/admin-config';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminLayoutContent({
   children,
   dictionary,
-  adminConfig,
   lang,
 }: {
   children: React.ReactNode;
@@ -23,18 +24,35 @@ export default function AdminLayoutContent({
 }) {
   const { user, loading } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const [currentAdminConfig, setCurrentAdminConfig] = useState<AdminConfig | null>(adminConfig);
 
   useEffect(() => {
-    if (!loading && adminConfig) {
-      if (user && user.email === adminConfig.superAdminEmail) {
+    const fetchConfig = async () => {
+      if (!currentAdminConfig) {
+        try {
+          const config = await getAdminConfig();
+          setCurrentAdminConfig(config);
+        } catch (error) {
+          console.error("Failed to fetch admin config in layout content:", error);
+          // Set to a default state to avoid blocking UI, the page itself will handle refetching.
+          setCurrentAdminConfig({}); 
+        }
+      }
+    };
+    fetchConfig();
+  }, [currentAdminConfig]);
+  
+  useEffect(() => {
+    if (!loading && currentAdminConfig) {
+      if (user && user.email === currentAdminConfig.superAdminEmail) {
         setIsAuthorized(true);
       } else {
         setIsAuthorized(false);
       }
     }
-  }, [user, loading, adminConfig]);
+  }, [user, loading, currentAdminConfig]);
 
-  if (loading || isAuthorized === null || !adminConfig) {
+  if (loading || isAuthorized === null || !currentAdminConfig) {
     return (
       <div className="min-h-screen bg-muted/30 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
