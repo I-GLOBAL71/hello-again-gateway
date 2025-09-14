@@ -83,11 +83,12 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [cvData, setCvData] = useState<CVData>(initialCvData);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(template.id);
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [paymentStep, setPaymentStep] = useState<'details' | 'form' | 'loading' | 'success' | 'error'>('details');
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile' | null>(null);
   const isMobile = useIsMobile();
   const downloadPrice = 4.99; // Configurable price
 
   const handlePrint = () => {
-    // This is where the actual printing/PDF generation happens
     const printContainer = document.querySelector('.print-container');
     if (!printContainer) return;
     
@@ -114,48 +115,163 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   };
 
   const handlePaymentAndDownload = () => {
+    setPaymentStep('loading');
     // Here you would integrate the real payment logic
-    // For now, we'll just simulate a successful payment and trigger the download
-    console.log("Simulating payment...");
-    setIsPaymentDialogOpen(false);
-    // Give dialog time to close
-    setTimeout(handlePrint, 100);
+    console.log("Simulating payment processing...");
+    
+    // Simulate API call
+    setTimeout(() => {
+      // Simulate success
+      setPaymentStep('success');
+    }, 2000);
   }
+  
+  const handleClosePaymentDialog = () => {
+    setIsPaymentDialogOpen(false);
+    // Reset state after a short delay to allow for closing animation
+    setTimeout(() => {
+        setPaymentStep('details');
+        setPaymentMethod(null);
+    }, 300);
+  };
+
+  const handleDownload = () => {
+    // When payment is successful, trigger the actual download/print
+    handleClosePaymentDialog();
+    setTimeout(handlePrint, 100);
+  };
+  
+  const openPaymentDialog = () => {
+    setPaymentStep('details');
+    setPaymentMethod(null);
+    setIsPaymentDialogOpen(true);
+  };
+
 
   const selectedTemplate = templates.find(t => t.id === selectedTemplateId) || template;
 
+  const PaymentDialogContent = () => {
+    switch (paymentStep) {
+        case 'loading':
+            return (
+                <div className="popup-content">
+                    <div className="loader-container">
+                        <div className="spinner"></div>
+                        <p>Préparation du paiement...</p>
+                    </div>
+                </div>
+            );
+        case 'success':
+            return (
+                 <div className="popup-content">
+                    <div className="success-container">
+                        <div className="success-icon">✅</div>
+                        <h3>Paiement réussi !</h3>
+                        <p>Votre paiement a été traité avec succès.</p>
+                        <button className="btn-primary" onClick={handleDownload}>
+                            Télécharger le CV
+                        </button>
+                    </div>
+                </div>
+            )
+        case 'error':
+             return (
+                 <div className="popup-content">
+                    <div className="error-container">
+                        <div className="error-icon">❌</div>
+                        <h3>Erreur de paiement</h3>
+                        <p>Le paiement a échoué. Veuillez réessayer.</p>
+                        <button className="btn-secondary" onClick={handleClosePaymentDialog}>
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            )
+        default:
+            return (
+                 <div className="popup-content">
+                    <div className="payment-details">
+                        <h4>Détails du paiement</h4>
+                        <p><strong>Montant:</strong> {dictionary.editor.price.replace('{price}', downloadPrice.toString())}</p>
+                        <p><strong>Description:</strong> {dictionary.editor.paymentItem} - {selectedTemplate.name}</p>
+                    </div>
+                    
+                    <div className="payment-methods">
+                        <h4>Méthodes de paiement</h4>
+                        <div className="method-buttons">
+                            <button className="payment-method" data-method="card" onClick={() => setPaymentMethod('card')}>
+                                💳 Carte bancaire
+                            </button>
+                            <button className="payment-method" data-method="mobile" onClick={() => setPaymentMethod('mobile')}>
+                                📱 Paiement mobile
+                            </button>
+                        </div>
+                    </div>
+                    
+                    {paymentMethod && (
+                        <div className="payment-form-container" id="payment-form">
+                            {paymentMethod === 'card' ? (
+                                <div className="card-form">
+                                    <div className="form-group">
+                                        <label>Numéro de carte</label>
+                                        <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxLength={19} />
+                                    </div>
+                                    <div className="form-row">
+                                        <div className="form-group">
+                                            <label>MM/AA</label>
+                                            <input type="text" id="card-expiry" placeholder="12/25" maxLength={5} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>CVC</label>
+                                            <input type="text" id="card-cvc" placeholder="123" maxLength={4} />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Nom sur la carte</label>
+                                        <input type="text" id="card-name" placeholder="John Doe" />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="mobile-form">
+                                    <div className="form-group">
+                                        <label>Numéro de téléphone</label>
+                                        <input type="tel" id="mobile-number" placeholder="+33 6 12 34 56 78" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Opérateur</label>
+                                        <select id="mobile-operator">
+                                            <option value="">Sélectionner un opérateur</option>
+                                            <option value="orange">Orange Money</option>
+                                            <option value="mtn">MTN Money</option>
+                                            <option value="moov">Moov Money</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    
+                    <div className="popup-actions">
+                        <button className="btn-cancel" onClick={handleClosePaymentDialog}>
+                           Annuler
+                        </button>
+                        {paymentMethod && (
+                            <button className="btn-pay" id="process-payment" onClick={handlePaymentAndDownload}>
+                                Payer maintenant
+                            </button>
+                        )}
+                    </div>
+                </div>
+            );
+    }
+  }
+
+
   const DownloadButton = (
-    <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <Download className="mr-2 h-4 w-4" />
-          {dictionary.editor.download}
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{dictionary.editor.paymentTitle}</DialogTitle>
-          <DialogDescription>
-            {dictionary.editor.paymentDescription}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="my-4">
-          <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
-            <span className="font-semibold">{dictionary.editor.paymentItem} - {selectedTemplate.name}</span>
-            <span className="font-bold text-lg text-primary">{dictionary.editor.price.replace('{price}', downloadPrice.toString())}</span>
-          </div>
-          <p className="text-xs text-muted-foreground mt-4">
-            {dictionary.editor.paymentDisclaimer}
-          </p>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>{dictionary.editor.paymentCancel}</Button>
-          <Button onClick={handlePaymentAndDownload}>
-            <CreditCard className="mr-2 h-4 w-4" /> {dictionary.editor.paymentPay}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      <Button size="sm" onClick={openPaymentDialog}>
+        <Download className="mr-2 h-4 w-4" />
+        {dictionary.editor.download}
+      </Button>
   );
 
   const EditorView = (
@@ -211,37 +327,10 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   );
 
   const MobileDownloadButton = (
-     <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-      <DialogTrigger asChild>
-        <Button size="icon" variant="outline">
-          <Download />
-          <span className="sr-only">{dictionary.editor.download}</span>
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{dictionary.editor.paymentTitle}</DialogTitle>
-          <DialogDescription>
-            {dictionary.editor.paymentDescription}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="my-4">
-          <div className="flex justify-between items-center bg-muted/50 p-4 rounded-lg">
-            <span className="font-semibold">{dictionary.editor.paymentItem} - {selectedTemplate.name}</span>
-            <span className="font-bold text-lg text-primary">{dictionary.editor.price.replace('{price}', downloadPrice.toString())}</span>
-          </div>
-           <p className="text-xs text-muted-foreground mt-4">
-            {dictionary.editor.paymentDisclaimer}
-          </p>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setIsPaymentDialogOpen(false)}>{dictionary.editor.paymentCancel}</Button>
-          <Button onClick={handlePaymentAndDownload}>
-            <CreditCard className="mr-2 h-4 w-4" /> {dictionary.editor.paymentPay}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <Button size="icon" variant="outline" onClick={openPaymentDialog}>
+        <Download />
+        <span className="sr-only">{dictionary.editor.download}</span>
+    </Button>
   );
 
   if (isMobile) {
@@ -269,6 +358,16 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
             <TabsContent value="preview" className="flex-1 overflow-y-auto data-[state=inactive]:hidden">
                 {PreviewView}
             </TabsContent>
+            
+            <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+                 <DialogContent className="payment-popup p-0 max-w-md w-full" onInteractOutside={(e) => e.preventDefault()}>
+                    <div className="popup-header">
+                        <h3>Paiement Sécurisé</h3>
+                         <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
+                    </div>
+                   <PaymentDialogContent/>
+                 </DialogContent>
+            </Dialog>
         </Tabs>
     );
   }
@@ -277,6 +376,16 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     <div className="flex flex-col lg:flex-row h-screen bg-muted/40 group/editor">
       {EditorView}
       {PreviewView}
+
+      <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+         <DialogContent className="payment-popup p-0 max-w-md w-full" onInteractOutside={(e) => e.preventDefault()}>
+            <div className="popup-header">
+                <h3>Paiement Sécurisé</h3>
+                <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
+            </div>
+           <PaymentDialogContent/>
+         </DialogContent>
+      </Dialog>
     </div>
   );
 }
