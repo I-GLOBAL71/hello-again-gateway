@@ -30,9 +30,20 @@ export async function getAdminConfig(): Promise<AdminConfig> {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            return docSnap.data() as AdminConfig;
+            // Combine fetched data with defaults to ensure all keys are present
+            const data = docSnap.data();
+            return {
+                superAdminEmail: data.superAdminEmail || 'fabricewilliam71@gmail.com',
+                lygosApiKey: data.lygosApiKey || '',
+                lygosSecretKey: data.lygosSecretKey || '',
+                coolpayMerchantId: data.coolpayMerchantId || '',
+                coolpayApiKey: data.coolpayApiKey || '',
+                coolpaySecretKey: data.coolpaySecretKey || '',
+                downloadPrice: data.downloadPrice || '4.99',
+            };
         }
         
+        // Return a complete default object if the document doesn't exist
         return {
             superAdminEmail: 'fabricewilliam71@gmail.com',
             lygosApiKey: '',

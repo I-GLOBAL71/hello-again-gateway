@@ -10,11 +10,11 @@ import { ArrowLeft, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { Locale } from '@/i18n-config';
 import { getAdminConfig } from '@/ai/flows/admin-config';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AdminLayoutContent({
   children,
   dictionary,
+  adminConfig: initialAdminConfig, // Renamed to avoid conflict
   lang,
 }: {
   children: React.ReactNode;
@@ -24,35 +24,35 @@ export default function AdminLayoutContent({
 }) {
   const { user, loading } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
-  const [currentAdminConfig, setCurrentAdminConfig] = useState<AdminConfig | null>(adminConfig);
+  const [adminConfig, setAdminConfig] = useState<AdminConfig | null>(initialAdminConfig);
 
   useEffect(() => {
+    // If the server-side fetch failed, try to fetch on the client.
     const fetchConfig = async () => {
-      if (!currentAdminConfig) {
+      if (!adminConfig) {
         try {
           const config = await getAdminConfig();
-          setCurrentAdminConfig(config);
+          setAdminConfig(config);
         } catch (error) {
-          console.error("Failed to fetch admin config in layout content:", error);
-          // Set to a default state to avoid blocking UI, the page itself will handle refetching.
-          setCurrentAdminConfig({}); 
+          console.error("Failed to fetch admin config in layout content (client-side):", error);
+          // Don't block UI. The page itself will handle refetching and errors.
         }
       }
     };
     fetchConfig();
-  }, [currentAdminConfig]);
+  }, [adminConfig]);
   
   useEffect(() => {
-    if (!loading && currentAdminConfig) {
-      if (user && user.email === currentAdminConfig.superAdminEmail) {
+    if (!loading && adminConfig) {
+      if (user && user.email === adminConfig.superAdminEmail) {
         setIsAuthorized(true);
       } else {
         setIsAuthorized(false);
       }
     }
-  }, [user, loading, currentAdminConfig]);
+  }, [user, loading, adminConfig]);
 
-  if (loading || isAuthorized === null || !currentAdminConfig) {
+  if (loading || isAuthorized === null || !adminConfig) {
     return (
       <div className="min-h-screen bg-muted/30 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
