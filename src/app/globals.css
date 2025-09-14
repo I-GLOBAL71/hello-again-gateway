@@ -126,11 +126,13 @@
     border-radius: 20px;
     width: 90%;
     max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     animation: popupSlideIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
 }
+
 
 @keyframes popupSlideIn {
     from {
@@ -151,6 +153,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .popup-header h3 {
@@ -181,6 +184,8 @@
 .popup-content {
     padding: 30px;
     color: hsl(var(--card-foreground));
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
 .loader-container {
@@ -365,5 +370,3 @@
         flex-direction: column;
     }
 }
-
-    

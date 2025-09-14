@@ -340,19 +340,21 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   
   const PaymentDialog = (
     <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-        <DialogContent className="p-0 max-w-lg w-[95%] max-h-[90vh] sm:max-h-[95vh] rounded-2xl" onInteractOutside={(e) => e.preventDefault()}>
-          <DialogHeader className="p-0">
-            <div className="popup-header">
-                <h3 className="text-lg font-semibold text-primary-foreground">{dictionary.editor.paymentTitle}</h3>
-                <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
-            </div>
-            <DialogTitle className="sr-only">{dictionary.editor.paymentTitle}</DialogTitle>
-            <DialogDescription className="sr-only">
-                {dictionary.editor.paymentDescription}
-            </DialogDescription>
-          </DialogHeader>
+      <DialogContent className="p-0 sm:max-w-lg w-[95%] rounded-2xl flex flex-col max-h-[90vh]" onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader className="p-0 shrink-0">
+          <div className="popup-header">
+              <h3 className="text-lg font-semibold text-primary-foreground">{dictionary.editor.paymentTitle}</h3>
+              <button className="close-btn" onClick={handleClosePaymentDialog}>×</button>
+          </div>
+          <DialogTitle className="sr-only">{dictionary.editor.paymentTitle}</DialogTitle>
+          <DialogDescription className="sr-only">
+              {dictionary.editor.paymentDescription}
+          </DialogDescription>
+        </DialogHeader>
+        <div className="overflow-y-auto">
           <PaymentDialogContent/>
-        </DialogContent>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 
@@ -408,5 +410,3 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     </div>
   );
 }
-
-    
