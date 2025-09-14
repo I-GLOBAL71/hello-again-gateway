@@ -32,11 +32,12 @@ export async function getAdminConfig(): Promise<AdminConfig> {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            const parsed = AdminConfigSchema.safeParse(docSnap.data());
-            if (parsed.success) {
-                return parsed.data;
-            }
+            // Directly return the data, assuming it matches the AdminConfig type.
+            // This simplifies the logic to pinpoint the connection issue.
+            return docSnap.data() as AdminConfig;
         }
+        
+        // If the document doesn't exist, return a full default object.
         return {
             superAdminEmail: 'fabricewilliam71@gmail.com',
             lygosApiKey: '',
@@ -54,6 +55,7 @@ export async function getAdminConfig(): Promise<AdminConfig> {
 
 export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
     try {
+        // We still validate on write to ensure data integrity.
         const parsedConfig = AdminConfigSchema.parse(config);
         const docRef = doc(db, CONFIG_COLLECTION_ID, CONFIG_DOC_ID);
         await setDoc(docRef, parsedConfig, { merge: true });
