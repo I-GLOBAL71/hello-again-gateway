@@ -26,7 +26,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 import { createPayment } from '@/ai/flows/create-payment';
 
@@ -76,7 +75,7 @@ const initialCvData: CVData = {
 
 type CvEditorProps = {
     template: Template;
-    dictionary: Awaited<ReturnType<typeof getDictionary>>;
+    dictionary: any;
     lang: Locale;
 }
 
@@ -341,7 +340,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   
   const PaymentDialog = (
     <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
-        <DialogContent className="payment-popup p-0 max-w-lg w-[95%] max-h-[95vh] rounded-2xl" onInteractOutside={(e) => e.preventDefault()}>
+        <DialogContent className="payment-popup p-0 max-w-lg w-[95%] max-h-[90vh] sm:max-h-[95vh] rounded-2xl" onInteractOutside={(e) => e.preventDefault()}>
           <DialogHeader className="p-0">
             <div className="popup-header">
                 <h3 className="text-lg font-semibold text-primary-foreground">{dictionary.editor.paymentTitle}</h3>

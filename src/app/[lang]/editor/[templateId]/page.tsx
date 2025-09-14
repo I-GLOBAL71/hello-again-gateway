@@ -11,7 +11,7 @@ type EditorPageProps = {
   };
 };
 
-export function generateStaticParams({ params: { lang } }: { params: { lang: Locale }}) {
+export function generateStaticParams({ params: { lang } }: { params: { lang: Locale } }) {
   return templates.map((template) => ({
     templateId: template.id,
   }))

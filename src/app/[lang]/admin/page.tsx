@@ -6,13 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 
 // As we can't get the dictionary on the client side in a server component,
 // we'll just use a trick to pass the dictionary to the client component.
 // This is not ideal, but it's a workaround.
-const AdminPageContent = ({ dictionary }: { dictionary: Awaited<ReturnType<typeof getDictionary>>['admin'] }) => {
+const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
     const [config, setConfig] = useState({
         lygosApiKey: '',
         lygosSecretKey: '',
@@ -116,6 +115,6 @@ const AdminPageContent = ({ dictionary }: { dictionary: Awaited<ReturnType<typeo
 
 
 export default async function AdminPage({ params }: { params: { lang: Locale }}) {
-    const dictionary = await getDictionary(params.lang);
+    const dictionary = (await import(`@/dictionaries/${params.lang}.json`)).default;
     return <AdminPageContent dictionary={dictionary.admin} />
 }
