@@ -103,6 +103,8 @@
     "admin": {
         "title": "Admin Configuration",
         "subtitle": "Manage your payment provider API keys and pricing here.",
+        "superAdminTitle": "Super Admin Configuration",
+        "superAdminEmail": "Super Admin Email",
         "pricingTitle": "Pricing Configuration",
         "downloadPrice": "Download Price (e.g., 4.99)",
         "lygosTitle": "Lygos App Configuration",

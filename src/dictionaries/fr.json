@@ -87,6 +87,8 @@
      "admin": {
         "title": "Configuration Admin",
         "subtitle": "Gérez vos clés d'API pour les fournisseurs de paiement et les tarifs ici.",
+        "superAdminTitle": "Configuration du Super Admin",
+        "superAdminEmail": "E-mail du Super Admin",
         "pricingTitle": "Configuration des Tarifs",
         "downloadPrice": "Prix du Téléchargement (ex: 4.99)",
         "lygosTitle": "Configuration Lygos App",

@@ -38,6 +38,7 @@ export type Template = {
 };
 
 export type AdminConfig = {
+    superAdminEmail?: string;
     lygosApiKey?: string;
     lygosSecretKey?: string;
     coolpayMerchantId?: string;

@@ -65,6 +65,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
              <div className="max-w-4xl mx-auto">
                 <p className="mb-8 text-muted-foreground">{dictionary.subtitle}</p>
                 <div className="space-y-8">
+                    <Card><CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader><CardContent className="space-y-4"><Skeleton className="h-10 w-full" /><Skeleton className="h-10 w-full" /></CardContent></Card>
                     <Card><CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader><CardContent><Skeleton className="h-10 w-full" /></CardContent></Card>
                     <Card><CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader><CardContent className="space-y-4"><Skeleton className="h-10 w-full" /><Skeleton className="h-10 w-full" /></CardContent></Card>
                     <Card><CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader><CardContent className="space-y-4"><Skeleton className="h-10 w-full" /><Skeleton className="h-10 w-full" /><Skeleton className="h-10 w-full" /></CardContent></Card>
@@ -78,6 +79,24 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
          <div className="max-w-4xl mx-auto">
             <p className="mb-8 text-muted-foreground">{dictionary.subtitle}</p>
             <form onSubmit={handleSubmit} className="space-y-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{dictionary.superAdminTitle}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="superAdminEmail">{dictionary.superAdminEmail}</Label>
+                            <Input
+                                id="superAdminEmail"
+                                name="superAdminEmail"
+                                type="email"
+                                value={config.superAdminEmail}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+
                 <Card>
                     <CardHeader>
                         <CardTitle>{dictionary.pricingTitle}</CardTitle>
