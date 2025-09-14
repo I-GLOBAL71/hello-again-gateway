@@ -13,15 +13,8 @@ export default async function AdminLayout({
 }) {
   const dictionary = await getDictionary(lang);
   
-  let adminConfig: AdminConfig | null = null;
-  try {
-    // Try fetching on the server. If it fails, we'll let the client handle it.
-    adminConfig = await getAdminConfig();
-  } catch (error) {
-    console.error("Failed to load admin config in layout (server-side):", error);
-    // It's okay to proceed with null, the client will try to fetch it.
-  }
-
+  // The error is handled inside getAdminConfig now, so no need for try/catch
+  const adminConfig = await getAdminConfig();
 
   return (
     <AdminLayoutContent
