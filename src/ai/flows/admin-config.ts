@@ -5,18 +5,19 @@
  *
  * - updateAdminConfig - Saves or updates the admin configuration.
  * - getAdminConfig - Retrieves the admin configuration.
- * - AdminConfigSchema - The Zod schema for the admin configuration.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import type { AdminConfig } from '@/lib/types';
+
 
 const CONFIG_DOC_ID = 'singleton';
 const CONFIG_COLLECTION_ID = 'adminConfig';
 
-export const AdminConfigSchema = z.object({
+const AdminConfigSchema = z.object({
     lygosApiKey: z.string().optional(),
     lygosSecretKey: z.string().optional(),
     coolpayMerchantId: z.string().optional(),
@@ -25,7 +26,6 @@ export const AdminConfigSchema = z.object({
     downloadPrice: z.string().optional(),
 });
 
-export type AdminConfig = z.infer<typeof AdminConfigSchema>;
 
 export async function getAdminConfig(): Promise<AdminConfig> {
   return getAdminConfigFlow();
@@ -46,10 +46,8 @@ const getAdminConfigFlow = ai.defineFlow(
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      // Basic validation, could be improved with Zod parsing
-      return docSnap.data() as AdminConfig;
+      return AdminConfigSchema.parse(docSnap.data());
     } else {
-      // Return empty/default config if it doesn't exist
       return {
         lygosApiKey: '',
         lygosSecretKey: '',
@@ -72,7 +70,6 @@ const updateAdminConfigFlow = ai.defineFlow(
   async (config) => {
     try {
       const docRef = doc(db, CONFIG_COLLECTION_ID, CONFIG_DOC_ID);
-      // `setDoc` with `merge: true` will create or update the document.
       await setDoc(docRef, config, { merge: true });
       return { success: true };
     } catch (error) {

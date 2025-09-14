@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { getAdminConfig, updateAdminConfig, AdminConfig } from '@/ai/flows/admin-config';
+import { getAdminConfig, updateAdminConfig } from '@/ai/flows/admin-config';
+import type { AdminConfig } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 

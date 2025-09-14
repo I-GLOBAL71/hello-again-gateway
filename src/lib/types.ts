@@ -36,3 +36,12 @@ export type Template = {
   name: string;
   isNew?: boolean;
 };
+
+export type AdminConfig = {
+    lygosApiKey?: string;
+    lygosSecretKey?: string;
+    coolpayMerchantId?: string;
+    coolpayApiKey?: string;
+    coolpaySecretKey?: string;
+    downloadPrice?: string;
+};
