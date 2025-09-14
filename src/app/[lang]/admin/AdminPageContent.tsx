@@ -1,38 +1,78 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { getAdminConfig, updateAdminConfig, AdminConfig } from '@/ai/flows/admin-config';
+import { Skeleton } from '@/components/ui/skeleton';
+
 
 const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
-    const [config, setConfig] = useState({
-        lygosApiKey: '',
-        lygosSecretKey: '',
-        coolpayMerchantId: '',
-        coolpayApiKey: '',
-        coolpaySecretKey: '',
-        downloadPrice: '4.99',
-    });
+    const [config, setConfig] = useState<AdminConfig | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const { toast } = useToast();
 
+    useEffect(() => {
+        const fetchConfig = async () => {
+            setIsLoading(true);
+            try {
+                const fetchedConfig = await getAdminConfig();
+                setConfig(fetchedConfig);
+            } catch (error) {
+                toast({
+                    variant: 'destructive',
+                    title: "Error",
+                    description: "Failed to load configuration.",
+                });
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchConfig();
+    }, [toast]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!config) return;
         const { name, value } = e.target;
-        setConfig(prev => ({ ...prev, [name]: value }));
+        setConfig(prev => ({ ...prev!, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // In a real application, you would send this to a secure backend endpoint
-        // to update the environment variables or a database.
-        console.log('Saving configuration:', config);
-        toast({
-            title: dictionary.saveSuccess,
-        });
+        if (!config) return;
+
+        try {
+            await updateAdminConfig(config);
+            toast({
+                title: "Success!",
+                description: "Configuration saved successfully.",
+            });
+        } catch (error) {
+             toast({
+                variant: 'destructive',
+                title: "Error",
+                description: "Failed to save configuration.",
+            });
+        }
     };
     
+    if (isLoading || !config) {
+        return (
+             <div className="max-w-4xl mx-auto">
+                <p className="mb-8 text-muted-foreground">{dictionary.subtitle}</p>
+                <div className="space-y-8">
+                    <Card><CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader><CardContent><Skeleton className="h-10 w-full" /></CardContent></Card>
+                    <Card><CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader><CardContent className="space-y-4"><Skeleton className="h-10 w-full" /><Skeleton className="h-10 w-full" /></CardContent></Card>
+                    <Card><CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader><CardContent className="space-y-4"><Skeleton className="h-10 w-full" /><Skeleton className="h-10 w-full" /><Skeleton className="h-10 w-full" /></CardContent></Card>
+                    <div className="flex justify-end"><Skeleton className="h-10 w-32" /></div>
+                </div>
+            </div>
+        )
+    }
+
     return (
          <div className="max-w-4xl mx-auto">
             <p className="mb-8 text-muted-foreground">{dictionary.subtitle}</p>

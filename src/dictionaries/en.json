@@ -102,9 +102,9 @@
     },
     "admin": {
         "title": "Admin Configuration",
-        "subtitle": "Manage your payment provider API keys here.",
+        "subtitle": "Manage your payment provider API keys and pricing here.",
         "pricingTitle": "Pricing Configuration",
-        "downloadPrice": "Download Price",
+        "downloadPrice": "Download Price (e.g., 4.99)",
         "lygosTitle": "Lygos App Configuration",
         "lygosApiKey": "API Key",
         "lygosSecretKey": "Secret Key",
@@ -113,9 +113,7 @@
         "coolpayApiKey": "API Key",
         "coolpaySecretKey": "Secret Key",
         "saveButton": "Save Configuration",
-        "saveSuccess": "Configuration saved to console!",
+        "saveSuccess": "Configuration saved successfully!",
         "backToHome": "Back to Home"
     }
 }
-
-    

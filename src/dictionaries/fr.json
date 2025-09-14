@@ -86,9 +86,9 @@
     },
      "admin": {
         "title": "Configuration Admin",
-        "subtitle": "Gérez vos clés d'API pour les fournisseurs de paiement ici.",
+        "subtitle": "Gérez vos clés d'API pour les fournisseurs de paiement et les tarifs ici.",
         "pricingTitle": "Configuration des Tarifs",
-        "downloadPrice": "Prix du Téléchargement",
+        "downloadPrice": "Prix du Téléchargement (ex: 4.99)",
         "lygosTitle": "Configuration Lygos App",
         "lygosApiKey": "Clé API",
         "lygosSecretKey": "Clé Secrète",
@@ -97,7 +97,7 @@
         "coolpayApiKey": "Clé API",
         "coolpaySecretKey": "Clé Secrète",
         "saveButton": "Sauvegarder la Configuration",
-        "saveSuccess": "Configuration sauvegardée dans la console !",
+        "saveSuccess": "Configuration sauvegardée avec succès !",
         "backToHome": "Retour à l'accueil"
     },
     "templates": {
@@ -117,5 +117,3 @@
         "impact": "Un modèle à fort impact conçu pour attirer l'attention."
     }
 }
-
-    
