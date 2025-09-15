@@ -51,7 +51,7 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
                     key={template.id}
                     className="group block no-print"
                   >
-                    <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
+                    <Card className="overflow-hidden flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
                       <CardHeader>
                         <div className="flex justify-between items-center">
                           <CardTitle className="font-headline text-xl">
@@ -83,4 +83,5 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
     </div>
   );
 }
+
 
