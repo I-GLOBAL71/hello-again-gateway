@@ -3,44 +3,12 @@ import { templates } from '@/lib/templates';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CvPreview } from '@/components/cv/CvPreview';
-import { CVData } from '@/lib/types';
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 import { Auth } from '@/components/auth/Auth';
 import { Button } from '@/components/ui/button';
 import { User } from 'lucide-react';
-
-const previewData: CVData = {
-  personalInfo: {
-    name: 'Your Name',
-    title: 'Professional Title',
-    email: 'your.email@example.com',
-    phone: '123-456-7890',
-    address: 'City, Country',
-  },
-  summary: 'A brief professional summary about yourself, your skills, and your career goals.',
-  experience: [
-    {
-      id: 'exp1',
-      company: 'Company Name',
-      role: 'Job Title',
-      startDate: 'YYYY',
-      endDate: 'YYYY',
-      description: '• Key responsibilities and achievements.',
-    },
-  ],
-  education: [
-    {
-      id: 'edu1',
-      institution: 'University Name',
-      degree: 'Degree',
-      startDate: 'YYYY',
-      endDate: 'YYYY',
-      description: '• Relevant coursework or honors.',
-    },
-  ],
-  skills: 'Skill 1, Skill 2, Skill 3',
-};
+import { previewDataSets } from '@/lib/preview-data';
 
 
 export default async function Home({ params: { lang } }: { params: { lang: Locale }}) {
@@ -74,32 +42,35 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
             {dictionary.home.chooseTemplate}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            {templates.map((template) => (
-              <Link
-                href={`/${lang}/editor/${template.id}`}
-                key={template.id}
-                className="group block no-print"
-              >
-                <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
-                  <CardHeader>
-                    <div className="flex justify-between items-center">
-                      <CardTitle className="font-headline text-xl">
-                        {template.name}
-                      </CardTitle>
-                      {template.isNew && <Badge variant="destructive">{dictionary.home.newBadge}</Badge>}
-                    </div>
-                    <p className="text-sm text-muted-foreground pt-1">{dictionary.templates[template.id as keyof typeof dictionary.templates]}</p>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                     <div className="aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
-                        <div className="scale-[0.2] origin-top-left w-[500%] h-[500%]">
-                            <CvPreview cvData={previewData} templateId={template.id} />
+            {templates.map((template) => {
+                const previewData = previewDataSets[template.id] || previewDataSets.default;
+                return (
+                  <Link
+                    href={`/${lang}/editor/${template.id}`}
+                    key={template.id}
+                    className="group block no-print"
+                  >
+                    <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
+                      <CardHeader>
+                        <div className="flex justify-between items-center">
+                          <CardTitle className="font-headline text-xl">
+                            {template.name}
+                          </CardTitle>
+                          {template.isNew && <Badge variant="destructive">{dictionary.home.newBadge}</Badge>}
                         </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+                        <p className="text-sm text-muted-foreground pt-1">{dictionary.templates[template.id as keyof typeof dictionary.templates]}</p>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-0">
+                         <div className="print-wrapper aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
+                            <div className="scale-[0.2] origin-top-left w-[500%] h-[500%]">
+                                <CvPreview cvData={previewData} templateId={template.id} />
+                            </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                )
+            })}
           </div>
         </section>
       </main>
