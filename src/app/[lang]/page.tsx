@@ -51,7 +51,7 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
                     key={template.id}
                     className="group block no-print"
                   >
-                    <Card className="overflow-hidden flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
+                    <Card className="overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-2xl group-hover:-translate-y-1 border-2 border-transparent group-hover:border-primary bg-card">
                       <CardHeader>
                         <div className="flex justify-between items-center">
                           <CardTitle className="font-headline text-xl">
@@ -62,8 +62,8 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
                         <p className="text-sm text-muted-foreground pt-1">{dictionary.templates[template.id as keyof typeof dictionary.templates]}</p>
                       </CardHeader>
                       <CardContent className="p-4 pt-0">
-                         <div className="print-wrapper w-full pointer-events-none bg-white">
-                            <div className="scale-[0.35] origin-top-left">
+                         <div className="print-wrapper aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
+                            <div className="scale-[0.2] origin-top-left w-[500%] h-[500%]">
                                 <CvPreview cvData={previewData} templateId={template.id} />
                             </div>
                         </div>
@@ -83,6 +83,4 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
     </div>
   );
 }
-
-
 
