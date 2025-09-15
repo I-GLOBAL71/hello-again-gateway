@@ -335,9 +335,8 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         <div
           id="cv-preview-wrapper"
           className="w-full max-w-4xl bg-white rounded-lg shadow-2xl transition-transform duration-300 ease-in-out lg:group-focus-within/editor:scale-[1.02] origin-top not-prose"
-          style={{ aspectRatio: '210 / 297' }}
         >
-            <div id="cv-preview" className="w-full h-full transform-gpu rounded-lg overflow-hidden">
+            <div id="cv-preview" className="w-full h-full transform-gpu rounded-lg">
                  <CvPreview cvData={cvData} templateId={selectedTemplateId} />
             </div>
         </div>
