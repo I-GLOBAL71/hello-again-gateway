@@ -44,7 +44,7 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {templates.map((template) => {
-                const previewData = previewDataSets[template.id] || previewDataSets.default;
+                const previewData = previewDataSets[template.id as keyof typeof previewDataSets] || previewDataSets.default;
                 return (
                   <Link
                     href={`/${lang}/editor/${template.id}`}
@@ -83,3 +83,4 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
     </div>
   );
 }
+
