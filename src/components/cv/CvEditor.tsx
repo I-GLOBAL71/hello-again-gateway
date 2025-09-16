@@ -330,7 +330,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     );
 
   const PreviewView = (
-     <div className="print-container-wrapper flex-1 p-4 md:p-8 flex justify-center items-start lg:items-center overflow-y-auto bg-muted/30 relative no-print">
+     <div className="print-container-wrapper flex-1 p-4 md:p-8 flex justify-center items-start overflow-y-auto bg-muted/30 relative no-print">
         {TemplateSwitcher}
         <div
           id="cv-preview-wrapper"
