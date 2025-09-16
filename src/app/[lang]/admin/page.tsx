@@ -7,5 +7,5 @@ import { getDictionary } from '@/get-dictionary';
 // It fetches the dictionary and passes it to the client component.
 export default async function AdminPage({ params }: { params: { lang: Locale } }) {
     const dictionary = await getDictionary(params.lang);
-    return <AdminPageContent dictionary={dictionary.admin} />
+    return <AdminPageContent dictionary={dictionary} />
 }

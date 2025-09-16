@@ -116,20 +116,21 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
         );
     }
 
+    const adminDictionary = dictionary.admin;
 
     return (
         <div className="min-h-screen bg-muted/30">
             <header className="bg-background border-b">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 <h1 className="text-xl font-semibold font-headline">
-                    {dictionary.title}
+                    {adminDictionary.title}
                 </h1>
                 <div className="flex items-center gap-4">
                     <Auth dictionary={dictionary.auth} />
                     <Button variant="outline" asChild>
                     <Link href={`/${lang}`}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
-                        {dictionary.backToHome}
+                        {adminDictionary.backToHome}
                     </Link>
                     </Button>
                 </div>
@@ -137,15 +138,15 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
             </header>
             <main className="container mx-auto px-4 py-8">
                 <div className="max-w-4xl mx-auto">
-                    <p className="mb-8 text-muted-foreground">{dictionary.subtitle}</p>
+                    <p className="mb-8 text-muted-foreground">{adminDictionary.subtitle}</p>
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <Card>
                             <CardHeader>
-                                <CardTitle>{dictionary.superAdminTitle}</CardTitle>
+                                <CardTitle>{adminDictionary.superAdminTitle}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="superAdminEmail">{dictionary.superAdminEmail}</Label>
+                                    <Label htmlFor="superAdminEmail">{adminDictionary.superAdminEmail}</Label>
                                     <Input
                                         id="superAdminEmail"
                                         name="superAdminEmail"
@@ -159,11 +160,11 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>{dictionary.pricingTitle}</CardTitle>
+                                <CardTitle>{adminDictionary.pricingTitle}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="downloadPrice">{dictionary.downloadPrice}</Label>
+                                    <Label htmlFor="downloadPrice">{adminDictionary.downloadPrice}</Label>
                                     <Input
                                         id="downloadPrice"
                                         name="downloadPrice"
@@ -178,11 +179,11 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>{dictionary.lygosTitle}</CardTitle>
+                                <CardTitle>{adminDictionary.lygosTitle}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="lygosApiKey">{dictionary.lygosApiKey}</Label>
+                                    <Label htmlFor="lygosApiKey">{adminDictionary.lygosApiKey}</Label>
                                     <Input
                                         id="lygosApiKey"
                                         name="lygosApiKey"
@@ -192,7 +193,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="lygosSecretKey">{dictionary.lygosSecretKey}</Label>
+                                    <Label htmlFor="lygosSecretKey">{adminDictionary.lygosSecretKey}</Label>
                                     <Input
                                         id="lygosSecretKey"
                                         name="lygosSecretKey"
@@ -206,11 +207,11 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle>{dictionary.coolpayTitle}</CardTitle>
+                                <CardTitle>{adminDictionary.coolpayTitle}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="coolpayMerchantId">{dictionary.coolpayMerchantId}</Label>
+                                    <Label htmlFor="coolpayMerchantId">{adminDictionary.coolpayMerchantId}</Label>
                                     <Input
                                         id="coolpayMerchantId"
                                         name="coolpayMerchantId"
@@ -219,7 +220,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="coolpayApiKey">{dictionary.coolpayApiKey}</Label>
+                                    <Label htmlFor="coolpayApiKey">{adminDictionary.coolpayApiKey}</Label>
                                     <Input
                                         id="coolpayApiKey"
                                         name="coolpayApiKey"
@@ -229,7 +230,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="coolpaySecretKey">{dictionary.coolpaySecretKey}</Label>
+                                    <Label htmlFor="coolpaySecretKey">{adminDictionary.coolpaySecretKey}</Label>
                                     <Input
                                         id="coolpaySecretKey"
                                         name="coolpaySecretKey"
@@ -242,7 +243,7 @@ const AdminPageContent = ({ dictionary }: { dictionary: any }) => {
                         </Card>
 
                         <div className="flex justify-end">
-                            <Button type="submit">{dictionary.saveButton}</Button>
+                            <Button type="submit">{adminDictionary.saveButton}</Button>
                         </div>
                     </form>
                 </div>
