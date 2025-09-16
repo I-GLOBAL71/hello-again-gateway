@@ -7,12 +7,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  "projectId": "cvgenius-b3846",
-  "appId": "1:396283648281:web:13098363363e06a3828c82",
-  "storageBucket": "cvgenius-b3846.appspot.com",
-  "apiKey": "AIzaSyDPT20o8s8fSqcF6jZlH5DkS4f6aP-Tj5c",
-  "authDomain": "cvgenius-b3846.firebaseapp.com",
-  "messagingSenderId": "396283648281"
+  "projectId": "studio-8852692980-206ab",
+  "appId": "1:470257936594:web:8240c81c4c5fea93c8250b",
+  "storageBucket": "studio-8852692980-206ab.firebasestorage.app",
+  "apiKey": "AIzaSyAENEc8kVtzSDcHNm6BtQwe0XEe1BR1zek",
+  "authDomain": "studio-8852692980-206ab.firebaseapp.com",
+  "messagingSenderId": "470257936594"
 };
 
 // Initialize Firebase
