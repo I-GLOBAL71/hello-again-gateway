@@ -128,10 +128,11 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
 
       console.log("Payment creation response:", result);
 
-      if (result && (result.success || result.id || result.payment_url)) {
-        // This now handles both real API responses and our simulated success.
-        // For a real API, you would redirect to `result.payment_url`
-        // For our simulation, we just move to the success step.
+      if (result && result.payment_url && !result.payment_url.startsWith(window.location.origin)) {
+        // Real payment provider: redirect to external payment page
+        window.location.href = result.payment_url;
+      } else if (result && (result.success || result.id || result.payment_url)) {
+        // Simulated payment was successful OR a real provider returned a success-like object without redirect
         setPaymentStep('success');
       } else {
         // Handle cases where the API returns a non-successful response
