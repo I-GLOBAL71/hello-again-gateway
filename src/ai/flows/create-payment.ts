@@ -10,7 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { PaymentManager, PaymentData } from '@/services/payment';
-import { getAdminConfig } from './admin-config';
+import type { AdminConfig } from '@/lib/types';
 
 const PaymentDataSchema = z.object({
   amount: z.number(),
@@ -24,9 +24,21 @@ const PaymentDataSchema = z.object({
   webhookUrl: z.string().url(),
 });
 
+const AdminConfigSchema = z.object({
+    superAdminEmail: z.string().optional(),
+    lygosApiKey: z.string().optional(),
+    lygosSecretKey: z.string().optional(),
+    coolpayMerchantId: z.string().optional(),
+    coolpayApiKey: z.string().optional(),
+    coolpaySecretKey: z.string().optional(),
+    downloadPrice: z.string().optional(),
+});
+
+
 const CreatePaymentInputSchema = z.object({
   provider: z.enum(['lygos', 'coolpay']),
   paymentData: PaymentDataSchema,
+  adminConfig: AdminConfigSchema,
 });
 export type CreatePaymentInput = z.infer<typeof CreatePaymentInputSchema>;
 
@@ -40,10 +52,9 @@ const createPaymentFlow = ai.defineFlow(
     inputSchema: CreatePaymentInputSchema,
     outputSchema: z.any(),
   },
-  async ({ provider, paymentData }) => {
+  async ({ provider, paymentData, adminConfig }) => {
     // The error handling is now more robust within the service itself.
     // The flow will just pass the result or error up to the client.
-    const adminConfig = await getAdminConfig();
     const paymentManager = new PaymentManager(provider, adminConfig);
     const result = await paymentManager.createPayment(paymentData as PaymentData);
     return result;

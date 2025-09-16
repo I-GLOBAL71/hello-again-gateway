@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { CVData, Template } from '@/lib/types';
+import type { CVData, Template, AdminConfig } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { Button } from '@/components/ui/button';
@@ -86,6 +86,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   const [paymentStep, setPaymentStep] = useState<'details' | 'form' | 'loading' | 'success' | 'error'>('details');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile' | null>(null);
+  const [adminConfig, setAdminConfig] = useState<AdminConfig | null>(null);
   const [downloadPrice, setDownloadPrice] = useState<number>(4.99);
   const [isDownloadUnlocked, setIsDownloadUnlocked] = useState(false);
   const isMobile = useIsMobile();
@@ -94,6 +95,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     const fetchConfig = async () => {
         try {
             const config = await getAdminConfig();
+            setAdminConfig(config);
             if (config.downloadPrice) {
                 setDownloadPrice(parseFloat(config.downloadPrice));
             }
@@ -116,6 +118,12 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     setPaymentStep('loading');
     console.log("Initiating payment...");
 
+    if (!adminConfig) {
+        console.error("Admin config not loaded.");
+        setPaymentStep('error');
+        return;
+    }
+
     try {
       const paymentData = {
         amount: downloadPrice,
@@ -129,7 +137,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         webhookUrl: `${window.location.origin}/api/webhook/payment`
       };
       
-      const result = await createPayment({ provider: 'lygos', paymentData });
+      const result = await createPayment({ provider: 'lygos', paymentData, adminConfig });
 
       console.log("Payment creation response:", result);
 
