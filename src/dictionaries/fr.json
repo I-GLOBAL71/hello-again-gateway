@@ -11,6 +11,8 @@
         "backToTemplates": "Retour aux modèles",
         "template": "Modèle",
         "download": "Télécharger",
+        "unlockDownload": "Débloquer le téléchargement",
+        "unlockDownloadFull": "Débloquer pour Télécharger",
         "preview": "Aperçu",
         "formEditor": "Éditeur",
         "paymentTitle": "Finalisez votre achat",
@@ -39,7 +41,7 @@
         "operatorMoov": "Moov Money",
         "paymentLoading": "Préparation du paiement...",
         "paymentSuccessTitle": "Paiement réussi !",
-        "paymentSuccessMessage": "Votre paiement a été traité avec succès.",
+        "paymentSuccessMessage": "Votre paiement a été traité avec succès. Vous pouvez maintenant télécharger votre CV.",
         "paymentErrorTitle": "Erreur de paiement",
         "paymentErrorMessage": "Le paiement a échoué. Veuillez réessayer.",
         "paymentRetry": "Réessayer"

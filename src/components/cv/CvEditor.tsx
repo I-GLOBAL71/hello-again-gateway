@@ -5,7 +5,7 @@ import type { CVData, Template } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { Button } from '@/components/ui/button';
-import { Download, ArrowLeft, Eye, Pencil, ChevronDown } from 'lucide-react';
+import { Download, ArrowLeft, Eye, Pencil, ChevronDown, Lock, Unlock } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -87,6 +87,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [paymentStep, setPaymentStep] = useState<'details' | 'form' | 'loading' | 'success' | 'error'>('details');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile' | null>(null);
   const [downloadPrice, setDownloadPrice] = useState<number>(4.99);
+  const [isDownloadUnlocked, setIsDownloadUnlocked] = useState(false);
   const isMobile = useIsMobile();
   
   useEffect(() => {
@@ -104,10 +105,14 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   }, []);
 
   const handlePrint = () => {
-    window.print();
+    if (isDownloadUnlocked) {
+      window.print();
+    } else {
+      openPaymentDialog();
+    }
   };
 
-  const handlePaymentAndDownload = async () => {
+  const handlePaymentInitiation = async () => {
     setPaymentStep('loading');
     console.log("Initiating payment...");
 
@@ -116,11 +121,11 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         amount: downloadPrice,
         currency: lang === 'fr' ? 'EUR' : 'USD',
         description: `${dictionary.editor.paymentItem} - ${selectedTemplate.name}`,
-        customerEmail: cvData.personalInfo.email || 'customer@example.com', // Fallback email
-        customerName: cvData.personalInfo.name || 'Customer Name', // Fallback name
-        successUrl: `${window.location.origin}/${lang}/payment/success`,
-        cancelUrl: `${window.location.origin}/${lang}/editor/${selectedTemplateId}`,
-        failureUrl: `${window.location.origin}/${lang}/payment/failure`,
+        customerEmail: cvData.personalInfo.email || 'customer@example.com',
+        customerName: cvData.personalInfo.name || 'Customer Name',
+        successUrl: `${window.location.origin}/${lang}/editor/${selectedTemplateId}?payment=success`,
+        cancelUrl: `${window.location.origin}/${lang}/editor/${selectedTemplateId}?payment=cancel`,
+        failureUrl: `${window.location.origin}/${lang}/editor/${selectedTemplateId}?payment=failure`,
         webhookUrl: `${window.location.origin}/api/webhook/payment`
       };
       
@@ -129,13 +134,10 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
       console.log("Payment creation response:", result);
 
       if (result && result.payment_url && !result.payment_url.startsWith(window.location.origin)) {
-        // Real payment provider: redirect to external payment page
         window.location.href = result.payment_url;
       } else if (result && (result.success || result.id || result.payment_url)) {
-        // Simulated payment was successful OR a real provider returned a success-like object without redirect
         setPaymentStep('success');
       } else {
-        // Handle cases where the API returns a non-successful response
         throw new Error(result.message || 'Payment initiation failed.');
       }
     } catch (error) {
@@ -146,17 +148,15 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   
   const handleClosePaymentDialog = () => {
     setIsPaymentDialogOpen(false);
-    // Reset state after a short delay to allow for closing animation
     setTimeout(() => {
         setPaymentStep('details');
         setPaymentMethod(null);
     }, 300);
   };
 
-  const handleDownload = () => {
-    // When payment is successful, trigger the actual download/print
+  const handleSuccessfulPayment = () => {
+    setIsDownloadUnlocked(true);
     handleClosePaymentDialog();
-    setTimeout(handlePrint, 100);
   };
   
   const openPaymentDialog = () => {
@@ -164,7 +164,6 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     setPaymentMethod(null);
     setIsPaymentDialogOpen(true);
   };
-
 
   const selectedTemplate = templates.find(t => t.id === selectedTemplateId) || template;
 
@@ -186,8 +185,8 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                         <div className="success-icon">✅</div>
                         <h3>{dictionary.editor.paymentSuccessTitle}</h3>
                         <p>{dictionary.editor.paymentSuccessMessage}</p>
-                        <button className="btn-primary mt-4" onClick={handleDownload}>
-                            {dictionary.editor.download}
+                        <button className="btn-primary mt-4" onClick={handleSuccessfulPayment}>
+                            {dictionary.editor.unlockDownload}
                         </button>
                     </div>
                 </div>
@@ -274,7 +273,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                            {dictionary.editor.paymentCancel}
                         </button>
                         {paymentMethod && (
-                            <button className="btn-pay" id="process-payment" onClick={handlePaymentAndDownload}>
+                            <button className="btn-pay" id="process-payment" onClick={handlePaymentInitiation}>
                                 {dictionary.editor.paymentPay}
                             </button>
                         )}
@@ -284,11 +283,10 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     }
   }
 
-
   const DownloadButton = (
-      <Button size="sm" onClick={openPaymentDialog}>
-        <Download className="mr-2 h-4 w-4" />
-        {dictionary.editor.download}
+      <Button size="sm" onClick={handlePrint} className={isDownloadUnlocked ? 'bg-green-600 hover:bg-green-700' : ''}>
+        {isDownloadUnlocked ? <Unlock className="mr-2 h-4 w-4" /> : <Download className="mr-2 h-4 w-4" />}
+        {isDownloadUnlocked ? dictionary.editor.download : dictionary.editor.unlockDownloadFull}
       </Button>
   );
 
@@ -365,13 +363,6 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   );
 
 
-  const MobileDownloadButton = (
-    <Button size="icon" variant="outline" onClick={openPaymentDialog}>
-        <Download />
-        <span className="sr-only">{dictionary.editor.download}</span>
-    </Button>
-  );
-
   if (isMobile) {
     return (
       <>
@@ -387,7 +378,17 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     <TabsTrigger value="editor"><Pencil className="mr-2"/> {dictionary.editor.formEditor}</TabsTrigger>
                     <TabsTrigger value="preview"><Eye className="mr-2"/> {dictionary.editor.preview}</TabsTrigger>
                 </TabsList>
-                {MobileDownloadButton}
+                 {isDownloadUnlocked ? (
+                    <Button size="icon" variant="default" onClick={handlePrint} className="bg-green-600 hover:bg-green-700">
+                        <Download />
+                        <span className="sr-only">{dictionary.editor.download}</span>
+                    </Button>
+                ) : (
+                    <Button size="icon" variant="outline" onClick={openPaymentDialog}>
+                        <Lock />
+                        <span className="sr-only">{dictionary.editor.unlockDownloadFull}</span>
+                    </Button>
+                )}
             </header>
             <TabsContent value="editor" className="flex-1 overflow-y-auto bg-card data-[state=inactive]:hidden">
                  <div className="p-4 sm:p-6">
