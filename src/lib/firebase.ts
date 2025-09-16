@@ -6,7 +6,6 @@ import { getAuth } from "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   "projectId": "cvgenius-b3846",
   "appId": "1:396283648281:web:13098363363e06a3828c82",
