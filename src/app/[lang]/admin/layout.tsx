@@ -13,7 +13,8 @@ export default async function AdminLayout({
 }) {
   const dictionary = await getDictionary(lang);
   
-  // The error is handled inside getAdminConfig now, so no need for try/catch
+  // getAdminConfig now returns a hardcoded value on the server to prevent errors.
+  // The real check and client-side fetch is handled in AdminLayoutContent.
   const adminConfig = await getAdminConfig();
 
   return (

@@ -7,12 +7,7 @@
  * - getAdminConfig - Retrieves the admin configuration.
  */
 import { z } from 'zod';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import type { AdminConfig } from '@/lib/types';
-
-const CONFIG_DOC_ID = 'singleton';
-const CONFIG_COLLECTION_ID = 'adminConfig';
 
 const AdminConfigSchema = z.object({
     superAdminEmail: z.string().optional(),
@@ -43,12 +38,15 @@ export async function updateAdminConfig(config: AdminConfig): Promise<{ success:
     console.warn("Admin config update is currently disabled.");
     try {
         const parsedConfig = AdminConfigSchema.parse(config);
-        // const docRef = doc(db, CONFIG_COLLECTION_ID, CONFIG_DOC_ID);
+        // The following lines are commented out to prevent server-side Firebase calls.
+        // import { doc, setDoc } from 'firebase/firestore';
+        // import { db } from '@/lib/firebase';
+        // const docRef = doc(db, 'adminConfig', 'singleton');
         // await setDoc(docRef, parsedConfig, { merge: true });
         console.log("Simulating admin config update:", parsedConfig);
         return { success: true };
     } catch (error) {
-        console.error("Error updating admin config in Firestore:", error);
+        console.error("Error during simulated admin config update:", error);
         throw new Error("Failed to update configuration.");
     }
 }

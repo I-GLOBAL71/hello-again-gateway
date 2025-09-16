@@ -27,14 +27,15 @@ export default function AdminLayoutContent({
   const [adminConfig, setAdminConfig] = useState<AdminConfig | null>(initialAdminConfig);
 
   useEffect(() => {
-    // If the server-side fetch failed, try to fetch on the client.
+    // If the server-side fetch failed or was a workaround, try to fetch on the client.
     const fetchConfig = async () => {
       if (!adminConfig) {
         try {
+          console.log("Fetching admin config on client...");
           const config = await getAdminConfig();
           setAdminConfig(config);
         } catch (error) {
-          console.error("Failed to fetch admin config in layout content (client-side):", error);
+          console.error("Failed to fetch admin config on client:", error);
           // Don't block UI. The page itself will handle refetching and errors.
         }
       }
