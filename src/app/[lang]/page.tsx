@@ -62,8 +62,8 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
                         <p className="text-sm text-muted-foreground pt-1">{dictionary.templates[template.id as keyof typeof dictionary.templates]}</p>
                       </CardHeader>
                       <CardContent className="p-4 pt-0">
-                         <div className="print-wrapper aspect-[210/297] w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
-                            <div className="scale-[0.2] origin-top-left w-[500%] h-[500%]">
+                         <div className="print-wrapper w-full overflow-hidden rounded-lg bg-white shadow-lg pointer-events-none">
+                            <div className="h-full">
                                 <CvPreview cvData={previewData} templateId={template.id} />
                             </div>
                         </div>
@@ -83,5 +83,6 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
     </div>
   );
 }
+
 
 
