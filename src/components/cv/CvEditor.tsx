@@ -284,10 +284,10 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   }
 
   const DownloadButton = (
-      <Button size="sm" onClick={handlePrint} className={isDownloadUnlocked ? 'bg-green-600 hover:bg-green-700' : ''}>
-        {isDownloadUnlocked ? <Unlock className="mr-2 h-4 w-4" /> : <Lock className="mr-2 h-4 w-4" />}
-        {isDownloadUnlocked ? dictionary.editor.download : dictionary.editor.unlockDownloadFull}
-      </Button>
+    <Button size="sm" onClick={handlePrint}>
+      <Download className="mr-2 h-4 w-4" />
+      {dictionary.editor.download}
+    </Button>
   );
 
   const EditorView = (
@@ -378,9 +378,9 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     <TabsTrigger value="editor"><Pencil className="mr-2"/> {dictionary.editor.formEditor}</TabsTrigger>
                     <TabsTrigger value="preview"><Eye className="mr-2"/> {dictionary.editor.preview}</TabsTrigger>
                 </TabsList>
-                <Button size="icon" variant={isDownloadUnlocked ? "default" : "outline"} onClick={handlePrint} className={isDownloadUnlocked ? 'bg-green-600 hover:bg-green-700' : ''}>
-                    {isDownloadUnlocked ? <Unlock/> : <Lock />}
-                    <span className="sr-only">{isDownloadUnlocked ? dictionary.editor.download : dictionary.editor.unlockDownloadFull}</span>
+                <Button size="icon" onClick={handlePrint}>
+                    <Download/>
+                    <span className="sr-only">{dictionary.editor.download}</span>
                 </Button>
             </header>
             <TabsContent value="editor" className="flex-1 overflow-y-auto bg-card data-[state=inactive]:hidden">
