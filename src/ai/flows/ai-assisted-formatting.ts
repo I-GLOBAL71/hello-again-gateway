@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * @fileOverview Formats user-provided CV information using AI according to a template's guidelines.
  *

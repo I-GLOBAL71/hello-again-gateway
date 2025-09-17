@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * @fileOverview A server action to create a payment intent using a specified payment provider.
  *

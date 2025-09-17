@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * @fileOverview Summarizes the content of a CV into a short professional summary paragraph.
  *

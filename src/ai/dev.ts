@@ -4,4 +4,3 @@ config();
 import '@/ai/flows/ai-assisted-formatting.ts';
 import '@/ai/flows/cv-summary.ts';
 import '@/ai/flows/create-payment.ts';
-import '@/ai/flows/admin-config.ts';
