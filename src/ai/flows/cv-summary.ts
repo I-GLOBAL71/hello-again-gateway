@@ -8,13 +8,15 @@
 'use server';
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import type { SummarizeCvInput, SummarizeCvOutput } from '@/lib/types';
+
 
 const SummarizeCvInputSchema = z.object({
   cvContent: z
     .string()
     .describe('The complete text content of the CV to be summarized.'),
 });
+export type SummarizeCvInput = z.infer<typeof SummarizeCvInputSchema>;
+
 
 const SummarizeCvOutputSchema = z.object({
   summary: z
@@ -23,6 +25,8 @@ const SummarizeCvOutputSchema = z.object({
       'A short, professional summary paragraph of the CV content.'
     ),
 });
+export type SummarizeCvOutput = z.infer<typeof SummarizeCvOutputSchema>;
+
 
 export async function summarizeCv(input: SummarizeCvInput): Promise<SummarizeCvOutput> {
   return summarizeCvFlow(input);

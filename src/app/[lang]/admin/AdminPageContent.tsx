@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { getAdminConfig, updateAdminConfig } from '@/app/actions';
+import { updateAdminConfig } from '@/app/server-actions';
 import type { AdminConfig } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
 import { Auth } from '@/components/auth/Auth';
@@ -15,9 +15,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Locale } from '@/i18n-config';
 
-export default function AdminPageContent({ dictionary }: { dictionary: any }) {
-    const [config, setConfig] = useState<AdminConfig | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+type AdminPageContentProps = {
+    dictionary: any;
+    initialConfig: AdminConfig;
+};
+
+export default function AdminPageContent({ dictionary, initialConfig }: AdminPageContentProps) {
+    const [config, setConfig] = useState<AdminConfig>(initialConfig);
+    const [isSaving, setIsSaving] = useState(false);
     const { toast } = useToast();
     const { user, loading: authLoading } = useAuth();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
@@ -25,36 +30,16 @@ export default function AdminPageContent({ dictionary }: { dictionary: any }) {
     const lang = pathname.split('/')[1] as Locale;
     
     useEffect(() => {
-        const fetchConfig = async () => {
-            setIsLoading(true);
-            try {
-                const fetchedConfig = await getAdminConfig();
-                setConfig(fetchedConfig);
-            } catch (error) {
-                toast({
-                    variant: 'destructive',
-                    title: "Error",
-                    description: "Failed to load configuration.",
-                });
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchConfig();
-    }, [toast]);
-
-    useEffect(() => {
-        if (!authLoading && config) {
+        if (!authLoading) {
             if (user && user.email === config.superAdminEmail) {
                 setIsAuthorized(true);
             } else {
                 setIsAuthorized(false);
             }
         }
-    }, [user, authLoading, config]);
+    }, [user, authLoading, config.superAdminEmail]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!config) return;
         const { name, value } = e.target;
         setConfig(prev => ({ ...prev!, [name]: value }));
     };
@@ -62,7 +47,7 @@ export default function AdminPageContent({ dictionary }: { dictionary: any }) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!config) return;
-
+        setIsSaving(true);
         try {
             await updateAdminConfig(config);
             toast({
@@ -75,12 +60,12 @@ export default function AdminPageContent({ dictionary }: { dictionary: any }) {
                 title: "Error",
                 description: "Failed to save configuration.",
             });
+        } finally {
+            setIsSaving(false);
         }
     };
     
-    const pageIsLoading = isLoading || authLoading || isAuthorized === null;
-
-    if (pageIsLoading) {
+    if (authLoading || isAuthorized === null) {
          return (
             <div className="min-h-screen bg-muted/30 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-4">
@@ -243,7 +228,9 @@ export default function AdminPageContent({ dictionary }: { dictionary: any }) {
                         </Card>
 
                         <div className="flex justify-end">
-                            <Button type="submit">{adminDictionary.saveButton}</Button>
+                            <Button type="submit" disabled={isSaving}>
+                                {isSaving ? 'Saving...' : adminDictionary.saveButton}
+                            </Button>
                         </div>
                     </form>
                 </div>

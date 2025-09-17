@@ -8,7 +8,8 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { PaymentManager } from '@/services/payment';
-import type { AdminConfig, CreatePaymentInput, PaymentData } from '@/lib/types';
+import type { AdminConfig, PaymentData } from '@/lib/types';
+
 
 const PaymentDataSchema = z.object({
   amount: z.number(),
@@ -38,6 +39,8 @@ const CreatePaymentInputSchema = z.object({
   paymentData: PaymentDataSchema,
   adminConfig: AdminConfigSchema.nullable(),
 });
+export type CreatePaymentInput = z.infer<typeof CreatePaymentInputSchema>;
+
 
 export async function createPayment(input: CreatePaymentInput): Promise<any> {
   return createPaymentFlow(input);
@@ -62,8 +65,6 @@ const createPaymentFlow = ai.defineFlow(
       };
     }
     
-    // The error handling is now more robust within the service itself.
-    // The flow will just pass the result or error up to the client.
     const paymentManager = new PaymentManager(provider, adminConfig);
     const result = await paymentManager.createPayment(paymentData as PaymentData);
     return result;

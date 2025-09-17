@@ -1,15 +1,9 @@
 'use server';
 
-/**
- * This file acts as a safe, centralized re-exporter for all Server Actions (Genkit flows).
- * Client components should import server actions from this file ONLY.
- * This avoids bundling server-side code into the client and prevents hydration/initialization errors.
- */
-
 import type { AdminConfig } from '@/lib/types';
 
-// Moved from ai/flows/admin-config.ts to resolve build issues.
 export async function getAdminConfig(): Promise<AdminConfig> {
+    console.log("Fetching admin config (simulated).");
     return Promise.resolve({
         superAdminEmail: 'fabricewilliam71@gmail.com',
         lygosApiKey: '',
@@ -26,8 +20,3 @@ export async function updateAdminConfig(config: AdminConfig): Promise<{ success:
     console.log("Simulating admin config update with:", config);
     return Promise.resolve({ success: true });
 };
-
-
-export { aiAssistedFormatting } from '@/ai/flows/ai-assisted-formatting';
-export { createPayment } from '@/ai/flows/create-payment';
-export { summarizeCv } from '@/ai/flows/cv-summary';

@@ -27,7 +27,8 @@ import {
 } from "@/components/ui/dialog";
 
 import { Locale } from '@/i18n-config';
-import { createPayment, getAdminConfig } from '@/app/actions';
+import { createPayment, type CreatePaymentInput } from '@/ai/flows/create-payment';
+import { getAdminConfig, updateAdminConfig } from '@/app/server-actions';
 
 
 const initialCvData: CVData = {
@@ -136,7 +137,8 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         webhookUrl: `${window.location.origin}/api/webhook/payment`
       };
       
-      const result = await createPayment({ provider: 'lygos', paymentData, adminConfig });
+      const input: CreatePaymentInput = { provider: 'lygos', paymentData, adminConfig };
+      const result = await createPayment(input);
 
       console.log("Payment creation response:", result);
 
