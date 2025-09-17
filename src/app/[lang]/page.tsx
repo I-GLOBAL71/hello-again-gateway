@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
-import { Auth } from '@/components/auth/Auth';
 import { Button } from '@/components/ui/button';
 import { User } from 'lucide-react';
 import { previewDataSets } from '@/lib/preview-data';
@@ -25,7 +24,6 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
               Admin
             </Link>
           </Button>
-          <Auth dictionary={dictionary.auth} />
         </div>
       </header>
       <main className="container mx-auto px-4 py-12 md:py-20">
@@ -83,6 +81,3 @@ export default async function Home({ params: { lang } }: { params: { lang: Local
     </div>
   );
 }
-
-
-
