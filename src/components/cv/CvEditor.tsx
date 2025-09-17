@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { CVData, Template, AdminConfig } from '@/lib/types';
+import type { CVData, Template, AdminConfig, CreatePaymentInput } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
 import { Button } from '@/components/ui/button';
@@ -27,8 +27,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Locale } from '@/i18n-config';
-import { createPayment, type CreatePaymentInput } from '@/ai/flows/create-payment';
-import { getAdminConfig, updateAdminConfig } from '@/app/server-actions';
+import { createPayment, getAdminConfig } from '@/app/actions';
 
 
 const initialCvData: CVData = {

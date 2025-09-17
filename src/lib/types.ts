@@ -46,3 +46,40 @@ export type AdminConfig = {
 coolpaySecretKey?: string;
     downloadPrice?: string;
 };
+
+export type PaymentData = {
+  amount: number;
+  currency: string;
+  description: string;
+  customerEmail: string;
+  customerName: string;
+  successUrl: string;
+  cancelUrl: string;
+  failureUrl: string;
+  webhookUrl: string;
+};
+
+// --- Genkit Flow Types ---
+
+export type AiAssistedFormattingInput = {
+  templateName: string;
+  rawText: string;
+};
+
+export type AiAssistedFormattingOutput = {
+  formattedText: string;
+};
+
+export type CreatePaymentInput = {
+  provider: 'lygos' | 'coolpay';
+  paymentData: PaymentData;
+  adminConfig: AdminConfig | null;
+};
+
+export type SummarizeCvInput = {
+  cvContent: string;
+};
+
+export type SummarizeCvOutput = {
+  summary: string;
+};

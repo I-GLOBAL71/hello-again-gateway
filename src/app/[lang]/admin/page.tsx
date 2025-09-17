@@ -1,7 +1,7 @@
 import { getDictionary } from '@/get-dictionary';
 import { Locale } from '@/i18n-config';
 import AdminPageContent from './AdminPageContent';
-import { getAdminConfig } from '@/app/server-actions';
+import { getAdminConfig } from '@/app/actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default async function AdminPage({

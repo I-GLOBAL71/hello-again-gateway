@@ -5,9 +5,9 @@
  * - SummarizeCvInput - The input type for the summarizeCv function.
  * - SummarizeCvOutput - The return type for the summarizeCv function.
  */
-'use server';
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import type { SummarizeCvInput, SummarizeCvOutput } from '@/lib/types';
 
 
 const SummarizeCvInputSchema = z.object({
@@ -15,7 +15,6 @@ const SummarizeCvInputSchema = z.object({
     .string()
     .describe('The complete text content of the CV to be summarized.'),
 });
-export type SummarizeCvInput = z.infer<typeof SummarizeCvInputSchema>;
 
 
 const SummarizeCvOutputSchema = z.object({
@@ -25,7 +24,6 @@ const SummarizeCvOutputSchema = z.object({
       'A short, professional summary paragraph of the CV content.'
     ),
 });
-export type SummarizeCvOutput = z.infer<typeof SummarizeCvOutputSchema>;
 
 
 export async function summarizeCv(input: SummarizeCvInput): Promise<SummarizeCvOutput> {

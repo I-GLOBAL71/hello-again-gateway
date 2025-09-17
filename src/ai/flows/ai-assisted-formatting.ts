@@ -5,21 +5,19 @@
  * - AiAssistedFormattingInput - The input type for the aiAssistedFormatting function.
  * - AiAssistedFormattingOutput - The return type for the aiAssistedFormatting function.
  */
-'use server';
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import type { AiAssistedFormattingInput, AiAssistedFormattingOutput } from '@/lib/types';
 
 const AiAssistedFormattingInputSchema = z.object({
   templateName: z.string().describe('The name of the CV template to use for formatting.'),
   rawText: z.string().describe('The raw, unformatted text of the CV information.'),
 });
-export type AiAssistedFormattingInput = z.infer<typeof AiAssistedFormattingInputSchema>;
 
 
 const AiAssistedFormattingOutputSchema = z.object({
   formattedText: z.string().describe('The AI-formatted text of the CV information.'),
 });
-export type AiAssistedFormattingOutput = z.infer<typeof AiAssistedFormattingOutputSchema>;
 
 
 export async function aiAssistedFormatting(input: AiAssistedFormattingInput): Promise<AiAssistedFormattingOutput> {

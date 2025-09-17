@@ -1,6 +1,6 @@
 'use client';
 
-import type { CVData, Education, Experience } from '@/lib/types';
+import type { CVData, Education, Experience, SummarizeCvInput, AiAssistedFormattingInput } from '@/lib/types';
 import {
   Accordion,
   AccordionContent,
@@ -13,8 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Plus, Sparkles, Trash2, User } from 'lucide-react';
 import { useState, useRef } from 'react';
-import { summarizeCv, type SummarizeCvInput } from '@/ai/flows/cv-summary';
-import { aiAssistedFormatting, type AiAssistedFormattingInput } from '@/ai/flows/ai-assisted-formatting';
+import { summarizeCv, aiAssistedFormatting } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 

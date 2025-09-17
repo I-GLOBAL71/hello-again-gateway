@@ -4,11 +4,10 @@
  * - createPayment - A function that initializes a payment.
  * - CreatePaymentInput - The input type for the createPayment function.
  */
-'use server';
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { PaymentManager } from '@/services/payment';
-import type { AdminConfig, PaymentData } from '@/lib/types';
+import type { AdminConfig, PaymentData, CreatePaymentInput } from '@/lib/types';
 
 
 const PaymentDataSchema = z.object({
@@ -39,7 +38,6 @@ const CreatePaymentInputSchema = z.object({
   paymentData: PaymentDataSchema,
   adminConfig: AdminConfigSchema.nullable(),
 });
-export type CreatePaymentInput = z.infer<typeof CreatePaymentInputSchema>;
 
 
 export async function createPayment(input: CreatePaymentInput): Promise<any> {
