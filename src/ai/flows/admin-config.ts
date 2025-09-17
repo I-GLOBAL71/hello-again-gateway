@@ -1,5 +1,3 @@
-'use server';
-
 /**
  * @fileOverview Manages admin configuration settings.
  *
@@ -9,10 +7,11 @@
  */
 import type { AdminConfig } from '@/lib/types';
 
+// NOTE: This file does NOT use 'use server'. The 'actions.ts' file that
+// imports from here is the 'use server' boundary.
 
-export const getAdminConfig = async (): Promise<AdminConfig> => {
-    console.log("Using hardcoded admin config to prevent server-side Firebase issues.");
-    return {
+export async function getAdminConfig(): Promise<AdminConfig> {
+    return Promise.resolve({
         superAdminEmail: 'fabricewilliam71@gmail.com',
         lygosApiKey: '',
         lygosSecretKey: '',
@@ -20,11 +19,11 @@ export const getAdminConfig = async (): Promise<AdminConfig> => {
         coolpayApiKey: '',
         coolpaySecretKey: '',
         downloadPrice: '4.99',
-    };
+    });
 };
 
-export const updateAdminConfig = async (config: AdminConfig): Promise<{ success: boolean; }> => {
+export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
     console.warn("Admin config update is simulated and does not persist data.");
     console.log("Simulating admin config update with:", config);
-    return { success: true };
+    return Promise.resolve({ success: true });
 };
