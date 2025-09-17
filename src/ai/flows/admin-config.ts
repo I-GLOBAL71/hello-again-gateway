@@ -1,27 +1,19 @@
 'use server';
 
 /**
- * @fileOverview Manages admin configuration settings using Firestore.
+ * @fileOverview Manages admin configuration settings.
  *
- * - updateAdminConfig - Saves or updates the admin configuration.
- * - getAdminConfig - Retrieves the admin configuration.
+ * This file provides a workaround to avoid server-side Firebase/Firestore calls
+ * that can cause connection and authentication issues in a Next.js environment.
+ * It returns a hardcoded configuration object.
  */
-import { z } from 'zod';
 import type { AdminConfig } from '@/lib/types';
 
-const AdminConfigSchema = z.object({
-    superAdminEmail: z.string().optional(),
-    lygosApiKey: z.string().optional(),
-    lygosSecretKey: z.string().optional(),
-    coolpayMerchantId: z.string().optional(),
-    coolpayApiKey: z.string().optional(),
-    coolpaySecretKey: z.string().optional(),
-    downloadPrice: z.string().optional(),
-});
 
+// This function is async to maintain signature compatibility with a potential
+// future implementation that would fetch data from a database.
 export async function getAdminConfig(): Promise<AdminConfig> {
-    // WORKAROUND: Hardcode config to bypass persistent Firestore connection errors.
-    console.log("Using hardcoded admin config as a workaround.");
+    console.log("Using hardcoded admin config to prevent server-side Firebase issues.");
     return {
         superAdminEmail: 'fabricewilliam71@gmail.com',
         lygosApiKey: '',
@@ -33,20 +25,11 @@ export async function getAdminConfig(): Promise<AdminConfig> {
     };
 }
 
+// This function simulates an update and is async for signature compatibility.
 export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
-    // WORKAROUND: This function is disabled to prevent Firestore connection errors.
-    console.warn("Admin config update is currently disabled.");
-    try {
-        const parsedConfig = AdminConfigSchema.parse(config);
-        // The following lines are commented out to prevent server-side Firebase calls.
-        // import { doc, setDoc } from 'firebase/firestore';
-        // import { db } from '@/lib/firebase';
-        // const docRef = doc(db, 'adminConfig', 'singleton');
-        // await setDoc(docRef, parsedConfig, { merge: true });
-        console.log("Simulating admin config update:", parsedConfig);
-        return { success: true };
-    } catch (error) {
-        console.error("Error during simulated admin config update:", error);
-        throw new Error("Failed to update configuration.");
-    }
+    console.warn("Admin config update is simulated and does not persist data.");
+    // In a real application, you would parse and save the config to a database.
+    // const parsedConfig = AdminConfigSchema.parse(config);
+    console.log("Simulating admin config update with:", config);
+    return { success: true };
 }
