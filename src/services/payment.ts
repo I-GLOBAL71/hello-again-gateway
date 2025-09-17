@@ -3,7 +3,7 @@
  * This file contains the logic to communicate with different payment APIs.
  */
 
-import type { AdminConfig } from '@/lib/types';
+import type { AdminConfig, PaymentData } from '@/lib/types';
 
 const LYGOS_API_URLS = {
     baseUrl: 'https://api.lygosapp.com',
@@ -19,18 +19,6 @@ const COOLPAY_API_URLS = {
         createPayment: '/payments/create',
         getStatus: '/payments/status'
     }
-};
-
-export type PaymentData = {
-    amount: number;
-    currency: string;
-    description: string;
-    customerEmail: string;
-    customerName: string;
-    successUrl: string;
-    cancelUrl: string;
-    failureUrl: string;
-    webhookUrl: string;
 };
 
 interface PaymentProvider {

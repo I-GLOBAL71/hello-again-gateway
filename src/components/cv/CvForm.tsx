@@ -1,6 +1,6 @@
 'use client';
 
-import type { CVData, Education, Experience } from '@/lib/types';
+import type { CVData, Education, Experience, SummarizeCvInput, AiAssistedFormattingInput } from '@/lib/types';
 import {
   Accordion,
   AccordionContent,
@@ -77,7 +77,8 @@ export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
         Skills:
         ${cvData.skills}
       `;
-      const result = await summarizeCv({ cvContent });
+      const input: SummarizeCvInput = { cvContent };
+      const result = await summarizeCv(input);
       if (result.summary) {
         setCvData(prev => ({ ...prev, summary: result.summary }));
         toast({
@@ -105,7 +106,8 @@ export function CvForm({ cvData, setCvData, dictionary }: CvFormProps) {
         description: dictionary.aiFormattingDesc,
     });
     try {
-        const result = await aiAssistedFormatting({ rawText, templateName: 'professional' });
+        const input: AiAssistedFormattingInput = { rawText, templateName: 'professional' };
+        const result = await aiAssistedFormatting(input);
         if (result.formattedText) {
             setCvData(prev => ({
                 ...prev,

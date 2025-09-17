@@ -23,7 +23,7 @@ export type Experience = {
 };
 
 export type Education = {
-  id: string;
+  id:string;
   institution: string;
   degree: string;
   startDate: string;
@@ -43,6 +43,46 @@ export type AdminConfig = {
     lygosSecretKey?: string;
     coolpayMerchantId?: string;
     coolpayApiKey?: string;
-    coolpaySecretKey?: string;
+coolpaySecretKey?: string;
     downloadPrice?: string;
+};
+
+// Types for AI Flows
+
+// cv-summary.ts
+export type SummarizeCvInput = {
+  cvContent: string;
+};
+
+export type SummarizeCvOutput = {
+  summary: string;
+};
+
+// ai-assisted-formatting.ts
+export type AiAssistedFormattingInput = {
+  templateName: string;
+  rawText: string;
+};
+
+export type AiAssistedFormattingOutput = {
+  formattedText: string;
+};
+
+// create-payment.ts
+export type PaymentData = {
+    amount: number;
+    currency: string;
+    description: string;
+    customerEmail: string;
+    customerName: string;
+    successUrl: string;
+    cancelUrl: string;
+    failureUrl: string;
+    webhookUrl: string;
+};
+
+export type CreatePaymentInput = {
+  provider: 'lygos' | 'coolpay';
+  paymentData: PaymentData;
+  adminConfig: AdminConfig | null;
 };
