@@ -27,8 +27,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Locale } from '@/i18n-config';
-import { createPayment } from '@/ai/flows/create-payment';
-import { getAdminConfig } from '@/ai/flows/admin-config';
+import { createPayment, getAdminConfig } from '@/app/actions';
 
 
 const initialCvData: CVData = {

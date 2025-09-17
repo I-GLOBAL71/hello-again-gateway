@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { getAdminConfig, updateAdminConfig } from '@/ai/flows/admin-config';
+import { getAdminConfig, updateAdminConfig } from '@/app/actions';
 import type { AdminConfig } from '@/lib/types';
 import { useAuth } from '@/contexts/AuthContext';
 import { Auth } from '@/components/auth/Auth';
