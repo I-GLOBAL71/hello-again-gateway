@@ -29,7 +29,6 @@ export async function getAdminConfig(): Promise<AdminConfig> {
 export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
     console.warn("Admin config update is simulated and does not persist data.");
     // In a real application, you would parse and save the config to a database.
-    // const parsedConfig = AdminConfigSchema.parse(config);
     console.log("Simulating admin config update with:", config);
     return { success: true };
 }

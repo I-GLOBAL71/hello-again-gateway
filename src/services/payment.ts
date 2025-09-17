@@ -106,6 +106,7 @@ class CoolPayProvider implements PaymentProvider {
          if (!this.config.coolpayMerchantId || !this.config.coolpayApiKey) {
             // Instead of throwing an error, simulate success for demo purposes.
             console.warn("CoolPay API keys not configured. Simulating successful payment response.");
+            await new Promise(resolve => setTimeout(resolve, 1500));
             return Promise.resolve({
                 id: `simulated_${crypto.randomUUID()}`,
                 payment_url: paymentData.successUrl, // Redirect to success for simulation
