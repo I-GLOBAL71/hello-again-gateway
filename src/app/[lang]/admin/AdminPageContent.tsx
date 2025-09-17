@@ -156,25 +156,6 @@ export default function AdminPageContent({ dictionary, initialConfig }: AdminPag
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <Card>
                             <CardHeader>
-                                <CardTitle>{adminDictionary.superAdminTitle}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="superAdminEmail">{adminDictionary.superAdminEmail}</Label>
-                                    <Input
-                                        id="superAdminEmail"
-                                        name="superAdminEmail"
-                                        type="email"
-                                        value={config?.superAdminEmail || ''}
-                                        onChange={handleChange}
-                                        placeholder="This field is no longer used for login"
-                                    />
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
                                 <CardTitle>{adminDictionary.pricingTitle}</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
