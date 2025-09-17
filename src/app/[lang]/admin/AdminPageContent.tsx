@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { updateAdminConfig, getAdminConfig } from '@/app/actions';
+import { updateAdminConfig, getAdminConfig, verifyAdminPassword } from '@/app/server-actions';
 import type { AdminConfig } from '@/lib/types';
 import { ArrowLeft, Shield, LogIn } from 'lucide-react';
 import Link from 'next/link';
@@ -16,18 +16,6 @@ import { Locale } from '@/i18n-config';
 type AdminPageContentProps = {
     dictionary: any;
     initialConfig: AdminConfig;
-};
-
-// This function would ideally be a server action to securely check credentials
-const verifyCredentials = async (password: string): Promise<boolean> => {
-    // In a real app, this would be a secure check against hashed passwords or an auth service.
-    // For this example, we use a simple environment variable check.
-    // This is a placeholder for a more secure verification method.
-    // NOTE: This is a simplified example. In a real-world scenario,
-    // you would use a proper authentication library and server-side validation.
-    // The password should be stored as an environment variable on the server.
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin";
-    return password === adminPassword;
 };
 
 
@@ -47,8 +35,8 @@ export default function AdminPageContent({ dictionary, initialConfig }: AdminPag
         e.preventDefault();
         setIsCheckingAuth(true);
         setAuthError('');
-        const isValid = await verifyCredentials(password);
-        if (isValid) {
+        const { success } = await verifyAdminPassword(password);
+        if (success) {
             setIsAuthorized(true);
             sessionStorage.setItem('isAdminAuthenticated', 'true');
         } else {
@@ -58,7 +46,6 @@ export default function AdminPageContent({ dictionary, initialConfig }: AdminPag
     };
 
     useEffect(() => {
-        // Check session storage to maintain authenticated state during the session
         const sessionAuth = sessionStorage.getItem('isAdminAuthenticated');
         if (sessionAuth === 'true') {
             setIsAuthorized(true);
