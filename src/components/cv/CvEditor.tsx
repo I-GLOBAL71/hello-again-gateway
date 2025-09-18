@@ -30,6 +30,8 @@ import { Locale } from '@/i18n-config';
 import { createPayment } from '@/ai/flows/create-payment';
 import { getAdminConfig } from '@/app/server-actions';
 import { cn } from '@/lib/utils';
+import { Input } from '../ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 
 const initialCvData: CVData = {
@@ -90,6 +92,8 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [adminConfig, setAdminConfig] = useState<AdminConfig | null>(null);
   const [downloadPrice, setDownloadPrice] = useState<number>(4.99);
   const [isDownloadUnlocked, setIsDownloadUnlocked] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [mobileOperator, setMobileOperator] = useState('');
   const isMobile = useIsMobile();
   
   const fetchConfig = useCallback(async () => {
@@ -265,13 +269,41 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                         </div>
                     </div>
                     
+                    {paymentMethod === 'lygos' && (
+                        <div className="payment-form-container">
+                            <div className="form-group">
+                                <label htmlFor="mobileNumber">{dictionary.editor.mobileNumber}</label>
+                                <Input
+                                    id="mobileNumber"
+                                    type="tel"
+                                    value={mobileNumber}
+                                    onChange={(e) => setMobileNumber(e.target.value)}
+                                    placeholder="+1 234 567 890"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="mobileOperator">{dictionary.editor.mobileOperator}</label>
+                                <Select onValueChange={setMobileOperator} value={mobileOperator}>
+                                    <SelectTrigger id="mobileOperator">
+                                        <SelectValue placeholder={dictionary.editor.selectOperator} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="orange">{dictionary.editor.operatorOrange}</SelectItem>
+                                        <SelectItem value="mtn">{dictionary.editor.operatorMtn}</SelectItem>
+                                        <SelectItem value="moov">{dictionary.editor.operatorMoov}</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                    )}
+
                     {paymentMethod && (
                        <div className="popup-actions mt-8">
                            <button className="btn-cancel" onClick={handleClosePaymentDialog}>
                                {dictionary.editor.paymentCancel}
                            </button>
-                           <button className="btn-pay" id="process-payment" onClick={handlePaymentInitiation}>
-                                {paymentMethod === 'coolpay' ? dictionary.editor.paymentPay : dictionary.editor.paymentPay}
+                           <button className="btn-pay" id="process-payment" onClick={handlePaymentInitiation} disabled={paymentMethod === 'lygos' && (!mobileNumber || !mobileOperator)}>
+                                {dictionary.editor.paymentPay}
                            </button>
                        </div>
                     )}
