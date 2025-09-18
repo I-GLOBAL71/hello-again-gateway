@@ -129,6 +129,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   }, [fetchConfig]);
 
   const handlePrint = () => {
+    if (!isDownloadUnlocked) return;
     window.print();
   };
 
@@ -149,7 +150,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         description: `${dictionary.editor.paymentItem} - ${selectedTemplate.name}`,
         customerEmail: cvData.personalInfo.email || 'customer@example.com',
         customerName: cvData.personalInfo.name || 'Customer Name',
-        successUrl: `${window.location.href.split('?')[0]}?payment_success=true`,
+        successUrl: `${window.location.origin}/${lang}/payment/success`,
         cancelUrl: `${window.location.origin}/${lang}/payment/cancel`,
         failureUrl: `${window.location.origin}/${lang}/payment/error`,
         webhookUrl: `${window.location.origin}/api/webhook/payment`
