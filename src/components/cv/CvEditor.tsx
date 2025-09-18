@@ -122,11 +122,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   }, [fetchConfig]);
 
   const handlePrint = () => {
-    if (isDownloadUnlocked) {
-      window.print();
-    } else {
-      openPaymentDialog();
-    }
+    window.print();
   };
 
   const handlePaymentInitiation = async () => {
@@ -307,11 +303,20 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     }
   }
 
-  const DownloadButton = (
-    <Button size="sm" onClick={handlePrint}>
-      <Download className="mr-2 h-4 w-4" />
-      {dictionary.editor.download}
-    </Button>
+  const HeaderActions = (
+    <div className='flex items-center gap-2'>
+        {!isDownloadUnlocked ? (
+            <Button size="sm" onClick={openPaymentDialog}>
+                <Lock className="mr-2 h-4 w-4" />
+                {dictionary.editor.unlockDownloadFull}
+            </Button>
+        ) : null}
+
+        <Button size="sm" onClick={handlePrint} disabled={!isDownloadUnlocked}>
+            <Download className="mr-2 h-4 w-4" />
+            {dictionary.editor.download}
+        </Button>
+    </div>
   );
 
   const EditorView = (
@@ -324,7 +329,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
           </Link>
         </Button>
         <h2 className="font-headline text-xl font-semibold">{template.name} {dictionary.editor.template}</h2>
-        {DownloadButton}
+        {HeaderActions}
       </header>
       <div className="overflow-y-auto flex-1 p-4 sm:p-6 bg-card">
           <CvForm cvData={cvData} setCvData={setCvData} dictionary={dictionary.form} />
@@ -402,10 +407,18 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     <TabsTrigger value="editor"><Pencil className="mr-2"/> {dictionary.editor.formEditor}</TabsTrigger>
                     <TabsTrigger value="preview"><Eye className="mr-2"/> {dictionary.editor.preview}</TabsTrigger>
                 </TabsList>
-                <Button size="icon" onClick={handlePrint}>
-                    <Download/>
-                    <span className="sr-only">{dictionary.editor.download}</span>
-                </Button>
+                 <div className="flex items-center gap-2">
+                    {!isDownloadUnlocked ? (
+                        <Button size="icon" onClick={openPaymentDialog}>
+                            <Lock/>
+                            <span className="sr-only">{dictionary.editor.unlockDownloadFull}</span>
+                        </Button>
+                    ) : null}
+                    <Button size="icon" onClick={handlePrint} disabled={!isDownloadUnlocked}>
+                        <Download/>
+                        <span className="sr-only">{dictionary.editor.download}</span>
+                    </Button>
+                </div>
             </header>
             <TabsContent value="editor" className="flex-1 overflow-y-auto bg-card data-[state=inactive]:hidden">
                  <div className="p-4 sm:p-6">
@@ -439,5 +452,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     </>
   );
 }
+
+    
 
     
