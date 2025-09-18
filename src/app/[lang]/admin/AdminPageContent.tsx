@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { updateAdminConfig, getAdminConfig, verifyAdminPassword } from '@/app/server-actions';
+import { updateAdminConfig, verifyAdminPassword } from '@/app/server-actions';
 import type { AdminConfig } from '@/lib/types';
 import { ArrowLeft, Shield, LogIn } from 'lucide-react';
 import Link from 'next/link';

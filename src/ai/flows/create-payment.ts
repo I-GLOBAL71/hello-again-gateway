@@ -4,7 +4,7 @@
  * - createPayment - A function that initializes a payment.
  * - CreatePaymentInput - The input type for the createPayment function.
  */
-
+'use server';
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import type { AdminConfig, PaymentData, CreatePaymentInput } from '@/lib/types';

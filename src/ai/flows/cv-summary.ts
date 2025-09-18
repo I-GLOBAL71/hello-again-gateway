@@ -5,6 +5,7 @@
  * - SummarizeCvInput - The input type for the summarizeCv function.
  * - SummarizeCvOutput - The return type for the summarizeCv function.
  */
+'use server';
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import type { SummarizeCvInput, SummarizeCvOutput } from '@/lib/types';
@@ -51,3 +52,5 @@ const summarizeCvFlow = ai.defineFlow(
     return output!;
   }
 );
+
+export { aiAssistedFormatting } from './ai-assisted-formatting';

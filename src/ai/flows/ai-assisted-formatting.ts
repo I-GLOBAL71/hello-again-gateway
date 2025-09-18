@@ -5,6 +5,7 @@
  * - AiAssistedFormattingInput - The input type for the aiAssistedFormatting function.
  * - AiAssistedFormattingOutput - The return type for the aiAssistedFormatting function.
  */
+'use server';
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import type { AiAssistedFormattingInput, AiAssistedFormattingOutput } from '@/lib/types';

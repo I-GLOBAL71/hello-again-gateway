@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Locale } from '@/i18n-config';
-import { createPayment } from '@/app/actions';
+import { createPayment } from '@/ai/flows/create-payment';
 import { getAdminConfig } from '@/app/server-actions';
 
 

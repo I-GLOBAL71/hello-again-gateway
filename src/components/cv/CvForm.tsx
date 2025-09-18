@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Plus, Sparkles, Trash2, User } from 'lucide-react';
 import { useState, useRef } from 'react';
-import { summarizeCv, aiAssistedFormatting } from '@/app/actions';
+import { summarizeCv, aiAssistedFormatting } from '@/ai/flows/cv-summary';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
