@@ -3,14 +3,13 @@
 import type { AdminConfig } from '@/lib/types';
 
 export async function verifyAdminPassword(password: string): Promise<{ success: boolean }> {
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "admin";
+    const adminPassword = process.env.ADMIN_PASSWORD || "admin";
     if (password === adminPassword) {
         return { success: true };
     }
     return { success: false };
 }
 
-// Note: These functions are simple and don't involve Genkit flows.
 export async function getAdminConfig(): Promise<AdminConfig> {
     console.log("Fetching admin config (simulated).");
     return Promise.resolve({
