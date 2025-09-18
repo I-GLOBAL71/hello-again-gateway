@@ -29,6 +29,7 @@ import {
 import { Locale } from '@/i18n-config';
 import { createPayment } from '@/ai/flows/create-payment';
 import { getAdminConfig } from '@/app/server-actions';
+import { cn } from '@/lib/utils';
 
 
 const initialCvData: CVData = {
@@ -243,10 +244,22 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     <div className="payment-methods">
                         <h4>{dictionary.editor.paymentMethods}</h4>
                          <div className="method-buttons">
-                            <button className="payment-method" data-method="card" onClick={() => setPaymentMethod('coolpay')}>
+                            <button
+                              className={cn(
+                                "payment-method",
+                                paymentMethod === 'coolpay' && "payment-method-selected"
+                              )}
+                              onClick={() => setPaymentMethod('coolpay')}
+                            >
                                 💳 {dictionary.editor.creditCard}
                             </button>
-                            <button className="payment-method" data-method="mobile" onClick={() => setPaymentMethod('lygos')}>
+                            <button
+                              className={cn(
+                                "payment-method",
+                                paymentMethod === 'lygos' && "payment-method-selected"
+                              )}
+                              onClick={() => setPaymentMethod('lygos')}
+                            >
                                 📱 {dictionary.editor.mobilePayment}
                             </button>
                         </div>
@@ -416,8 +429,3 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     </>
   );
 }
-
-    
-
-    
-
