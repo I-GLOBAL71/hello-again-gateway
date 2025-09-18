@@ -63,6 +63,12 @@ export default function AdminPageContent({ dictionary, initialConfig }: AdminPag
         setIsSaving(true);
         try {
             await updateAdminConfig(config);
+            
+            // Broadcast that the config has changed
+            const channel = new BroadcastChannel('config_channel');
+            channel.postMessage('config_updated');
+            channel.close();
+
             toast({
                 title: "Success!",
                 description: "Configuration saved successfully.",

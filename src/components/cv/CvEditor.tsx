@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { CVData, Template, AdminConfig, CreatePaymentInput } from '@/lib/types';
 import { CvForm } from '@/components/cv/CvForm';
 import { CvPreview } from '@/components/cv/CvPreview';
@@ -91,20 +91,35 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [isDownloadUnlocked, setIsDownloadUnlocked] = useState(false);
   const isMobile = useIsMobile();
   
+  const fetchConfig = useCallback(async () => {
+    try {
+        const config = await getAdminConfig();
+        setAdminConfig(config);
+        if (config.downloadPrice) {
+            setDownloadPrice(parseFloat(config.downloadPrice));
+        }
+    } catch (error) {
+        console.error("Failed to load admin config for price:", error);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchConfig = async () => {
-        try {
-            const config = await getAdminConfig();
-            setAdminConfig(config);
-            if (config.downloadPrice) {
-                setDownloadPrice(parseFloat(config.downloadPrice));
-            }
-        } catch (error) {
-            console.error("Failed to load admin config for price:", error);
+    fetchConfig();
+
+    const channel = new BroadcastChannel('config_channel');
+    const handleMessage = (event: MessageEvent) => {
+        if (event.data === 'config_updated') {
+            fetchConfig();
         }
     };
-    fetchConfig();
-  }, []);
+
+    channel.addEventListener('message', handleMessage);
+
+    return () => {
+        channel.removeEventListener('message', handleMessage);
+        channel.close();
+    };
+  }, [fetchConfig]);
 
   const handlePrint = () => {
     if (isDownloadUnlocked) {
