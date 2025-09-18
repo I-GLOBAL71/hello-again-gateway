@@ -40,12 +40,10 @@ class LygosProvider implements PaymentProvider {
 
     async createPayment(paymentData: PaymentData): Promise<any> {
         if (!this.config.lygosApiKey || !this.config.lygosSecretKey) {
-            console.warn("Lygos API keys not configured. Simulating successful payment response.");
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            console.warn("Lygos API keys not configured. Simulating successful payment by redirecting to success URL.");
             return Promise.resolve({
                 success: true,
                 message: "Payment gateway created successfully (Simulated)",
-                gateway_id: `simulated_${crypto.randomUUID()}`,
                 payment_url: paymentData.successUrl,
             });
         }
@@ -89,8 +87,7 @@ class CoolPayProvider implements PaymentProvider {
     
     async createPayment(paymentData: PaymentData): Promise<any> {
          if (!this.config.coolpayMerchantId || !this.config.coolpayApiKey) {
-            console.warn("CoolPay API keys not configured. Simulating successful payment response.");
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            console.warn("CoolPay API keys not configured. Simulating successful payment by redirecting to success URL.");
             return Promise.resolve({
                 id: `simulated_${crypto.randomUUID()}`,
                 payment_url: paymentData.successUrl,
@@ -185,8 +182,7 @@ const createPaymentFlow = ai.defineFlow(
   },
   async ({ provider, paymentData, adminConfig }) => {
     if (!adminConfig) {
-      console.warn("Admin config not provided to createPaymentFlow. Simulating successful payment response.");
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.warn("Admin config not provided to createPaymentFlow. Simulating payment by redirecting to success URL.");
       return {
         success: true,
         message: "Payment gateway created successfully (Simulated)",

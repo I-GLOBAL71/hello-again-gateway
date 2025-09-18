@@ -115,6 +115,13 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
 
     channel.addEventListener('message', handleMessage);
 
+    // Check for payment success on load
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment_success') === 'true') {
+        setIsDownloadUnlocked(true);
+    }
+
+
     return () => {
         channel.removeEventListener('message', handleMessage);
         channel.close();
@@ -142,7 +149,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         description: `${dictionary.editor.paymentItem} - ${selectedTemplate.name}`,
         customerEmail: cvData.personalInfo.email || 'customer@example.com',
         customerName: cvData.personalInfo.name || 'Customer Name',
-        successUrl: `${window.location.origin}/${lang}/payment/success`,
+        successUrl: `${window.location.href.split('?')[0]}?payment_success=true`,
         cancelUrl: `${window.location.origin}/${lang}/payment/cancel`,
         failureUrl: `${window.location.origin}/${lang}/payment/error`,
         webhookUrl: `${window.location.origin}/api/webhook/payment`
@@ -153,12 +160,10 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
 
       console.log("Payment creation response:", result);
 
-      if (result && result.payment_url && !result.payment_url.startsWith(window.location.origin)) {
+      if (result && result.payment_url) {
         window.location.href = result.payment_url;
-      } else if (result && (result.success || result.id || result.payment_url)) {
-        setPaymentStep('success');
       } else {
-        throw new Error(result.message || 'Payment initiation failed.');
+        throw new Error(result.message || 'Payment initiation failed. No payment_url returned.');
       }
     } catch (error) {
       console.error("Payment error:", error);
