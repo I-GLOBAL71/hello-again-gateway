@@ -2,6 +2,18 @@
 
 import type { AdminConfig } from '@/lib/types';
 
+// In-memory store for the admin configuration
+let inMemoryConfig: AdminConfig = {
+    superAdminEmail: 'fabricewilliam71@gmail.com',
+    lygosApiKey: '',
+    lygosSecretKey: '',
+    coolpayMerchantId: '',
+    coolpayApiKey: '',
+    coolpaySecretKey: '',
+    downloadPrice: '4.99',
+};
+
+
 export async function verifyAdminPassword(password: string): Promise<{ success: boolean }> {
     const adminPassword = process.env.ADMIN_PASSWORD || "admin";
     if (password === adminPassword) {
@@ -11,20 +23,12 @@ export async function verifyAdminPassword(password: string): Promise<{ success: 
 }
 
 export async function getAdminConfig(): Promise<AdminConfig> {
-    console.log("Fetching admin config (simulated).");
-    return Promise.resolve({
-        superAdminEmail: 'fabricewilliam71@gmail.com',
-        lygosApiKey: '',
-        lygosSecretKey: '',
-        coolpayMerchantId: '',
-        coolpayApiKey: '',
-        coolpaySecretKey: '',
-        downloadPrice: '4.99',
-    });
+    console.log("Fetching admin config from in-memory store.");
+    return Promise.resolve(inMemoryConfig);
 };
 
 export async function updateAdminConfig(config: AdminConfig): Promise<{ success: boolean; }> {
-    console.warn("Admin config update is simulated and does not persist data.");
-    console.log("Simulating admin config update with:", config);
+    console.log("Updating in-memory admin config with:", config);
+    inMemoryConfig = config;
     return Promise.resolve({ success: true });
 };
