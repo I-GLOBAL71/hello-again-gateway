@@ -85,7 +85,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(template.id);
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   const [paymentStep, setPaymentStep] = useState<'details' | 'form' | 'loading' | 'success' | 'error'>('details');
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'mobile' | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<'coolpay' | 'lygos' | null>(null);
   const [adminConfig, setAdminConfig] = useState<AdminConfig | null>(null);
   const [downloadPrice, setDownloadPrice] = useState<number>(4.99);
   const [isDownloadUnlocked, setIsDownloadUnlocked] = useState(false);
@@ -134,8 +134,9 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
   };
 
   const handlePaymentInitiation = async () => {
+    if (!paymentMethod) return;
     setPaymentStep('loading');
-    console.log("Initiating payment...");
+    console.log("Initiating payment with:", paymentMethod);
 
     if (!adminConfig) {
         console.error("Admin config not loaded.");
@@ -156,7 +157,7 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
         webhookUrl: `${window.location.origin}/api/webhook/payment`
       };
       
-      const input: CreatePaymentInput = { provider: 'lygos', paymentData, adminConfig };
+      const input: CreatePaymentInput = { provider: paymentMethod, paymentData, adminConfig };
       const result = await createPayment(input);
 
       console.log("Payment creation response:", result);
@@ -241,69 +242,26 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
                     
                     <div className="payment-methods">
                         <h4>{dictionary.editor.paymentMethods}</h4>
-                        <div className="method-buttons">
-                            <button className="payment-method" data-method="card" onClick={() => setPaymentMethod('card')}>
+                         <div className="method-buttons">
+                            <button className="payment-method" data-method="card" onClick={() => setPaymentMethod('coolpay')}>
                                 💳 {dictionary.editor.creditCard}
                             </button>
-                            <button className="payment-method" data-method="mobile" onClick={() => setPaymentMethod('mobile')}>
+                            <button className="payment-method" data-method="mobile" onClick={() => setPaymentMethod('lygos')}>
                                 📱 {dictionary.editor.mobilePayment}
                             </button>
                         </div>
                     </div>
                     
                     {paymentMethod && (
-                        <div className="payment-form-container" id="payment-form">
-                            {paymentMethod === 'card' ? (
-                                <div className="card-form">
-                                    <div className="form-group">
-                                        <label>{dictionary.editor.cardNumber}</label>
-                                        <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxLength={19} />
-                                    </div>
-                                    <div className="form-row">
-                                        <div className="form-group">
-                                            <label>{dictionary.editor.cardExpiry}</label>
-                                            <input type="text" id="card-expiry" placeholder="MM/AA" maxLength={5} />
-                                        </div>
-                                        <div className="form-group">
-                                            <label>{dictionary.editor.cardCVC}</label>
-                                            <input type="text" id="card-cvc" placeholder="123" maxLength={4} />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label>{dictionary.editor.cardName}</label>
-                                        <input type="text" id="card-name" placeholder="John Doe" />
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="mobile-form">
-                                    <div className="form-group">
-                                        <label>{dictionary.editor.mobileNumber}</label>
-                                        <input type="tel" id="mobile-number" placeholder="+33 6 12 34 56 78" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>{dictionary.editor.mobileOperator}</label>
-                                        <select id="mobile-operator">
-                                            <option value="">{dictionary.editor.selectOperator}</option>
-                                            <option value="orange">{dictionary.editor.operatorOrange}</option>
-                                            <option value="mtn">{dictionary.editor.operatorMtn}</option>
-                                            <option value="moov">{dictionary.editor.operatorMoov}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                       <div className="popup-actions mt-8">
+                           <button className="btn-cancel" onClick={handleClosePaymentDialog}>
+                               {dictionary.editor.paymentCancel}
+                           </button>
+                           <button className="btn-pay" id="process-payment" onClick={handlePaymentInitiation}>
+                                {paymentMethod === 'coolpay' ? dictionary.editor.paymentPay : dictionary.editor.paymentPay}
+                           </button>
+                       </div>
                     )}
-                    
-                    <div className="popup-actions">
-                        <button className="btn-cancel" onClick={handleClosePaymentDialog}>
-                           {dictionary.editor.paymentCancel}
-                        </button>
-                        {paymentMethod && (
-                            <button className="btn-pay" id="process-payment" onClick={handlePaymentInitiation}>
-                                {dictionary.editor.paymentPay}
-                            </button>
-                        )}
-                    </div>
                 </div>
             );
     }
@@ -462,3 +420,4 @@ export function CvEditor({ template, dictionary, lang }: CvEditorProps) {
     
 
     
+
